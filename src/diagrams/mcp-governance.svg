@@ -1,0 +1,65 @@
+<svg viewBox="0 0 800 330" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="Order of operations for MCP governance: the developer or agent discovers servers in the registry, then asks the organization allow list for permission, and only then invokes a tool on the MCP server. If the server is not on the allow list the request is blocked and the tool call never happens.">
+  <defs>
+    <marker id="ar-mcp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+    <marker id="ar-mcp-good" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--good)"/>
+    </marker>
+    <marker id="ar-mcp-bad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--bad)"/>
+    </marker>
+  </defs>
+
+  <!-- participants -->
+  <rect x="17"  y="14" width="150" height="40" rx="7" fill="var(--surface)" stroke="var(--line-2)"/>
+  <rect x="217" y="14" width="150" height="40" rx="7" fill="var(--surface)" stroke="var(--line-2)"/>
+  <rect x="417" y="14" width="150" height="40" rx="7" fill="var(--accent-wash)" stroke="var(--accent)"/>
+  <rect x="625" y="14" width="150" height="40" rx="7" fill="var(--surface)" stroke="var(--line-2)"/>
+  <g font-family="IBM Plex Sans, system-ui, sans-serif" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="middle">
+    <text x="92"  y="39">Developer / agent</text>
+    <text x="292" y="39">MCP registry</text>
+    <text x="492" y="39" fill="var(--accent-ink)">Org allow list</text>
+    <text x="700" y="39">MCP server</text>
+  </g>
+
+  <!-- lifelines -->
+  <g stroke="var(--line-2)" stroke-width="1" stroke-dasharray="3 4">
+    <line x1="92"  y1="54" x2="92"  y2="306"/>
+    <line x1="292" y1="54" x2="292" y2="306"/>
+    <line x1="492" y1="54" x2="492" y2="306"/>
+    <line x1="700" y1="54" x2="700" y2="306"/>
+  </g>
+
+  <!-- messages -->
+  <g stroke="currentColor" stroke-width="1.5" fill="none">
+    <line x1="92"  y1="88"  x2="286" y2="88"  marker-end="url(#ar-mcp)"/>
+    <line x1="292" y1="118" x2="98"  y2="118" marker-end="url(#ar-mcp)" stroke-dasharray="5 4"/>
+    <line x1="92"  y1="154" x2="486" y2="154" marker-end="url(#ar-mcp)"/>
+    <line x1="92"  y1="218" x2="694" y2="218" marker-end="url(#ar-mcp)"/>
+    <line x1="700" y1="248" x2="98"  y2="248" marker-end="url(#ar-mcp)" stroke-dasharray="5 4"/>
+  </g>
+  <line x1="492" y1="186" x2="98" y2="186" stroke="var(--good)" stroke-width="1.5"
+        stroke-dasharray="5 4" marker-end="url(#ar-mcp-good)"/>
+
+  <g font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10.5" fill="var(--muted)">
+    <text x="104" y="79">1 · discover available servers</text>
+    <text x="104" y="109">2 · server catalog</text>
+    <text x="104" y="145">3 · may I enable server X?</text>
+    <text x="104" y="177" fill="var(--good)">4 · allowed</text>
+    <text x="104" y="209">5 · invoke tool</text>
+    <text x="104" y="239">6 · tool result</text>
+  </g>
+
+  <!-- blocked branch -->
+  <line x1="17" y1="272" x2="783" y2="272" stroke="var(--line-2)" stroke-width="1" stroke-dasharray="2 4"/>
+  <rect x="17" y="262" width="86" height="19" rx="4" fill="var(--surface)" stroke="var(--line-2)"/>
+  <text x="60" y="276" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10"
+        fill="var(--faint)" text-anchor="middle">otherwise</text>
+
+  <line x1="492" y1="300" x2="98" y2="300" stroke="var(--bad)" stroke-width="1.5"
+        stroke-dasharray="5 4" marker-end="url(#ar-mcp-bad)"/>
+  <text x="104" y="291" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10.5"
+        fill="var(--bad)">4 · blocked — not on the allow list, so steps 5 and 6 never happen</text>
+</svg>

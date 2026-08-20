@@ -1,0 +1,91 @@
+<svg viewBox="0 0 900 470" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="A closed loop: GitHub's control-plane primitives enforce constraints on the agent workflow, the workflow produces artifacts into GitHub's system of record, and that record is audited back through the same control-plane primitives.">
+  <defs>
+    <marker id="ar-cp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+    <marker id="ar-cp-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+
+  <!-- control plane -->
+  <rect x="28" y="16" width="772" height="104" rx="10" fill="none" stroke="var(--accent)" stroke-dasharray="5 4"/>
+  <text x="44" y="38" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10.5"
+        letter-spacing="1.4" fill="var(--accent-ink)">GITHUB CONTROL PLANE — ENFORCES</text>
+  <g>
+    <rect x="44"  y="50" width="172" height="52" rx="7" fill="var(--surface)" stroke="var(--line-2)"/>
+    <rect x="236" y="50" width="172" height="52" rx="7" fill="var(--surface)" stroke="var(--line-2)"/>
+    <rect x="428" y="50" width="172" height="52" rx="7" fill="var(--surface)" stroke="var(--line-2)"/>
+    <rect x="620" y="50" width="172" height="52" rx="7" fill="var(--surface)" stroke="var(--line-2)"/>
+  </g>
+  <g font-family="IBM Plex Sans, system-ui, sans-serif" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="middle">
+    <text x="130" y="72">Rulesets and</text><text x="130" y="88">branch protection</text>
+    <text x="322" y="80">Required checks</text>
+    <text x="514" y="80">CODEOWNERS</text>
+    <text x="706" y="72">Environments</text><text x="706" y="88">with reviewers</text>
+  </g>
+
+  <!-- enforces -->
+  <line x1="414" y1="120" x2="414" y2="158" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ar-cp-accent)"/>
+  <text x="426" y="144" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10.5"
+        fill="var(--accent-ink)">enforces</text>
+
+  <!-- pipeline -->
+  <rect x="28" y="164" width="772" height="140" rx="10" fill="none" stroke="var(--line-2)" stroke-dasharray="5 4"/>
+  <text x="44" y="186" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10.5"
+        letter-spacing="1.4" fill="var(--faint)">AGENT WORKFLOW — GITHUB ACTIONS</text>
+  <g>
+    <rect x="50"  y="210" width="164" height="62" rx="7" fill="var(--surface)" stroke="var(--line-2)"/>
+    <rect x="238" y="210" width="164" height="62" rx="7" fill="var(--surface)" stroke="var(--line-2)"/>
+    <rect x="426" y="210" width="164" height="62" rx="7" fill="var(--surface)" stroke="var(--line-2)"/>
+    <rect x="614" y="210" width="164" height="62" rx="7" fill="var(--surface)" stroke="var(--line-2)"/>
+  </g>
+  <g font-family="IBM Plex Sans, system-ui, sans-serif" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="middle">
+    <text x="132" y="234">Trigger</text>
+    <text x="320" y="234">Plan job</text>
+    <text x="508" y="234">Act job</text>
+    <text x="696" y="234">Eval job</text>
+  </g>
+  <g font-family="IBM Plex Mono, ui-monospace, monospace" font-size="9.5" fill="var(--faint)" text-anchor="middle">
+    <text x="132" y="252">PR · issue</text><text x="132" y="264">workflow_dispatch</text>
+    <text x="320" y="252">uploads the plan</text><text x="320" y="264">as an artifact</text>
+    <text x="508" y="252">scoped token</text><text x="508" y="264">on its own branch</text>
+    <text x="696" y="252">checks, scans,</text><text x="696" y="264">review outcomes</text>
+  </g>
+  <g stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#ar-cp)">
+    <line x1="214" y1="241" x2="232" y2="241"/>
+    <line x1="402" y1="241" x2="420" y2="241"/>
+    <line x1="590" y1="241" x2="608" y2="241"/>
+  </g>
+
+  <!-- produces -->
+  <line x1="414" y1="304" x2="414" y2="342" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ar-cp-accent)"/>
+  <text x="426" y="328" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10.5"
+        fill="var(--accent-ink)">produces</text>
+
+  <!-- system of record -->
+  <rect x="28" y="348" width="772" height="104" rx="10" fill="none" stroke="var(--accent)" stroke-dasharray="5 4"/>
+  <text x="44" y="370" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10.5"
+        letter-spacing="1.4" fill="var(--accent-ink)">GITHUB SYSTEM OF RECORD — REMEMBERS</text>
+  <g>
+    <rect x="44"  y="382" width="172" height="52" rx="7" fill="var(--surface)" stroke="var(--line-2)"/>
+    <rect x="236" y="382" width="172" height="52" rx="7" fill="var(--surface)" stroke="var(--line-2)"/>
+    <rect x="428" y="382" width="172" height="52" rx="7" fill="var(--surface)" stroke="var(--line-2)"/>
+    <rect x="620" y="382" width="172" height="52" rx="7" fill="var(--surface)" stroke="var(--line-2)"/>
+  </g>
+  <g font-family="IBM Plex Sans, system-ui, sans-serif" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="middle">
+    <text x="130" y="404">Pull requests</text><text x="130" y="420">and commits</text>
+    <text x="322" y="404">Workflow runs</text><text x="322" y="420">and job logs</text>
+    <text x="514" y="412">Artifacts</text>
+    <text x="706" y="404">Reviews and</text><text x="706" y="420">security alerts</text>
+  </g>
+
+  <!-- audited via -->
+  <path d="M800 400 L840 400 L840 68 L806 68" stroke="var(--accent)" stroke-width="1.5"
+        fill="none" stroke-dasharray="5 4" marker-end="url(#ar-cp-accent)"/>
+  <g font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10.5" fill="var(--accent-ink)">
+    <text x="850" y="230">audited</text>
+    <text x="850" y="244">via</text>
+  </g>
+</svg>

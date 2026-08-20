@@ -344,6 +344,28 @@ button, input, select { font: inherit; color: inherit; }
 .md table { border-collapse: collapse; width: 100%; font-size: 14px; min-width: 460px; }
 .md th, .md td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--line); }
 .md th { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; background: var(--sunken); }
+.md figure.diagram {
+  margin: 0; display: flex; flex-direction: column; gap: 10px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r-lg); padding: 18px 20px; overflow-x: auto;
+}
+/* the inner div carries a min-width equal to the drawing's own viewBox width,
+   so labels never shrink below legibility - the figure scrolls instead */
+.md figure.diagram .diagram-scroll { display: block; }
+.md figure.diagram svg { display: block; width: 100%; height: auto; }
+.md figure.diagram figcaption {
+  font-size: 13.5px; line-height: 1.5; color: var(--muted);
+  padding-top: 10px; border-top: 1px solid var(--line);
+}
+
+/* let drawings step outside the reading column once there is room for them */
+@media (min-width: 1160px) {
+  .wrap-narrow .md figure.diagram { margin-inline: -84px; }
+}
+@media (min-width: 1400px) {
+  .wrap-narrow .md figure.diagram { margin-inline: -140px; }
+}
+
 .md .callout {
   background: var(--surface-2); border: 1px solid var(--line);
   border-left: 3px solid var(--accent); border-radius: var(--r-md); padding: 12px 15px; font-size: 14.5px;

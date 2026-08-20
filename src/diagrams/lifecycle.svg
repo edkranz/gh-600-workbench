@@ -1,0 +1,52 @@
+<svg viewBox="0 0 880 216" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="The agent lifecycle is a loop: plan produces an inspectable artifact, act produces a branch and pull request, evaluate consumes checks and scans. Passing gates lead to merge; failing checks send the agent back to revise the plan.">
+  <defs>
+    <marker id="ar-life" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+    <marker id="ar-life-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+
+  <!-- phases -->
+  <rect x="20"  y="52" width="168" height="78" rx="8" fill="var(--surface)" stroke="var(--line-2)"/>
+  <rect x="264" y="52" width="168" height="78" rx="8" fill="var(--surface)" stroke="var(--line-2)"/>
+  <rect x="508" y="52" width="168" height="78" rx="8" fill="var(--surface)" stroke="var(--line-2)"/>
+  <rect x="752" y="52" width="120" height="78" rx="8" fill="var(--accent-wash)" stroke="var(--accent)"/>
+
+  <g font-family="IBM Plex Sans, system-ui, sans-serif" font-size="14" font-weight="600" fill="var(--ink)" text-anchor="middle">
+    <text x="104" y="84">Plan</text>
+    <text x="348" y="84">Act</text>
+    <text x="592" y="84">Evaluate</text>
+    <text x="812" y="84" fill="var(--accent-ink)">Merge</text>
+  </g>
+  <g font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" fill="var(--faint)" text-anchor="middle">
+    <text x="104" y="105">produces a plan</text>
+    <text x="104" y="118">artifact or PR body</text>
+    <text x="348" y="105">produces a branch,</text>
+    <text x="348" y="118">commits, a PR</text>
+    <text x="592" y="105">consumes checks,</text>
+    <text x="592" y="118">reviews, scans</text>
+    <text x="812" y="112" fill="var(--accent-ink)">outcome</text>
+  </g>
+
+  <!-- forward flow -->
+  <g stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#ar-life)">
+    <line x1="188" y1="91" x2="258" y2="91"/>
+    <line x1="432" y1="91" x2="502" y2="91"/>
+  </g>
+  <line x1="676" y1="91" x2="746" y2="91" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ar-life-accent)"/>
+
+  <g font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10.5" fill="var(--muted)" text-anchor="middle">
+    <text x="223" y="80">execute</text>
+    <text x="467" y="80">evidence</text>
+    <text x="711" y="80" fill="var(--accent-ink)">gates pass</text>
+  </g>
+
+  <!-- feedback loop -->
+  <path d="M592 130 L592 190 L104 190 L104 136" stroke="currentColor" stroke-width="1.5"
+        fill="none" stroke-dasharray="5 4" marker-end="url(#ar-life)"/>
+  <text x="348" y="183" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10.5"
+        fill="var(--muted)" text-anchor="middle">checks fail or criteria unmet — revise the plan and run again</text>
+</svg>

@@ -79,11 +79,46 @@ DOCS = [
      f"{REPO}/blob/main/README.md"),
 ]
 
+# The source ships Mermaid, which only renders where a Mermaid runtime exists.
+# Swap each block for a hand-authored inline SVG so the diagrams render anywhere,
+# in both themes, in the site's own palette. Order matches diagrams.md.
+DIAGRAMS = [
+    ("lifecycle.svg",
+     "Evaluation feeds back into planning. A linear plan-act-evaluate run is the anti-pattern."),
+    ("risk-autonomy.svg",
+     "Triage in order, and any single yes escalates - risk is not averaged across the three dimensions."),
+    ("mcp-governance.svg",
+     "The allow list is checked after registry discovery and before the tool call. Discovery is not permission."),
+    ("control-plane.svg",
+     "The same primitives that enforce policy are the ones that record what happened - that is what "
+     "\"system of record and control plane\" means."),
+    ("subagent-lifecycle.svg",
+     "Five events, and both outcomes converge on deselected. toolCallId is the join key across all of them."),
+]
+SVG_DIR = os.path.join(ROOT, "src", "diagrams")
+
+
+def swap_mermaid(body):
+    blocks = iter(DIAGRAMS)
+
+    def sub(_m):
+        name, caption = next(blocks)
+        svg = open(os.path.join(SVG_DIR, name), encoding="utf-8").read().strip()
+        return "```svg " + caption + "\n" + svg + "\n```"
+
+    return re.sub(r"```mermaid\n.*?```", sub, body, flags=re.S)
+
+
 refs = []
 for rid, title, fname, blurb, url in DOCS:
     body = open(os.path.join(C, fname), encoding="utf-8").read()
     body = re.sub(r"\$\\rightarrow\$", "->", body)
     body = re.sub(r"^# .*\n", "", body, count=1)   # title is rendered by the app
+    if rid == "ref-diagrams":
+        body = swap_mermaid(body)
+        # "Embedded in: modules/..." points at the source repo's own file layout
+        body = re.sub(r"^\*\*Embedded in\*\*.*\n", "", body, flags=re.M)
+        body = re.sub(r"^## How to update[\s\S]*$", "", body, flags=re.M)
     refs.append({"id": rid, "title": title, "summary": blurb,
                  "source": "Community study guide (jtur671/gh-600-study-guide)",
                  "sourceUrl": url, "markdown": body.strip()})

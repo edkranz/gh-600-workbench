@@ -1,0 +1,68 @@
+<svg viewBox="0 0 760 408" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="Risk triage for an agent action, checked in order: operational risk, then security risk, then compliance risk. A yes on operational or security risk routes to human-authored execution; a yes on compliance risk routes to approval-gated execution; only a no on all three allows full automation.">
+  <defs>
+    <marker id="ar-risk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+
+  <!-- decision column -->
+  <rect x="48"  y="16"  width="250" height="46" rx="8" fill="var(--sunken)"  stroke="var(--line-2)"/>
+  <rect x="48"  y="92"  width="250" height="54" rx="8" fill="var(--surface)" stroke="var(--line-2)"/>
+  <rect x="48"  y="172" width="250" height="54" rx="8" fill="var(--surface)" stroke="var(--line-2)"/>
+  <rect x="48"  y="252" width="250" height="54" rx="8" fill="var(--surface)" stroke="var(--line-2)"/>
+  <rect x="48"  y="332" width="250" height="58" rx="8" fill="var(--good-wash)" stroke="var(--good)"/>
+
+  <g font-family="IBM Plex Sans, system-ui, sans-serif" font-size="13.5" font-weight="600" fill="var(--ink)" text-anchor="middle">
+    <text x="173" y="44">Agent action</text>
+    <text x="173" y="118">Operational risk?</text>
+    <text x="173" y="198">Security risk?</text>
+    <text x="173" y="278">Compliance risk?</text>
+    <text x="173" y="357" fill="var(--good)">Fully autonomous</text>
+  </g>
+  <g font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" fill="var(--faint)" text-anchor="middle">
+    <text x="173" y="135">does failure break things?</text>
+    <text x="173" y="215">could it leak or expose?</text>
+    <text x="173" y="295">regulated or auditable?</text>
+    <text x="173" y="376" fill="var(--good)">docs · formatting · lint fixes</text>
+  </g>
+
+  <!-- outcome column -->
+  <rect x="452" y="104" width="284" height="110" rx="8" fill="var(--bad-wash)"  stroke="var(--bad)"/>
+  <rect x="452" y="250" width="284" height="64"  rx="8" fill="var(--warn-wash)" stroke="var(--warn)"/>
+
+  <g font-family="IBM Plex Sans, system-ui, sans-serif" font-size="13.5" font-weight="600" text-anchor="middle">
+    <text x="594" y="145" fill="var(--bad)">Human-authored</text>
+    <text x="594" y="275" fill="var(--warn)">Approval-gated</text>
+  </g>
+  <g font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10" text-anchor="middle">
+    <text x="594" y="164" fill="var(--bad)">production deploys · secrets</text>
+    <text x="594" y="178" fill="var(--bad)">schema migrations · deletes</text>
+    <text x="594" y="294" fill="var(--warn)">logic changes · dependency bumps</text>
+  </g>
+
+  <!-- no path, straight down -->
+  <g stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#ar-risk)">
+    <line x1="173" y1="62"  x2="173" y2="86"/>
+    <line x1="173" y1="146" x2="173" y2="166"/>
+    <line x1="173" y1="226" x2="173" y2="246"/>
+    <line x1="173" y1="306" x2="173" y2="326"/>
+  </g>
+  <g font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10.5" fill="var(--muted)">
+    <text x="183" y="161">no</text>
+    <text x="183" y="241">no</text>
+    <text x="183" y="321">no</text>
+  </g>
+
+  <!-- yes path, straight right -->
+  <g stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#ar-risk)">
+    <line x1="298" y1="119" x2="446" y2="119"/>
+    <line x1="298" y1="199" x2="446" y2="199"/>
+    <line x1="298" y1="279" x2="446" y2="279"/>
+  </g>
+  <g font-family="IBM Plex Mono, ui-monospace, monospace" font-size="10.5" fill="var(--muted)" text-anchor="middle">
+    <text x="372" y="111">yes</text>
+    <text x="372" y="191">yes</text>
+    <text x="372" y="271">yes</text>
+  </g>
+</svg>
