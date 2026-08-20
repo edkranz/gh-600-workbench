@@ -3,15 +3,33 @@
   "id": "auth-d5-01",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.1.1", "module": "m5",
+  "domain": "d5",
+  "objective": "5.1.1",
+  "module": "m5",
   "unit": "m5-multi-agent-responsibilities",
   "type": "single",
   "text": "Three agents operate in one repository: a dependency agent, a refactoring agent, and a security agent. Which scope split follows the module's responsibility model?",
   "options": [
-   {"text": "All three may change anything, and conflicts get resolved at merge time.", "correct": false, "why": "If multiple agents act as general developers across the whole repository, including workflows and infrastructure, the result is repeated collisions, inconsistent review routing, and uncontrolled risk."},
-   {"text": "Dependency agent: manifests and lockfiles only. Refactoring agent: src/ but not manifests, lockfiles, or workflows. Security agent: validates outcomes and reports, proposing changes without broadening into refactoring.", "correct": true, "why": "This is the scope-boundary model. Each agent gets a narrow role limited by path and artifact type, with completion signals verifiable through GitHub checks and review outcomes - which prevents overlap and reduces conflict."},
-   {"text": "Dependency and refactoring agents share src/; the security agent owns everything else.", "correct": false, "why": "Two agents sharing src/ is exactly the overlap that produces conflicting pull requests and duplicated work."},
-   {"text": "Each agent gets its own repository so scopes cannot overlap.", "correct": false, "why": "Splitting repositories to avoid coordination avoids the problem rather than solving it, and it fragments the codebase."}
+   {
+    "text": "All three may change anything, and conflicts get resolved at merge time.",
+    "correct": false,
+    "why": "If multiple agents act as general developers across the whole repository, including workflows and infrastructure, the result is repeated collisions, inconsistent review routing, and uncontrolled risk."
+   },
+   {
+    "text": "Dependency agent: manifests and lockfiles only. Refactoring agent: src/ but not manifests, lockfiles, or workflows. Security agent: validates outcomes and reports, proposing changes without broadening into refactoring.",
+    "correct": true,
+    "why": "This is the scope-boundary model. Each agent gets a narrow role limited by path and artifact type, with completion signals verifiable through GitHub checks and review outcomes - which prevents overlap and reduces conflict."
+   },
+   {
+    "text": "Dependency and refactoring agents share src/; the security agent owns everything else.",
+    "correct": false,
+    "why": "Two agents sharing src/ is exactly the overlap that produces conflicting pull requests and duplicated work."
+   },
+   {
+    "text": "Each agent gets its own repository so scopes cannot overlap.",
+    "correct": false,
+    "why": "Splitting repositories to avoid coordination avoids the problem rather than solving it, and it fragments the codebase."
+   }
   ],
   "takeaway": "Define what each agent is allowed to change, by path and artifact type. Narrow roles are what make multi-agent systems enforceable."
  },
@@ -19,15 +37,33 @@
   "id": "auth-d5-02",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.1.1", "module": "m5",
+  "domain": "d5",
+  "objective": "5.1.1",
+  "module": "m5",
   "unit": "m5-agent-orchestration-github-workflows",
   "type": "single",
   "text": "A spec analyzer and a risk reviewer must both finish before a plan merger runs. Which GitHub Actions construct expresses this fan-out / fan-in?",
   "options": [
-   {"text": "A matrix strategy on the merger job.", "correct": false, "why": "strategy.matrix controls parallelism within a run - it fans out copies of a job rather than waiting on distinct upstream jobs."},
-   {"text": "needs: [spec_analyzer, risk_reviewer] on the plan_merger job.", "correct": true, "why": "needs is the fan-in: the merger waits for both upstream jobs to complete. The two analysis jobs run in parallel because neither declares a dependency on the other."},
-   {"text": "A workflow_run trigger on the merger workflow listening for both.", "correct": false, "why": "workflow_run chains separate workflows after one completes; it is the sequential pattern, and coordinating two upstreams that way is awkward compared with needs inside a single workflow."},
-   {"text": "concurrency: group on all three jobs.", "correct": false, "why": "Concurrency prevents overlapping runs. It does not express dependency ordering."}
+   {
+    "text": "A matrix strategy on the merger job.",
+    "correct": false,
+    "why": "strategy.matrix controls parallelism within a run - it fans out copies of a job rather than waiting on distinct upstream jobs."
+   },
+   {
+    "text": "needs: [spec_analyzer, risk_reviewer] on the plan_merger job.",
+    "correct": true,
+    "why": "needs is the fan-in: the merger waits for both upstream jobs to complete. The two analysis jobs run in parallel because neither declares a dependency on the other."
+   },
+   {
+    "text": "A workflow_run trigger on the merger workflow listening for both.",
+    "correct": false,
+    "why": "workflow_run chains separate workflows after one completes; it is the sequential pattern, and coordinating two upstreams that way is awkward compared with needs inside a single workflow."
+   },
+   {
+    "text": "concurrency: group on all three jobs.",
+    "correct": false,
+    "why": "Concurrency prevents overlapping runs. It does not express dependency ordering."
+   }
   ],
   "takeaway": "Parallel jobs plus needs is fan-out/fan-in. workflow_run chains workflows sequentially. Concurrency stops overlap - three different tools."
  },
@@ -35,15 +71,33 @@
   "id": "auth-d5-03",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.1.1", "module": "m5",
+  "domain": "d5",
+  "objective": "5.1.1",
+  "module": "m5",
   "unit": "m5-agent-orchestration-github-workflows",
   "type": "single",
   "text": "Why does the module prefer artifact-based coordination over direct agent-to-agent communication?",
   "options": [
-   {"text": "Artifacts are faster to transfer than messages.", "correct": false, "why": "Performance is not the argument. Artifact upload and download add latency, not remove it."},
-   {"text": "It creates an explicit boundary between reasoning and writing, and leaves evidence reviewers can inspect.", "correct": true, "why": "The robust pattern is: run an agent with restricted permissions, produce a structured output as an artifact, then use a controlled step to apply only the operations the workflow allows. Hidden coordination that leaves no evidence in PRs or workflow runs makes failures impossible to diagnose."},
-   {"text": "Direct communication between agents is not technically possible on GitHub.", "correct": false, "why": "It is possible; the module argues it is less reliable and less observable, not impossible."},
-   {"text": "Artifacts are retained indefinitely, unlike messages.", "correct": false, "why": "Artifacts expire - 90 days by default. Their advantage is inspectability, not permanence."}
+   {
+    "text": "Artifacts are faster to transfer than messages.",
+    "correct": false,
+    "why": "Performance is not the argument. Artifact upload and download add latency, not remove it."
+   },
+   {
+    "text": "It creates an explicit boundary between reasoning and writing, and leaves evidence reviewers can inspect.",
+    "correct": true,
+    "why": "The robust pattern is: run an agent with restricted permissions, produce a structured output as an artifact, then use a controlled step to apply only the operations the workflow allows. Hidden coordination that leaves no evidence in PRs or workflow runs makes failures impossible to diagnose."
+   },
+   {
+    "text": "Direct communication between agents is not technically possible on GitHub.",
+    "correct": false,
+    "why": "It is possible; the module argues it is less reliable and less observable, not impossible."
+   },
+   {
+    "text": "Artifacts are retained indefinitely, unlike messages.",
+    "correct": false,
+    "why": "Artifacts expire - 90 days by default. Their advantage is inspectability, not permanence."
+   }
   ],
   "takeaway": "Shared, reviewable artifacts separate reasoning from writing and leave a diagnosable trail. Hidden coordination destroys both."
  },
@@ -51,15 +105,33 @@
   "id": "auth-d5-04",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.1.2", "module": "m5",
+  "domain": "d5",
+  "objective": "5.1.2",
+  "module": "m5",
   "unit": "m5-execution-isolation-permissions-concurrency",
   "type": "single",
   "text": "A team sets concurrency group to ${{ github.ref }} alone. What goes wrong?",
   "options": [
-   {"text": "Nothing - branch-level grouping is the recommended configuration.", "correct": false, "why": "The recommended group is ${{ github.workflow }}-${{ github.ref }}, precisely to avoid the problem below."},
-   {"text": "Concurrency becomes global to the branch, so unrelated workflows on that branch block each other.", "correct": true, "why": "Omitting the workflow component makes every workflow on that ref share one concurrency group. Including github.workflow isolates runs per workflow and per branch, so unrelated automation still runs in parallel."},
-   {"text": "In-progress runs stop being cancelled.", "correct": false, "why": "Cancellation is controlled by cancel-in-progress, independently of how the group is composed."},
-   {"text": "Jobs within a single run stop running in parallel.", "correct": false, "why": "That is job-level concurrency, which applies within a workflow run rather than across runs."}
+   {
+    "text": "Nothing - branch-level grouping is the recommended configuration.",
+    "correct": false,
+    "why": "The recommended group is ${{ github.workflow }}-${{ github.ref }}, precisely to avoid the problem below."
+   },
+   {
+    "text": "Concurrency becomes global to the branch, so unrelated workflows on that branch block each other.",
+    "correct": true,
+    "why": "Omitting the workflow component makes every workflow on that ref share one concurrency group. Including github.workflow isolates runs per workflow and per branch, so unrelated automation still runs in parallel."
+   },
+   {
+    "text": "In-progress runs stop being cancelled.",
+    "correct": false,
+    "why": "Cancellation is controlled by cancel-in-progress, independently of how the group is composed."
+   },
+   {
+    "text": "Jobs within a single run stop running in parallel.",
+    "correct": false,
+    "why": "That is job-level concurrency, which applies within a workflow run rather than across runs."
+   }
   ],
   "takeaway": "Use group: ${{ github.workflow }}-${{ github.ref }} with cancel-in-progress. Ref alone makes concurrency branch-global."
  },
@@ -67,15 +139,33 @@
   "id": "auth-d5-05",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.1.2", "module": "m5",
+  "domain": "d5",
+  "objective": "5.1.2",
+  "module": "m5",
   "unit": "m5-execution-isolation-permissions-concurrency",
   "type": "multi",
   "text": "Which layers make up execution isolation in a multi-agent system? (Select all that apply.)",
   "options": [
-   {"text": "Branch isolation - a dedicated branch per agent, such as agent/dependency/<ticket>", "correct": true, "why": "Yes. Bounded branches make scope and intent legible and keep changes separable."},
-   {"text": "Workflow isolation - a dedicated workflow or job per agent with distinct permissions", "correct": true, "why": "Yes. It keeps triggers, permissions, and outputs easy to reason about and reduces accidental coupling as workflows evolve."},
-   {"text": "Permission isolation - minimum-scope permissions per workflow", "correct": true, "why": "Yes. Shared broad write permissions make failures harder to diagnose and attribute."},
-   {"text": "Model isolation - a different LLM per agent", "correct": false, "why": "No. Model choice is not an isolation boundary. Isolation in GitHub is about branches, workflows, permissions, and concurrency."}
+   {
+    "text": "Branch isolation - a dedicated branch per agent, such as agent/dependency/<ticket>",
+    "correct": true,
+    "why": "Yes. Bounded branches make scope and intent legible and keep changes separable."
+   },
+   {
+    "text": "Workflow isolation - a dedicated workflow or job per agent with distinct permissions",
+    "correct": true,
+    "why": "Yes. It keeps triggers, permissions, and outputs easy to reason about and reduces accidental coupling as workflows evolve."
+   },
+   {
+    "text": "Permission isolation - minimum-scope permissions per workflow",
+    "correct": true,
+    "why": "Yes. Shared broad write permissions make failures harder to diagnose and attribute."
+   },
+   {
+    "text": "Model isolation - a different LLM per agent",
+    "correct": false,
+    "why": "No. Model choice is not an isolation boundary. Isolation in GitHub is about branches, workflows, permissions, and concurrency."
+   }
   ],
   "takeaway": "Isolation = branches + workflows + permissions + concurrency. It makes parallelism safe and attribution clear."
  },
@@ -83,15 +173,33 @@
   "id": "auth-d5-06",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.1.2", "module": "m5",
+  "domain": "d5",
+  "objective": "5.1.2",
+  "module": "m5",
   "unit": "m5-execution-isolation-permissions-concurrency",
   "type": "single",
   "text": "A team wants several agent tasks running in parallel. Which invocation mode does not support parallel sessions across multiple tasks?",
   "options": [
-   {"text": "Copilot Cloud", "correct": false, "why": "Cloud supports parallel sessions across multiple tasks."},
-   {"text": "Copilot CLI", "correct": false, "why": "CLI supports parallel sessions across multiple tasks."},
-   {"text": "Local", "correct": true, "why": "Local invocation is serial only - one task at a time. If a workload needs genuine parallelism across tasks, it must run through Cloud or CLI."},
-   {"text": "All three support parallel sessions equally.", "correct": false, "why": "They do not; local is the exception."}
+   {
+    "text": "Copilot Cloud",
+    "correct": false,
+    "why": "Cloud supports parallel sessions across multiple tasks."
+   },
+   {
+    "text": "Copilot CLI",
+    "correct": false,
+    "why": "CLI supports parallel sessions across multiple tasks."
+   },
+   {
+    "text": "Local",
+    "correct": true,
+    "why": "Local invocation is serial only - one task at a time. If a workload needs genuine parallelism across tasks, it must run through Cloud or CLI."
+   },
+   {
+    "text": "All three support parallel sessions equally.",
+    "correct": false,
+    "why": "They do not; local is the exception."
+   }
   ],
   "takeaway": "Copilot Cloud and CLI support parallel sessions across tasks; local invocation is serial."
  },
@@ -99,15 +207,33 @@
   "id": "auth-d5-07",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.1.3", "module": "m5",
+  "domain": "d5",
+  "objective": "5.1.3",
+  "module": "m5",
   "unit": "m5-conflict-resolution-github-arbitration",
   "type": "single",
   "text": "Two agent pull requests merge cleanly but the combined behavior is broken. Which conflict type is this, and what catches it?",
   "options": [
-   {"text": "A textual merge conflict; git surfaces it automatically.", "correct": false, "why": "Textual conflicts are same-file, same-line collisions. This one merged cleanly, so git had nothing to flag."},
-   {"text": "A semantic conflict; it merges cleanly, so it is caught by required checks and review rather than by merge machinery.", "correct": true, "why": "Semantic conflicts are defined as a clean merge with broken combined behavior. Because git cannot see them, the defense is validation - required checks and human review - not conflict detection."},
-   {"text": "A policy conflict; CODEOWNERS resolves it.", "correct": false, "why": "Policy conflicts are about protected areas requiring different reviews or approvals, not about broken combined behavior."},
-   {"text": "Duplicate effort; deduplicate at the issue level.", "correct": false, "why": "Duplicate effort is two PRs solving the same problem differently. Here the two changes are different but interact badly."}
+   {
+    "text": "A textual merge conflict; git surfaces it automatically.",
+    "correct": false,
+    "why": "Textual conflicts are same-file, same-line collisions. This one merged cleanly, so git had nothing to flag."
+   },
+   {
+    "text": "A semantic conflict; it merges cleanly, so it is caught by required checks and review rather than by merge machinery.",
+    "correct": true,
+    "why": "Semantic conflicts are defined as a clean merge with broken combined behavior. Because git cannot see them, the defense is validation - required checks and human review - not conflict detection."
+   },
+   {
+    "text": "A policy conflict; CODEOWNERS resolves it.",
+    "correct": false,
+    "why": "Policy conflicts are about protected areas requiring different reviews or approvals, not about broken combined behavior."
+   },
+   {
+    "text": "Duplicate effort; deduplicate at the issue level.",
+    "correct": false,
+    "why": "Duplicate effort is two PRs solving the same problem differently. Here the two changes are different but interact badly."
+   }
   ],
   "takeaway": "Four conflict types: textual, semantic, policy, and duplicate effort. Only textual ones show up as merge conflicts."
  },
@@ -115,15 +241,33 @@
   "id": "auth-d5-08",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.1.3", "module": "m5",
+  "domain": "d5",
+  "objective": "5.1.3",
+  "module": "m5",
   "unit": "m5-conflict-resolution-github-arbitration",
   "type": "single",
   "text": "Rather than waiting for reviewers to spot conflicts with main, a team wants conflicts to fail fast. What do they add?",
   "options": [
-   {"text": "A required review from the platform team on every agent PR.", "correct": false, "why": "That adds human load without making detection automatic or early."},
-   {"text": "A merge validation step - fetch origin/main and attempt a merge - configured as a required check so conflicts become enforceable.", "correct": true, "why": "GitHub shows merge conflicts on the PR, but adding a merge validation step turns them into a failing check. As a required check, conflicts stop depending on reviewers noticing them manually."},
-   {"text": "A concurrency group so only one agent PR is open at a time.", "correct": false, "why": "Concurrency controls workflow runs, not open pull requests, and serializing PRs would surrender the parallelism."},
-   {"text": "Squash merging on all pull requests.", "correct": false, "why": "Squashing changes history shape. It neither detects nor prevents conflicts."}
+   {
+    "text": "A required review from the platform team on every agent PR.",
+    "correct": false,
+    "why": "That adds human load without making detection automatic or early."
+   },
+   {
+    "text": "A merge validation step - fetch origin/main and attempt a merge - configured as a required check so conflicts become enforceable.",
+    "correct": true,
+    "why": "GitHub shows merge conflicts on the PR, but adding a merge validation step turns them into a failing check. As a required check, conflicts stop depending on reviewers noticing them manually."
+   },
+   {
+    "text": "A concurrency group so only one agent PR is open at a time.",
+    "correct": false,
+    "why": "Concurrency controls workflow runs, not open pull requests, and serializing PRs would surrender the parallelism."
+   },
+   {
+    "text": "Squash merging on all pull requests.",
+    "correct": false,
+    "why": "Squashing changes history shape. It neither detects nor prevents conflicts."
+   }
   ],
   "takeaway": "Make conflict detection a required check so it fails fast and does not depend on a reviewer noticing."
  },
@@ -131,15 +275,33 @@
   "id": "auth-d5-09",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.1.3", "module": "m5",
+  "domain": "d5",
+  "objective": "5.1.3",
+  "module": "m5",
   "unit": "m5-conflict-resolution-github-arbitration",
   "type": "multi",
   "text": "Which conditions should trigger escalation to a human under a multi-agent escalation policy? (Select all that apply.)",
   "options": [
-   {"text": "A pull request conflicts twice after rebasing attempts", "correct": true, "why": "Yes. Repeated conflict after automated resolution attempts is a named escalation threshold."},
-   {"text": "The same required check fails twice with the same failure signature", "correct": true, "why": "Yes. A repeated identical failure means automation is not converging."},
-   {"text": "Two agents propose incompatible fixes to the same alert", "correct": true, "why": "Yes. Incompatible fixes to one alert require arbitration that automation should not make silently."},
-   {"text": "Any workflow takes longer than the previous run", "correct": false, "why": "No. Run duration variance is normal and is not an escalation signal. Escalate on repeated failure to converge, not on timing noise."}
+   {
+    "text": "A pull request conflicts twice after rebasing attempts",
+    "correct": true,
+    "why": "Yes. Repeated conflict after automated resolution attempts is a named escalation threshold."
+   },
+   {
+    "text": "The same required check fails twice with the same failure signature",
+    "correct": true,
+    "why": "Yes. A repeated identical failure means automation is not converging."
+   },
+   {
+    "text": "Two agents propose incompatible fixes to the same alert",
+    "correct": true,
+    "why": "Yes. Incompatible fixes to one alert require arbitration that automation should not make silently."
+   },
+   {
+    "text": "Any workflow takes longer than the previous run",
+    "correct": false,
+    "why": "No. Run duration variance is normal and is not an escalation signal. Escalate on repeated failure to converge, not on timing noise."
+   }
   ],
   "takeaway": "Escalate when automation stops converging - repeat conflicts, repeat identical check failures, incompatible fixes - with a short report of what was attempted."
  },
@@ -147,15 +309,33 @@
   "id": "auth-d5-10",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.2.1", "module": "m5",
+  "domain": "d5",
+  "objective": "5.2.1",
+  "module": "m5",
   "unit": "m5-system-observability-evidence-workflows",
   "type": "multi",
   "text": "What does a practical observability goal require every meaningful step in a multi-agent workflow to leave behind? (Select all that apply.)",
   "options": [
-   {"text": "A pull request that links to context and describes intent", "correct": true, "why": "Yes. The PR carries intent and links the change to its context."},
-   {"text": "Checks and workflow runs that produce evidence", "correct": true, "why": "Yes. Runs and checks are the objective evidence layer."},
-   {"text": "Artifacts and logs that explain outcomes, plus clear attribution through titles, labels, and owners", "correct": true, "why": "Yes. Artifacts and logs explain what happened, and attribution answers which agent did it."},
-   {"text": "A private debug transcript retained on the runner for the engineering team", "correct": false, "why": "No. Runner-local output is discarded with the runner and is not reviewable. Observability in GitHub means durable, native artifacts."}
+   {
+    "text": "A pull request that links to context and describes intent",
+    "correct": true,
+    "why": "Yes. The PR carries intent and links the change to its context."
+   },
+   {
+    "text": "Checks and workflow runs that produce evidence",
+    "correct": true,
+    "why": "Yes. Runs and checks are the objective evidence layer."
+   },
+   {
+    "text": "Artifacts and logs that explain outcomes, plus clear attribution through titles, labels, and owners",
+    "correct": true,
+    "why": "Yes. Artifacts and logs explain what happened, and attribution answers which agent did it."
+   },
+   {
+    "text": "A private debug transcript retained on the runner for the engineering team",
+    "correct": false,
+    "why": "No. Runner-local output is discarded with the runner and is not reviewable. Observability in GitHub means durable, native artifacts."
+   }
   ],
   "takeaway": "Every meaningful step should leave a durable trace: a PR with intent, checks and runs as evidence, artifacts and logs, and clear attribution."
  },
@@ -163,15 +343,33 @@
   "id": "auth-d5-11",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.2.1", "module": "m5",
+  "domain": "d5",
+  "objective": "5.2.1",
+  "module": "m5",
   "unit": "m5-system-observability-evidence-workflows",
   "type": "single",
   "text": "A multi-agent system uses attribution conventions so reviewers can tell agents apart at a glance. Which set matches the module's recommendation?",
   "options": [
-   {"text": "PR titles prefixed like [agent: dependency], labels such as agent: security, and PR body sections for Plan, Evidence, Risks, and Rollback/Escalation.", "correct": true, "why": "These are the recommended conventions. Consistent titles and labels make attribution scannable, and the standard body sections make handoffs and decisions consistently locatable."},
-   {"text": "One shared bot account for all agents so attribution is simple.", "correct": false, "why": "A single identity destroys attribution - you can no longer tell which agent produced which change."},
-   {"text": "Randomly generated branch names to guarantee uniqueness.", "correct": false, "why": "Uniqueness without meaning defeats the purpose. Branches like agent/refactor/<ticket> convey scope and owner."},
-   {"text": "Attribution recorded only in the workflow logs.", "correct": false, "why": "Logs expire and are not the review surface. Attribution belongs where reviewers actually look."}
+   {
+    "text": "PR titles prefixed like [agent: dependency], labels such as agent: security, and PR body sections for Plan, Evidence, Risks, and Rollback/Escalation.",
+    "correct": true,
+    "why": "These are the recommended conventions. Consistent titles and labels make attribution scannable, and the standard body sections make handoffs and decisions consistently locatable."
+   },
+   {
+    "text": "One shared bot account for all agents so attribution is simple.",
+    "correct": false,
+    "why": "A single identity destroys attribution - you can no longer tell which agent produced which change."
+   },
+   {
+    "text": "Randomly generated branch names to guarantee uniqueness.",
+    "correct": false,
+    "why": "Uniqueness without meaning defeats the purpose. Branches like agent/refactor/<ticket> convey scope and owner."
+   },
+   {
+    "text": "Attribution recorded only in the workflow logs.",
+    "correct": false,
+    "why": "Logs expire and are not the review surface. Attribution belongs where reviewers actually look."
+   }
   ],
   "takeaway": "Consistent titles, labels, branch naming, and PR body sections turn a pile of agent PRs into a legible system."
  },
@@ -179,15 +377,33 @@
   "id": "auth-d5-12",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.2.2", "module": "m5",
+  "domain": "d5",
+  "objective": "5.2.2",
+  "module": "m5",
   "unit": "m5-system-observability-evidence-workflows",
   "type": "single",
   "text": "Which pull request structure best captures decisions and handoffs across agents?",
   "options": [
-   {"text": "A single free-text summary paragraph written by the last agent to touch the branch.", "correct": false, "why": "Free text is inconsistent and loses the specific fields reviewers and auditors need."},
-   {"text": "Objective, Plan, Evidence, Decisions and handoffs (decision, rationale, next owner), and Risks and rollback.", "correct": true, "why": "This standard structure ensures every decision is captured, every action is justified, and every handoff names the next owner if escalation is needed."},
-   {"text": "A checklist of files changed with no narrative.", "correct": false, "why": "A file list is already in the Files tab and explains nothing about why."},
-   {"text": "Links to the agents' internal reasoning traces only.", "correct": false, "why": "Raw traces are neither summarized nor decision-oriented, and they are not the durable review surface."}
+   {
+    "text": "A single free-text summary paragraph written by the last agent to touch the branch.",
+    "correct": false,
+    "why": "Free text is inconsistent and loses the specific fields reviewers and auditors need."
+   },
+   {
+    "text": "Objective, Plan, Evidence, Decisions and handoffs (decision, rationale, next owner), and Risks and rollback.",
+    "correct": true,
+    "why": "This standard structure ensures every decision is captured, every action is justified, and every handoff names the next owner if escalation is needed."
+   },
+   {
+    "text": "A checklist of files changed with no narrative.",
+    "correct": false,
+    "why": "A file list is already in the Files tab and explains nothing about why."
+   },
+   {
+    "text": "Links to the agents' internal reasoning traces only.",
+    "correct": false,
+    "why": "Raw traces are neither summarized nor decision-oriented, and they are not the durable review surface."
+   }
   ],
   "takeaway": "Standardize the PR body: objective, plan, evidence, decisions and handoffs with a named next owner, risks and rollback."
  },
@@ -195,15 +411,33 @@
   "id": "auth-d5-13",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.2.3", "module": "m5",
+  "domain": "d5",
+  "objective": "5.2.3",
+  "module": "m5",
   "unit": "m5-system-observability-evidence-workflows",
   "type": "single",
   "text": "During a post-hoc investigation the workflow artifact you need is missing. Which audit log event tells you what happened to it?",
   "options": [
-   {"text": "action:workflow_run.delete", "correct": false, "why": "Not the documented event for artifact removal."},
-   {"text": "action:artifact.destroy", "correct": true, "why": "Searching the organization audit log for action:artifact.destroy shows who deleted an artifact, when, and in which repository. This matters because deleted artifacts cannot be restored."},
-   {"text": "action:repo.artifact_removed", "correct": false, "why": "Not a real event name."},
-   {"text": "action:actions.retention_expired", "correct": false, "why": "Expiry is automatic under the retention policy rather than an audited deletion event."}
+   {
+    "text": "action:workflow_run.delete",
+    "correct": false,
+    "why": "Not the documented event for artifact removal."
+   },
+   {
+    "text": "action:artifact.destroy",
+    "correct": true,
+    "why": "Searching the organization audit log for action:artifact.destroy shows who deleted an artifact, when, and in which repository. This matters because deleted artifacts cannot be restored."
+   },
+   {
+    "text": "action:repo.artifact_removed",
+    "correct": false,
+    "why": "Not a real event name."
+   },
+   {
+    "text": "action:actions.retention_expired",
+    "correct": false,
+    "why": "Expiry is automatic under the retention policy rather than an audited deletion event."
+   }
   ],
   "takeaway": "Artifacts are the primary post-hoc evidence source; when one is missing, the organization audit log's artifact.destroy event tells you who removed it."
  },
@@ -211,15 +445,33 @@
   "id": "auth-d5-14",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.3.1", "module": "m5",
+  "domain": "d5",
+  "objective": "5.3.1",
+  "module": "m5",
   "unit": "m5-scale-failure-recovery",
   "type": "multi",
   "text": "Which are recognized multi-agent coordination failure modes? (Select all that apply.)",
   "options": [
-   {"text": "Partial execution - a pull request exists but evidence or validation is missing", "correct": true, "why": "Yes. The work started but did not produce what makes it acceptable."},
-   {"text": "Stalled workflows - checks fail repeatedly or approvals never arrive", "correct": true, "why": "Yes. Progress stops without a definite failure to react to."},
-   {"text": "Flapping - workflows rerun repeatedly with no convergence", "correct": true, "why": "Yes. Repeated runs that never reach a stable outcome consume budget and hide the underlying problem."},
-   {"text": "A single unit test failing once in a run", "correct": false, "why": "No. That is an ordinary individual execution issue, not a coordination failure between agents."}
+   {
+    "text": "Partial execution - a pull request exists but evidence or validation is missing",
+    "correct": true,
+    "why": "Yes. The work started but did not produce what makes it acceptable."
+   },
+   {
+    "text": "Stalled workflows - checks fail repeatedly or approvals never arrive",
+    "correct": true,
+    "why": "Yes. Progress stops without a definite failure to react to."
+   },
+   {
+    "text": "Flapping - workflows rerun repeatedly with no convergence",
+    "correct": true,
+    "why": "Yes. Repeated runs that never reach a stable outcome consume budget and hide the underlying problem."
+   },
+   {
+    "text": "A single unit test failing once in a run",
+    "correct": false,
+    "why": "No. That is an ordinary individual execution issue, not a coordination failure between agents."
+   }
   ],
   "takeaway": "Coordination failures: partial execution, stalled workflows, conflicting outputs, and flapping. They are system-level, not single-agent, problems."
  },
@@ -227,15 +479,33 @@
   "id": "auth-d5-15",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.3.1", "module": "m5",
+  "domain": "d5",
+  "objective": "5.3.1",
+  "module": "m5",
   "unit": "m5-scale-failure-recovery",
   "type": "single",
   "text": "You need to watch a long-running agent session live to work out why it appears stuck. Which command does that?",
   "options": [
-   {"text": "gh run watch", "correct": false, "why": "That follows a GitHub Actions workflow run, not the agent session's own log stream."},
-   {"text": "gh agent-task view --log --follow", "correct": true, "why": "This live-streams agent session logs from the GitHub CLI and is the documented way to debug a stalled or long-running agent run in real time."},
-   {"text": "gh copilot debug --session", "correct": false, "why": "Not a documented command for this purpose."},
-   {"text": "gh workflow view --agent", "correct": false, "why": "Not a documented command for this purpose."}
+   {
+    "text": "gh run watch",
+    "correct": false,
+    "why": "That follows a GitHub Actions workflow run, not the agent session's own log stream."
+   },
+   {
+    "text": "gh agent-task view --log --follow",
+    "correct": true,
+    "why": "This live-streams agent session logs from the GitHub CLI and is the documented way to debug a stalled or long-running agent run in real time."
+   },
+   {
+    "text": "gh copilot debug --session",
+    "correct": false,
+    "why": "Not a documented command for this purpose."
+   },
+   {
+    "text": "gh workflow view --agent",
+    "correct": false,
+    "why": "Not a documented command for this purpose."
+   }
   ],
   "takeaway": "gh agent-task view --log --follow streams a live agent session - the first tool for a stalled or long-running run."
  },
@@ -243,15 +513,33 @@
   "id": "auth-d5-16",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.3.2", "module": "m5",
+  "domain": "d5",
+  "objective": "5.3.2",
+  "module": "m5",
   "unit": "m5-scale-failure-recovery",
   "type": "single",
   "text": "An agent run halts with: \"Error: Command blocked by policy. Reason: destructive_operation_detected. [agent] Escalating to human review...\" What happened?",
   "options": [
-   {"text": "The workflow ran out of permissions midway and failed open.", "correct": false, "why": "A permission failure produces an authorization error, and nothing here \"failed open\" - the action was stopped."},
-   {"text": "A preToolUse hook inspected the requested action before execution, matched a blocked pattern, stopped it, and handed off to a human.", "correct": true, "why": "Pre-execution (preToolUse) hooks run before a tool is executed, inspect the requested action, and stop it when it matches a blocked pattern - ensuring risky actions such as deleting infrastructure trigger a human handoff rather than proceeding."},
-   {"text": "The model refused the task based on its own reasoning.", "correct": false, "why": "The distinguishing value of hooks is that they operate independently of the model's reasoning. This was an enforced control, not a choice."},
-   {"text": "A required status check failed after the change was applied.", "correct": false, "why": "The block happened before execution, which is the point - the destructive operation never ran."}
+   {
+    "text": "The workflow ran out of permissions midway and failed open.",
+    "correct": false,
+    "why": "A permission failure produces an authorization error, and nothing here \"failed open\" - the action was stopped."
+   },
+   {
+    "text": "A preToolUse hook inspected the requested action before execution, matched a blocked pattern, stopped it, and handed off to a human.",
+    "correct": true,
+    "why": "Pre-execution (preToolUse) hooks run before a tool is executed, inspect the requested action, and stop it when it matches a blocked pattern - ensuring risky actions such as deleting infrastructure trigger a human handoff rather than proceeding."
+   },
+   {
+    "text": "The model refused the task based on its own reasoning.",
+    "correct": false,
+    "why": "The distinguishing value of hooks is that they operate independently of the model's reasoning. This was an enforced control, not a choice."
+   },
+   {
+    "text": "A required status check failed after the change was applied.",
+    "correct": false,
+    "why": "The block happened before execution, which is the point - the destructive operation never ran."
+   }
   ],
   "takeaway": "Hooks are enforceable control points independent of model reasoning: pre-action hooks block, post-action hooks log, error hooks escalate."
  },
@@ -259,15 +547,33 @@
   "id": "auth-d5-17",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.3.2", "module": "m5",
+  "domain": "d5",
+  "objective": "5.3.2",
+  "module": "m5",
   "unit": "m5-scale-failure-recovery",
   "type": "single",
   "text": "An orchestrator cannot invoke one of its subagents at all, and the run degrades. Which configuration setting most likely explains it?",
   "options": [
-   {"text": "user-invocable: false on the subagent", "correct": false, "why": "That setting only stops a human selecting the agent directly in chat or the UI. Orchestration invocation is unaffected."},
-   {"text": "disable-model-invocation: true on the subagent", "correct": true, "why": "An agent with disable-model-invocation: true cannot be called as a subagent via orchestration, which is a documented cause of orchestration failures."},
-   {"text": "A concurrency group shared with the orchestrator", "correct": false, "why": "Shared concurrency can cancel or queue runs, but it does not make an agent uninvokable."},
-   {"text": "Missing applyTo globs on the subagent", "correct": false, "why": "applyTo narrows which files the agent focuses on; it does not govern whether the agent can be invoked."}
+   {
+    "text": "user-invocable: false on the subagent",
+    "correct": false,
+    "why": "That setting only stops a human selecting the agent directly in chat or the UI. Orchestration invocation is unaffected."
+   },
+   {
+    "text": "disable-model-invocation: true on the subagent",
+    "correct": true,
+    "why": "An agent with disable-model-invocation: true cannot be called as a subagent via orchestration, which is a documented cause of orchestration failures."
+   },
+   {
+    "text": "A concurrency group shared with the orchestrator",
+    "correct": false,
+    "why": "Shared concurrency can cancel or queue runs, but it does not make an agent uninvokable."
+   },
+   {
+    "text": "Missing applyTo globs on the subagent",
+    "correct": false,
+    "why": "applyTo narrows which files the agent focuses on; it does not govern whether the agent can be invoked."
+   }
   ],
   "takeaway": "disable-model-invocation: true blocks subagent orchestration; user-invocable: false only hides the agent from direct human selection."
  },
@@ -275,15 +581,33 @@
   "id": "auth-d5-18",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.3.3", "module": "m5",
+  "domain": "d5",
+  "objective": "5.3.3",
+  "module": "m5",
   "unit": "m5-scale-failure-recovery",
   "type": "multi",
   "text": "Which recovery strategies does the module prescribe for reliable multi-agent operation? (Select all that apply.)",
   "options": [
-   {"text": "Bounded retries - the agent may revise a PR branch to fix failures, but only within limits", "correct": true, "why": "Yes. Bounded means the loop terminates, which is what prevents endless iteration."},
-   {"text": "An escalation threshold - stop automated iteration and escalate to a human with links and a concise summary after the same required check fails twice", "correct": true, "why": "Yes. A defined threshold with an actionable handoff is the published rule."},
-   {"text": "Rollback readiness - prefer small, scoped pull requests so reverting is safe", "correct": true, "why": "Yes. Small scope is what makes rollback cheap and low-risk when it is needed."},
-   {"text": "Automatic force-push of the orchestrator's branch to reset system state", "correct": false, "why": "No. Force-pushing destroys history and the audit trail. Recovery is retry, rollback via revert, and human escalation."}
+   {
+    "text": "Bounded retries - the agent may revise a PR branch to fix failures, but only within limits",
+    "correct": true,
+    "why": "Yes. Bounded means the loop terminates, which is what prevents endless iteration."
+   },
+   {
+    "text": "An escalation threshold - stop automated iteration and escalate to a human with links and a concise summary after the same required check fails twice",
+    "correct": true,
+    "why": "Yes. A defined threshold with an actionable handoff is the published rule."
+   },
+   {
+    "text": "Rollback readiness - prefer small, scoped pull requests so reverting is safe",
+    "correct": true,
+    "why": "Yes. Small scope is what makes rollback cheap and low-risk when it is needed."
+   },
+   {
+    "text": "Automatic force-push of the orchestrator's branch to reset system state",
+    "correct": false,
+    "why": "No. Force-pushing destroys history and the audit trail. Recovery is retry, rollback via revert, and human escalation."
+   }
   ],
   "takeaway": "Design for failure: bounded retries, a defined escalation threshold with a useful report, and small PRs that revert cleanly."
  },
@@ -291,31 +615,68 @@
   "id": "auth-d5-19",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.4.1", "module": "m5",
+  "difficulty": "advanced",
+  "domain": "d5",
+  "objective": "5.4.1",
+  "module": "m5",
   "unit": "m5-scale-failure-recovery",
   "type": "single",
-  "text": "You are chaining a planner agent to an implementer and a code reviewer. Which frontmatter fields express that, and how are subagents resolved?",
+  "text": "A planner agent should hand work to an implementer and then a code reviewer, running on the Copilot cloud agent. Which mechanism actually makes that possible?",
   "options": [
-   {"text": "needs: and uses:, resolved by workflow file path.", "correct": false, "why": "Those are GitHub Actions keys for jobs and actions, not agent frontmatter."},
-   {"text": "agents: lists the allowed subagents and handoffs: configures the transitions; handoffs resolve to subagents by the name attribute in the agent YAML, or by matching filename.", "correct": true, "why": "agents: declares which subagents this agent may orchestrate, and handoffs: configures each transition - optionally auto-submitting a prompt with send: true or specifying a model. Resolution is by name attribute or filename."},
-   {"text": "subagents: and triggers:, resolved by repository topic.", "correct": false, "why": "Not documented fields."},
-   {"text": "tools: and applyTo:, resolved by file glob.", "correct": false, "why": "Those scope capability and file focus within one agent; they do not chain agents."}
+   {
+    "text": "A handoffs: block in the planner's frontmatter, listing each transition.",
+    "correct": false,
+    "why": "This is the trap. `handoffs` appears in some agent formats, but the Copilot cloud agent ignores it — a profile relying on it will simply never delegate."
+   },
+   {
+    "text": "Granting the planner the agent tool, so it can invoke the other custom agents.",
+    "correct": true,
+    "why": "Subagent invocation is a capability, not a declaration. The `agent` tool (aliases `custom-agent`, `Task`) is what lets one custom agent call another; the profile's prose then says which specialist to use for what."
+   },
+   {
+    "text": "A needs: list in the planner's frontmatter naming the downstream agents.",
+    "correct": false,
+    "why": "`needs` orders jobs in a GitHub Actions workflow. It has no meaning in agent frontmatter."
+   },
+   {
+    "text": "Setting user-invocable: true on the implementer and reviewer.",
+    "correct": false,
+    "why": "That controls whether a *human* can select them directly. It does not let another agent call them — and `disable-model-invocation: true` would actively block it."
+   }
   ],
-  "takeaway": "agents: lists allowed subagents; handoffs: defines the transitions (label, agent, optional send and model); resolution is by name or filename."
+  "takeaway": "On the cloud agent, subagent delegation comes from the `agent` tool. `handoffs` is ignored there, so never treat it as the mechanism."
  },
  {
   "id": "auth-d5-20",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.4.2", "module": "m5",
+  "domain": "d5",
+  "objective": "5.4.2",
+  "module": "m5",
   "unit": "m5-scale-failure-recovery",
   "type": "single",
   "text": "You must swap an agent's configuration for a new version while runs are in flight. Which approach avoids disrupting active workflows?",
   "options": [
-   {"text": "Edit the agent file in place on the default branch so every run picks up the change immediately.", "correct": false, "why": "In-flight work changes behavior mid-task, producing exactly the inconsistent, hard-to-diagnose outcomes you are trying to avoid."},
-   {"text": "Version the agent configuration, roll the new version out gradually while in-flight runs complete on the old one, and promote only after parity is confirmed.", "correct": true, "why": "Versioned configuration plus gradual rollout is the disruption-free path: active runs finish on the version they started with, and the new version is promoted on evidence rather than hope. It also preserves a rollback target."},
-   {"text": "Cancel all running workflows, then replace the configuration.", "correct": false, "why": "Cancelling active runs is disruption, not avoidance of it, and it discards partial work and evidence."},
-   {"text": "Delete the old agent file and let orchestration fall back to defaults.", "correct": false, "why": "Deleting the configuration mid-flight causes orchestration failures and loses the rollback target."}
+   {
+    "text": "Edit the agent file in place on the default branch so every run picks up the change immediately.",
+    "correct": false,
+    "why": "In-flight work changes behavior mid-task, producing exactly the inconsistent, hard-to-diagnose outcomes you are trying to avoid."
+   },
+   {
+    "text": "Version the agent configuration, roll the new version out gradually while in-flight runs complete on the old one, and promote only after parity is confirmed.",
+    "correct": true,
+    "why": "Versioned configuration plus gradual rollout is the disruption-free path: active runs finish on the version they started with, and the new version is promoted on evidence rather than hope. It also preserves a rollback target."
+   },
+   {
+    "text": "Cancel all running workflows, then replace the configuration.",
+    "correct": false,
+    "why": "Cancelling active runs is disruption, not avoidance of it, and it discards partial work and evidence."
+   },
+   {
+    "text": "Delete the old agent file and let orchestration fall back to defaults.",
+    "correct": false,
+    "why": "Deleting the configuration mid-flight causes orchestration failures and loses the rollback target."
+   }
   ],
   "takeaway": "Version agent configuration, let in-flight runs finish on the old version, promote the new one only after parity - and keep the old version as a rollback path."
  },
@@ -323,15 +684,33 @@
   "id": "auth-d5-21",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.4.2", "module": "m6",
+  "domain": "d5",
+  "objective": "5.4.2",
+  "module": "m6",
   "unit": "m6-maintain-governance-operational-reliability",
   "type": "single",
   "text": "What does the module say agent lifecycle management requires beyond deploying and retiring agents?",
   "options": [
-   {"text": "A dedicated repository per agent.", "correct": false, "why": "Not a lifecycle requirement, and it fragments the codebase agents work on."},
-   {"text": "Clearly defined ownership, plus supporting elements such as runbooks and a regular review cadence, because both agents and their guardrails evolve.", "correct": true, "why": "Lifecycle management is a continuous sequence of deployment, monitoring, updating, and retirement. Because agents and their guardrails both change over time, ownership must be explicit and runbooks and review cadences must exist to keep governance effective."},
-   {"text": "An annual model upgrade schedule.", "correct": false, "why": "Model versioning is not the lifecycle concern the module describes."},
-   {"text": "Automatic retirement after a fixed number of runs.", "correct": false, "why": "Retirement is a decision, made and documented deliberately, not a run counter."}
+   {
+    "text": "A dedicated repository per agent.",
+    "correct": false,
+    "why": "Not a lifecycle requirement, and it fragments the codebase agents work on."
+   },
+   {
+    "text": "Clearly defined ownership, plus supporting elements such as runbooks and a regular review cadence, because both agents and their guardrails evolve.",
+    "correct": true,
+    "why": "Lifecycle management is a continuous sequence of deployment, monitoring, updating, and retirement. Because agents and their guardrails both change over time, ownership must be explicit and runbooks and review cadences must exist to keep governance effective."
+   },
+   {
+    "text": "An annual model upgrade schedule.",
+    "correct": false,
+    "why": "Model versioning is not the lifecycle concern the module describes."
+   },
+   {
+    "text": "Automatic retirement after a fixed number of runs.",
+    "correct": false,
+    "why": "Retirement is a decision, made and documented deliberately, not a run counter."
+   }
   ],
   "takeaway": "Lifecycle = deploy, monitor, update, retire - held together by named ownership, runbooks, and a review cadence."
  },
@@ -339,15 +718,33 @@
   "id": "auth-d5-22",
   "source": "authored",
   "sourceLabel": "Authored for coverage",
-  "domain": "d5", "objective": "5.1.1", "module": "m5",
+  "domain": "d5",
+  "objective": "5.1.1",
+  "module": "m5",
   "unit": "m5-exercise",
   "type": "single",
   "text": "In the Copilot CLI custom agents exercise, an Orchestrator coordinates a Planner, a Designer, and a Coder. What does the Orchestrator itself contribute?",
   "options": [
-   {"text": "It writes the dashboard code so the specialists can focus on review.", "correct": false, "why": "Implementation belongs to the Coder agent; the Orchestrator delegates rather than implements."},
-   {"text": "It coordinates the specialists - delegating planning, design, and implementation in turn, then summarizing the coordinated handoff.", "correct": true, "why": "The exercise has the Orchestrator involve the Planner for an implementation plan, delegate design to the Designer, delegate implementation to the Coder, and finally summarize the coordinated handoff identifying each agent's contribution and the validation steps."},
-   {"text": "It runs the validation workflows in GitHub Actions.", "correct": false, "why": "Validation in the exercise is running the dashboard in a Codespace and checking it, not an Actions job the Orchestrator runs."},
-   {"text": "It merges each specialist's branch after review.", "correct": false, "why": "The exercise coordinates agents in a Codespace via the CLI; the Orchestrator's role is delegation and summary, not merging."}
+   {
+    "text": "It writes the dashboard code so the specialists can focus on review.",
+    "correct": false,
+    "why": "Implementation belongs to the Coder agent; the Orchestrator delegates rather than implements."
+   },
+   {
+    "text": "It coordinates the specialists - delegating planning, design, and implementation in turn, then summarizing the coordinated handoff.",
+    "correct": true,
+    "why": "The exercise has the Orchestrator involve the Planner for an implementation plan, delegate design to the Designer, delegate implementation to the Coder, and finally summarize the coordinated handoff identifying each agent's contribution and the validation steps."
+   },
+   {
+    "text": "It runs the validation workflows in GitHub Actions.",
+    "correct": false,
+    "why": "Validation in the exercise is running the dashboard in a Codespace and checking it, not an Actions job the Orchestrator runs."
+   },
+   {
+    "text": "It merges each specialist's branch after review.",
+    "correct": false,
+    "why": "The exercise coordinates agents in a Codespace via the CLI; the Orchestrator's role is delegation and summary, not merging."
+   }
   ],
   "takeaway": "The supervisor/orchestrator pattern in practice: dispatch to specialists, then produce a documented handoff summary of who did what."
  }

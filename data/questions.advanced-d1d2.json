@@ -1,0 +1,362 @@
+[
+ {
+  "id": "adv-01", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.1.2", "module": "m3", "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "A custom agent profile is committed with this frontmatter:\n\n---\nname: reviewer\ndescription: Reviews changes and writes concise findings.\n---\n\nWhat can this agent do?",
+  "options": [
+   {"text": "Nothing — with no tools key it has no capabilities at all.", "correct": false, "why": "That is what `tools: []` means. An omitted key and an empty list are opposite outcomes, and this is the single most common misreading of an agent profile."},
+   {"text": "Potentially everything — omitting tools may leave all available tools enabled, including edit and execute.", "correct": true, "why": "Omission is not restriction. If `tools` is absent the agent may have the full toolset, so a profile whose prose says \"do not edit files\" is guidance with nothing enforcing it. A review agent must list `tools: [read, search]` explicitly."},
+   {"text": "Only read, because a description mentioning review implies read-only scope.", "correct": false, "why": "The description is documentation for humans and for model selection. It grants and withholds nothing."},
+   {"text": "It is invalid and will not load, because tools is a required key.", "correct": false, "why": "`description` is the required key. `tools` is optional — which is exactly what makes this dangerous."}
+  ],
+  "takeaway": "Omitted `tools` may enable everything; `tools: []` disables everything. Never rely on prose to keep an agent read-only."
+ },
+ {
+  "id": "adv-02", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.1.2", "module": "m3", "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "Which field is required in custom-agent YAML frontmatter?",
+  "options": [
+   {"text": "name", "correct": false, "why": "`name` is optional — it supplies a display name. This is the intended trap: `name` feels like the identity field, so it feels required."},
+   {"text": "description", "correct": true, "why": "`description` is the required field. It states the agent's purpose and capability, and it is what surfaces the agent for selection."},
+   {"text": "tools", "correct": false, "why": "Optional, and omitting it may enable every available tool."},
+   {"text": "target", "correct": false, "why": "Optional. It names the surface, such as `github-copilot` or `vscode`."}
+  ],
+  "takeaway": "`description` is the only required key. `name`, `tools`, `target`, `model` are all optional."
+ },
+ {
+  "id": "adv-03", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.1.1", "module": "m3", "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "An agent must locate every call site of a deprecated function across the repository and report them. It must not change anything. Which tool list is correct?",
+  "options": [
+   {"text": "read, web", "correct": false, "why": "`web` fetches URLs and web search — it is not repository search, and it is not applicable to the cloud agent today. It cannot find call sites in your code."},
+   {"text": "read, search", "correct": true, "why": "`search` is repository/file search. Paired with `read` the agent can find the call sites and inspect them, with no ability to modify anything."},
+   {"text": "read, search, execute", "correct": false, "why": "`execute` would let it run `grep` via a shell, but shell execution is a far broader capability than the task needs. Add `execute` only when the task genuinely requires running commands."},
+   {"text": "read, search, edit", "correct": false, "why": "`edit` is exactly the capability the requirement excludes."}
+  ],
+  "takeaway": "`search` is repository search, not the internet. `web` is a different tool and is not available to the cloud agent."
+ },
+ {
+  "id": "adv-04", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.1.2", "module": "m3", "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "An orchestrator agent should call a reviewer agent and an auditor agent, then merge their findings. It never edits files itself. Which tool list fits?",
+  "options": [
+   {"text": "read, search, execute", "correct": false, "why": "`execute` runs shell commands. It does not invoke another custom agent."},
+   {"text": "read, search, agent", "correct": true, "why": "`agent` is the tool that invokes another custom agent — it also appears as the aliases `custom-agent` and `Task`. Read and search let the orchestrator gather context before delegating."},
+   {"text": "read, search, edit, execute", "correct": false, "why": "This is the implementer profile. It can change files and run commands but cannot delegate to a subagent."},
+   {"text": "read, search, handoffs", "correct": false, "why": "`handoffs` is not a tool. It appears as frontmatter in some formats and is ignored by the Copilot cloud agent."}
+  ],
+  "takeaway": "Subagent invocation needs the `agent` tool (aliases: `custom-agent`, `Task`). Nothing else grants it."
+ },
+ {
+  "id": "adv-05", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.1.2", "module": "m3", "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "An agent should remain available for a human to pick in chat, but must never be selected automatically by the model as part of an orchestration. Which frontmatter setting?",
+  "options": [
+   {"text": "user-invocable: false", "correct": false, "why": "Backwards. This hides the agent from direct human selection while leaving model invocation intact — the exact opposite of the requirement."},
+   {"text": "disable-model-invocation: true", "correct": true, "why": "This blocks inferred/model invocation, so the agent cannot be pulled into an orchestration as a subagent, while a human can still choose it explicitly."},
+   {"text": "tools: []", "correct": false, "why": "That strips the agent's capabilities but does not change who or what can invoke it."},
+   {"text": "target: vscode", "correct": false, "why": "`target` names the surface the agent is intended for. It is not an invocation control."}
+  ],
+  "takeaway": "`disable-model-invocation` blocks the model from selecting it; `user-invocable` controls whether a human can. They are independent, and easy to swap under pressure."
+ },
+ {
+  "id": "adv-06", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.1.2", "module": "m3", "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "Where must a custom agent live so it is available across every repository in an organization?",
+  "options": [
+   {"text": "In .github/agents/ of each repository that needs it.", "correct": false, "why": "That is repository-scoped. It works, but it means copying and maintaining the profile everywhere."},
+   {"text": "Under /agents/ in a .github-private repository.", "correct": true, "why": "Organization and enterprise custom agents live under `/agents/` in a `.github-private` repository. Note the repository name — `.github-private`, not `.github`."},
+   {"text": "Under /agents/ in the organization's .github repository.", "correct": false, "why": "Close, and the intended distractor. The public `.github` repository holds community health files; agent profiles go in `.github-private`."},
+   {"text": "In ~/.copilot/agents/ on each developer's machine.", "correct": false, "why": "That is the per-user CLI location. It is local to one machine and invisible to the organization."}
+  ],
+  "takeaway": "Org-wide agents: `/agents/` inside `.github-private`. Repo agents: `.github/agents/*.agent.md`. User CLI agents: `~/.copilot/agents/`."
+ },
+ {
+  "id": "adv-07", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.2.1", "module": "m3", "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "You are given this MCP server entry:\n\n\"atlassian\": {\n  \"command\": \"npx\",\n  \"args\": [\"mcp-remote@latest\", \"https://mcp.atlassian.com/v1/mcp\", \"--header\", \"...\"],\n  \"tools\": [\"*\"]\n}\n\nWhat is the correct type?",
+  "options": [
+   {"text": "http, because the configuration contains an https:// endpoint.", "correct": false, "why": "This is the trap the whole item is built on. The URL is an argument passed to a local bridge process, not a top-level connection target."},
+   {"text": "local (or stdio), because the client starts a subprocess and speaks over stdin/stdout.", "correct": true, "why": "Transport is decided by the top-level shape. `command` plus `args` means the client launches a process — `mcp-remote` happens to proxy onward to a URL, but the MCP client's own transport is still local."},
+   {"text": "sse, because mcp-remote streams responses.", "correct": false, "why": "`sse` requires a top-level `url`. Nothing here connects the client directly to an endpoint."},
+   {"text": "remote, because the underlying service is hosted.", "correct": false, "why": "`remote` is not a valid transport value. The values are `local`/`stdio`, `http`, and `sse`."}
+  ],
+  "takeaway": "Read the top level, not the strings inside it. `command`+`args` = local; a top-level `url` = http or sse."
+ },
+ {
+  "id": "adv-08", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.2.1", "module": "m3", "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "A server entry has a top-level url and no command. The available type choices are stdio, sse, and local. Which do you pick?",
+  "options": [
+   {"text": "stdio", "correct": false, "why": "`stdio` starts a local process and talks over standard streams. It has no way to connect to a URL."},
+   {"text": "local", "correct": false, "why": "Same problem — local transport launches a subprocess, and none is specified here."},
+   {"text": "sse", "correct": true, "why": "A top-level `url` means remote transport. Modern remote MCP is normally `http`, but when `http` is not among the choices, `sse` is the remote option and the correct pick."},
+   {"text": "None of these — the configuration is invalid without a command.", "correct": false, "why": "A `url`-based remote server is perfectly valid; it simply uses a remote transport."}
+  ],
+  "takeaway": "Top-level `url` ⇒ remote. Prefer `http`; if `http` is not offered, choose `sse`. Never pick `stdio`/`local` for a URL."
+ },
+ {
+  "id": "adv-09", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.2.1", "module": "m3", "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "You are adding MCP configuration inside a custom agent's YAML frontmatter. Which key do you use?",
+  "options": [
+   {"text": "mcpServers", "correct": false, "why": "That is the camelCase key used in JSON MCP configuration files such as `.vscode/mcp.json` or `~/.copilot/mcp-config.json`."},
+   {"text": "mcp-servers", "correct": true, "why": "Custom agent YAML frontmatter uses the hyphenated `mcp-servers`. The two spellings are surface-specific and are a favourite fill-in-the-blank."},
+   {"text": "servers", "correct": false, "why": "Not a valid key in either surface."},
+   {"text": "Either — the parser accepts both spellings.", "correct": false, "why": "They are not interchangeable. YAML frontmatter expects `mcp-servers`; JSON config expects `mcpServers`."}
+  ],
+  "takeaway": "YAML agent frontmatter: `mcp-servers`. JSON config file: `mcpServers`."
+ },
+ {
+  "id": "adv-10", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.2.4", "module": "m3", "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "multi",
+  "text": "An agent declares tools: [read, search, jira/get_issue, github/*]. Which statements are accurate? (Select all that apply.)",
+  "options": [
+   {"text": "jira/get_issue exposes exactly one tool from the jira server.", "correct": true, "why": "Correct. `server/tool` is single-tool scoping — the narrow, preferred form."},
+   {"text": "github/* exposes every tool the github server offers.", "correct": true, "why": "Correct. The wildcard grants the server's whole surface, which widens blast radius and should be justified."},
+   {"text": "search will also query the jira server.", "correct": false, "why": "No. `search` is repository search. MCP tools are reached only through their `server/tool` names."},
+   {"text": "The GitHub MCP server is read-only by default and scoped to the source repository.", "correct": true, "why": "Correct, and worth knowing — `github/*` is broad in tool count but still bounded by that default posture."}
+  ],
+  "takeaway": "`server/tool` = one tool. `server/*` = all of that server's tools. The GitHub MCP server defaults to read-only, scoped to the source repo."
+ },
+ {
+  "id": "adv-11", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.2.4", "module": "m3", "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "A cloud agent MCP server needs an API token. The team stores it as an Agents secret named JIRA_TOKEN and references it. The server fails to authenticate. What is wrong?",
+  "options": [
+   {"text": "Secrets cannot be used with MCP servers at all.", "correct": false, "why": "They can — that is the supported way to supply credentials at runtime."},
+   {"text": "For the Copilot cloud agent, referenced secret and variable names must start with COPILOT_MCP_.", "correct": true, "why": "The naming prefix is the requirement. `COPILOT_MCP_JIRA_TOKEN` would be picked up; a bare `JIRA_TOKEN` will not be."},
+   {"text": "The token should be committed to .github/mcp.json instead.", "correct": false, "why": "Never commit credentials. Secrets are injected at runtime precisely so they stay out of repository content."},
+   {"text": "MCP servers must use Actions secrets, not Agents secrets.", "correct": false, "why": "Agents secrets and variables are a distinct store from Actions secrets, and are the right home here. The problem is the name, not the store."}
+  ],
+  "takeaway": "Cloud agent MCP credentials must be named with the `COPILOT_MCP_` prefix, and Agents secrets are a separate store from Actions secrets."
+ },
+ {
+  "id": "adv-12", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.2.2", "module": "m3", "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "A vendor's remote MCP server authenticates with OAuth. You want the Copilot cloud agent to use it. What should you expect?",
+  "options": [
+   {"text": "It works once you add the OAuth client ID and secret as Agents secrets.", "correct": false, "why": "Adding credentials does not enable an unsupported authorization flow."},
+   {"text": "The cloud agent does not currently support remote MCP servers that rely on OAuth authorization.", "correct": true, "why": "This is a stated product limitation. A remote server requiring OAuth is not usable from the cloud agent — you would need a server supporting header/token auth, or a local bridge."},
+   {"text": "It works only if the server is also listed in the MCP registry.", "correct": false, "why": "Registry listing governs which servers are permitted, not which authorization flows are supported."},
+   {"text": "It works if you set type: sse instead of http.", "correct": false, "why": "Transport choice does not change the supported authorization mechanisms."}
+  ],
+  "takeaway": "Cloud agent + remote MCP + OAuth = unsupported today. Header or token auth, or a local bridge process, are the workarounds."
+ },
+ {
+  "id": "adv-13", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.2.3", "module": "m3", "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "multi",
+  "text": "You are adapting an existing .vscode/mcp.json for use by the cloud agent. Which changes are needed? (Select all that apply.)",
+  "options": [
+   {"text": "Add a tools list to each server.", "correct": true, "why": "Correct. Explicit tool scoping is expected rather than inheriting whatever the server exposes."},
+   {"text": "Replace inputs with env.", "correct": true, "why": "Correct. `inputs` is a VS Code prompting mechanism with no meaning to the cloud agent."},
+   {"text": "Replace envFile with env.", "correct": true, "why": "Correct. There is no local env file to read in the cloud environment."},
+   {"text": "Rename the top-level mcpServers key to mcp-servers.", "correct": false, "why": "No. It is still a JSON config file, so `mcpServers` stays. The hyphenated form belongs only in agent YAML frontmatter."}
+  ],
+  "takeaway": "Porting `.vscode/mcp.json`: add `tools`, convert `inputs`/`envFile` to `env`, store credentials as Agents secrets — but keep the `mcpServers` key."
+ },
+ {
+  "id": "adv-14", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.3.6", "module": "m3", "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "An agent can reach an approved MCP server but its own outbound HTTP calls to a third-party API are blocked. Which control is responsible?",
+  "options": [
+   {"text": "The MCP allowlist — it governs all outbound access.", "correct": false, "why": "The MCP allowlist decides which MCP servers may be used. It says nothing about arbitrary network egress."},
+   {"text": "The firewall allowlist — it governs network egress, which is a different problem from MCP server permission.", "correct": true, "why": "Two separate controls that are constantly conflated. MCP allowlist = which servers an agent may use. Firewall allowlist = which hosts the environment may reach."},
+   {"text": "The MCP registry URL setting.", "correct": false, "why": "The registry is the catalog of discoverable servers. It is not an egress control."},
+   {"text": "Branch protection on the default branch.", "correct": false, "why": "A merge policy has no bearing on runtime network access."}
+  ],
+  "takeaway": "Firewall allowlist governs egress; MCP allowlist governs which MCP servers may be used. Different problems, different controls."
+ },
+ {
+  "id": "adv-15", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.2.4", "module": "m3", "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "An organization sets its MCP policy to Allow all. The enterprise above it is set to Registry only. What applies to a developer in that organization?",
+  "options": [
+   {"text": "Allow all — the more specific organization policy wins.", "correct": false, "why": "Specificity does not override hierarchy here. Treating org policy as the last word is the trap."},
+   {"text": "Registry only — enterprise policy can override organization policy.", "correct": true, "why": "Enterprise policy sits above organization policy, and `Registry only` is the stricter of the two settings. The developer is limited to registry-listed servers."},
+   {"text": "Whichever was configured most recently.", "correct": false, "why": "Policy resolution is by scope, not by timestamp."},
+   {"text": "Neither — conflicting policies disable MCP entirely.", "correct": false, "why": "The conflict resolves to the enterprise setting rather than switching MCP off."}
+  ],
+  "takeaway": "Enterprise policy can override organization policy, and `Registry only` is stricter than `Allow all`."
+ },
+ {
+  "id": "adv-16", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.3.3", "module": "m3", "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "A scheduled workflow runs the Copilot CLI. It succeeds locally but in CI the job hangs until it times out. Which flag is missing?",
+  "options": [
+   {"text": "--autopilot", "correct": false, "why": "`--autopilot` lets the CLI continue autonomously on the local runner. It addresses continuation, not the blocking prompt."},
+   {"text": "--no-ask-user", "correct": true, "why": "Without it the CLI can stop and ask an interactive question. Nothing is there to answer in CI, so the job waits until the timeout. This is the canonical CI hang."},
+   {"text": "--output-format=json", "correct": false, "why": "That changes the shape of the output for machine parsing. It does not stop the CLI from asking."},
+   {"text": "--continue", "correct": false, "why": "That resumes the latest session. Irrelevant to an interactive prompt blocking a fresh run."}
+  ],
+  "takeaway": "`--no-ask-user` is the CI flag. An agent that can ask questions in a non-interactive environment will hang."
+ },
+ {
+  "id": "adv-17", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.3.3", "module": "m3", "unit": "m3-interact-github-apis-workflows",
+  "type": "single",
+  "text": "Match the mechanism to where the work actually executes: --autopilot, /delegate, /fleet.",
+  "options": [
+   {"text": "--autopilot runs locally; /delegate hands off to the cloud agent; /fleet splits work into parallel subagents in the CLI.", "correct": true, "why": "That is the split. `--autopilot` continues autonomously on the local CLI or runner, `/delegate` (or the `&` prefix) pushes a background task to the cloud agent which produces a PR, and `/fleet` decomposes work into parallel subagents under CLI orchestration."},
+   {"text": "All three hand work to the Copilot cloud agent; they differ only in verbosity.", "correct": false, "why": "Only `/delegate` moves execution to the cloud agent."},
+   {"text": "--autopilot delegates to the cloud; /delegate splits into subagents; /fleet runs locally.", "correct": false, "why": "All three are shuffled."},
+   {"text": "/fleet delegates to the cloud agent; /delegate runs a single local session; --autopilot enables MCP.", "correct": false, "why": "`/fleet` is CLI-side decomposition, and `--autopilot` has nothing to do with MCP."}
+  ],
+  "takeaway": "`--autopilot` = keep going locally. `/delegate` (or `&`) = background cloud agent task. `/fleet` = parallel subagents under CLI orchestration."
+ },
+ {
+  "id": "adv-18", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.3.3", "module": "m3", "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "You need to reattach to one specific earlier CLI session by name, not simply pick up the most recent one. Which flag?",
+  "options": [
+   {"text": "--continue", "correct": false, "why": "`--continue` resumes the latest session. If another session ran since, you get the wrong one."},
+   {"text": "--resume", "correct": true, "why": "`--resume` targets a named session, which is what \"one specific earlier session\" requires. A stable session id is what makes it addressable."},
+   {"text": "--autopilot", "correct": false, "why": "Autonomous continuation of the current run; not a session selector."},
+   {"text": "/session", "correct": false, "why": "The slash command inspects the current session from inside the CLI. It does not reattach to a prior one at launch."}
+  ],
+  "takeaway": "`--resume` = a named session. `--continue` = whatever ran last."
+ },
+ {
+  "id": "adv-19", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.3.6", "module": "m3", "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "A team adds .github/workflows/copilot-setup-steps.yml on a feature branch, with the job id setup. The cloud agent still starts without their dependencies installed. What are the two problems?",
+  "options": [
+   {"text": "The file must be on the default branch, and the job must be named copilot-setup-steps.", "correct": true, "why": "Both conditions are required. The file is only picked up from the default branch, and the job id must be exactly `copilot-setup-steps` for it to be recognised as the setup job."},
+   {"text": "The file must be in .github/ rather than .github/workflows/, and needs a schedule trigger.", "correct": false, "why": "The path is right as given; setup steps live under `.github/workflows/`."},
+   {"text": "The workflow needs contents: write, and must run on pull_request.", "correct": false, "why": "Neither is required, and elevating permissions would not make the file discoverable."},
+   {"text": "Setup steps must be defined in the agent profile, not a workflow file.", "correct": false, "why": "The cloud agent environment is prepared by this workflow file, not by agent frontmatter."}
+  ],
+  "takeaway": "`copilot-setup-steps.yml` must sit on the default branch and use the job id `copilot-setup-steps`."
+ },
+ {
+  "id": "adv-20", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.4.1", "module": "m3", "unit": "m3-agent-execution-limits-protections",
+  "type": "single",
+  "text": "A step inside copilot-setup-steps.yml fails partway through. What happens next?",
+  "options": [
+   {"text": "The agent session is cancelled and the task never starts.", "correct": false, "why": "Setup failure is not fatal to the session, which is precisely why it can be confusing to debug."},
+   {"text": "Remaining setup steps are skipped and Copilot starts with the current environment.", "correct": true, "why": "The agent proceeds with whatever state setup managed to reach. That produces puzzling downstream failures — missing dependencies, wrong toolchain — that look like agent errors but are environment errors."},
+   {"text": "The whole workflow retries from the beginning up to three times.", "correct": false, "why": "There is no automatic retry of setup."},
+   {"text": "Copilot falls back to the previous successful setup run's environment.", "correct": false, "why": "There is no cached previous environment to fall back to."}
+  ],
+  "takeaway": "Setup failure skips the rest and starts anyway. Suspect setup when an agent behaves as if the toolchain is missing."
+ },
+ {
+  "id": "adv-21", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.3.3", "module": "m3", "unit": "m3-interact-github-apis-workflows",
+  "type": "single",
+  "text": "Which statement correctly distinguishes copilot-setup-steps.yml from a workflow that installs the Copilot CLI and runs copilot -p?",
+  "options": [
+   {"text": "They are the same thing under different names.", "correct": false, "why": "Conflating them is the point of the question. They serve different purposes and run at different times."},
+   {"text": "copilot-setup-steps.yml prepares the cloud agent's environment; a workflow running copilot -p is separate CI automation that invokes the CLI.", "correct": true, "why": "Setup steps provision the environment the cloud agent will work inside. A workflow that installs `@github/copilot` and calls `copilot -p` is ordinary CI that happens to use the CLI as a tool."},
+   {"text": "copilot-setup-steps.yml runs after the agent finishes, to clean up.", "correct": false, "why": "It runs beforehand, to prepare."},
+   {"text": "Only copilot-setup-steps.yml can use secrets.", "correct": false, "why": "Both are workflows and both can reference secrets."}
+  ],
+  "takeaway": "Setup steps prepare the cloud agent's environment. A `copilot -p` workflow is CI invoking the CLI. Different mechanisms."
+ },
+ {
+  "id": "adv-22", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d2", "objective": "2.1.3", "module": "m3", "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "In a CI step invoking the Copilot CLI, which environment variable does GitHub's own example use to authenticate it?",
+  "options": [
+   {"text": "GITHUB_TOKEN", "correct": false, "why": "The workflow's `GITHUB_TOKEN` authorises Actions API calls. It is not what the documented CLI example passes."},
+   {"text": "COPILOT_GITHUB_TOKEN", "correct": true, "why": "This is the variable GitHub's CI example sets, typically from a PAT stored as a secret."},
+   {"text": "COPILOT_MCP_TOKEN", "correct": false, "why": "The `COPILOT_MCP_` prefix is the naming rule for MCP server credentials, not CLI authentication."},
+   {"text": "GH_COPILOT_PAT", "correct": false, "why": "Not a documented variable name."}
+  ],
+  "takeaway": "`COPILOT_GITHUB_TOKEN` authenticates the CLI in CI. Distinct from `GITHUB_TOKEN` and from `COPILOT_MCP_*`."
+ },
+ {
+  "id": "adv-23", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d1", "objective": "1.3.1", "module": "m6", "unit": "m6-define-risk-based-autonomy",
+  "type": "single",
+  "text": "Using the low/medium/high autonomy model, which tool set and control pairing describes a medium-autonomy implementer?",
+  "options": [
+   {"text": "read, search — with no write and no shell.", "correct": false, "why": "That is low autonomy: read, search, summarize, plan."},
+   {"text": "read, search, edit, execute — gated by PR checks and required review.", "correct": true, "why": "Medium autonomy edits files and runs tests, then opens a PR. The controls that make it safe are required checks and review, not restricted tooling."},
+   {"text": "agent plus MCP tools and shell — gated by narrow tools, hooks, approvals, and audit.", "correct": false, "why": "That is high autonomy: coordinating agents, MCP, workflow modification."},
+   {"text": "read, search, agent — gated by branch protection alone.", "correct": false, "why": "That is a coordinator's tool set, and branch protection alone is thin for it."}
+  ],
+  "takeaway": "Low = read/search. Medium = +edit/execute, gated by checks and review. High = agent/MCP/shell, gated by hooks, approvals and audit."
+ },
+ {
+  "id": "adv-24", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d1", "objective": "1.1.1", "module": "m2", "unit": "m2-inputs-outputs-success-criteria",
+  "type": "multi",
+  "text": "Which conditions indicate a task should NOT be handed to an agent alone? (Select all that apply.)",
+  "options": [
+   {"text": "Success criteria are unclear.", "correct": true, "why": "Yes. With nothing to validate against, neither the agent nor a reviewer can tell whether the work is done."},
+   {"text": "The agent would need broad secrets or broad external write access.", "correct": true, "why": "Yes. Breadth of credential is breadth of blast radius."},
+   {"text": "The agent would approve its own output.", "correct": true, "why": "Yes. Self-approval removes the acceptance boundary entirely — agents propose, humans and policy accept."},
+   {"text": "The work can be scoped to a single repository and branch.", "correct": false, "why": "No — that is one of the conditions that makes a task well suited to an agent."}
+  ],
+  "takeaway": "Rule the agent out when criteria are vague, credentials must be broad, the change is irreversible, or the agent would accept its own work."
+ }
+]

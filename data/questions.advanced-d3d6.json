@@ -1,0 +1,392 @@
+[
+ {
+  "id": "adv-25", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d3", "objective": "3.2.2", "module": "m4", "unit": "m4-agent-state-context-drift",
+  "type": "single",
+  "text": "You are handed this CLI log excerpt:\n\nsession.id=abc123\nloaded ~/.copilot/session-state/abc123/events.jsonl\nresume=true\n\nWhat does it tell you?",
+  "options": [
+   {"text": "A new session started and immediately wrote its first events file.", "correct": false, "why": "A new session would show `resume=false` and would not load an existing events file."},
+   {"text": "An existing session was resumed — its prior event stream was replayed from session-state.", "correct": true, "why": "Three signals agree: a session id that already existed, `resume=true`, and the load of `session-state/<id>/events.jsonl`. That file is the per-session event stream."},
+   {"text": "Copilot Memory was loaded for the repository.", "correct": false, "why": "Copilot Memory is a separate mechanism from CLI session state. Session persistence is not Copilot Memory."},
+   {"text": "The session was deleted and recreated with the same id.", "correct": false, "why": "Deletion would discard the events file, leaving nothing to load."}
+  ],
+  "takeaway": "Resume evidence: a reused session id, `resume=true`, and a load from `~/.copilot/session-state/<id>/events.jsonl`."
+ },
+ {
+  "id": "adv-26", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d3", "objective": "3.3.1", "module": "m4", "unit": "m4-memory-state-continuity",
+  "type": "single",
+  "text": "A workstation must keep Copilot CLI configuration and session state on an encrypted volume rather than the home directory. Which environment variable moves it?",
+  "options": [
+   {"text": "COPILOT_CACHE_HOME", "correct": false, "why": "That relocates the cache only. Config and session state stay where they were — a partial move that looks like it worked."},
+   {"text": "COPILOT_HOME", "correct": true, "why": "`COPILOT_HOME` changes the config and state root, which is where `agents/`, `session-state/`, `logs/`, `config.json` and `mcp-config.json` live."},
+   {"text": "COPILOT_CONFIG_PATH", "correct": false, "why": "Not a documented variable."},
+   {"text": "XDG_CONFIG_HOME", "correct": false, "why": "A general convention, but the CLI's documented override is `COPILOT_HOME`."}
+  ],
+  "takeaway": "`COPILOT_HOME` = config and state root. `COPILOT_CACHE_HOME` = cache only."
+ },
+ {
+  "id": "adv-27", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d3", "objective": "3.2.1", "module": "m4", "unit": "m4-memory-state-continuity",
+  "type": "single",
+  "text": "Using the Copilot SDK, a session finishes and the client calls disconnect(). A week later you try to resume the same session id. What happens?",
+  "options": [
+   {"text": "It fails — disconnect() destroys the session.", "correct": false, "why": "That is `deleteSession()`. Confusing the two is the trap: one closes the connection, the other destroys the data."},
+   {"text": "It resumes — disconnect() keeps session data, and a stable sessionId is what makes resume possible.", "correct": true, "why": "`disconnect()` ends the connection while preserving session data. Note what does not survive: provider or API keys, and in-memory tool state."},
+   {"text": "It resumes, including any API keys the session was using.", "correct": false, "why": "Half right. The session resumes, but provider and API keys are not persisted and must be supplied again."},
+   {"text": "It creates a new session, silently ignoring the id.", "correct": false, "why": "A stable id is precisely what addresses an existing session."}
+  ],
+  "takeaway": "`disconnect()` preserves session data; `deleteSession()` destroys it. Keys and in-memory tool state never persist."
+ },
+ {
+  "id": "adv-28", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d3", "objective": "3.3.3", "module": "m4", "unit": "m4-memory-state-continuity",
+  "type": "single",
+  "text": "An agent keeps applying a naming convention the team abandoned three months ago. Copilot Memory holds it as a repository-level fact. What is the correct diagnosis?",
+  "options": [
+   {"text": "Session state was resumed from a stale session.", "correct": false, "why": "Session state is per-execution. A convention applied consistently across new sessions points at memory, not at one resumed run."},
+   {"text": "Stale repository memory — repository facts should be validated against the current branch before use.", "correct": true, "why": "Repository-level facts are scoped to the repository and can outlive the practice they describe. The guidance is to check stored facts against current branch state; stale memory produces exactly this wrong-convention symptom."},
+   {"text": "A user-level preference is overriding the repository convention.", "correct": false, "why": "Possible in principle, but the question states the fact is stored at repository level. User preferences are a separate scope."},
+   {"text": "The agent lacks the search tool and cannot see current code.", "correct": false, "why": "It is applying a specific remembered convention, not failing to find anything."}
+  ],
+  "takeaway": "Repository facts and user preferences are different scopes, and repository facts must be re-validated against the current branch."
+ },
+ {
+  "id": "adv-29", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d3", "objective": "3.3.2", "module": "m4", "unit": "m4-memory-state-continuity",
+  "type": "multi",
+  "text": "Match the need to the right storage. Which pairings are correct? (Select all that apply.)",
+  "options": [
+   {"text": "Share a plan between two workflow jobs → workflow artifact or job output.", "correct": true, "why": "Correct. Jobs are isolated; artifacts and job outputs are the supported handoffs."},
+   {"text": "Continue the same CLI or SDK run later → session id and session-state.", "correct": true, "why": "Correct. That is what session persistence is for."},
+   {"text": "Preserve a review decision → PR comment or review.", "correct": true, "why": "Correct. Decisions belong on the PR timeline where reviewers and auditors will look."},
+   {"text": "Store an MCP server's API token → repository instructions file.", "correct": false, "why": "No. Memory, prompts, instructions and comments must never hold secrets. Credentials go in Agents secrets and are injected at runtime."}
+  ],
+  "takeaway": "Artifacts/outputs for cross-job data, session-state for run continuity, PR comments for decisions — and never instructions or memory for secrets."
+ },
+ {
+  "id": "adv-30", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d4", "objective": "4.1.4", "module": "m4", "unit": "m4-evaluation-signals-quality-gates",
+  "type": "single",
+  "text": "A workflow uploads review.md but the job log shows:\n\nWarning: No files were found with the provided path: review.md\n\nThe run is still green. Which change makes this fail loudly?",
+  "options": [
+   {"text": "Set retention-days: 1 so the problem surfaces sooner.", "correct": false, "why": "Retention governs how long an artifact is kept. It has nothing to do with a missing file."},
+   {"text": "Set if-no-files-found: error on the upload step.", "correct": true, "why": "The input's default is `warn`, which is why the run stayed green. `error` turns a missing artifact into a failure; `ignore` suppresses it entirely."},
+   {"text": "Set overwrite: true.", "correct": false, "why": "That replaces an existing artifact of the same name. It does not detect an absent file."},
+   {"text": "Set include-hidden-files: true.", "correct": false, "why": "Only relevant if the file were hidden — `review.md` is not."}
+  ],
+  "takeaway": "`if-no-files-found` defaults to `warn`. Use `error` when a missing artifact should fail the run."
+ },
+ {
+  "id": "adv-31", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d4", "objective": "4.3.3", "module": "m4", "unit": "m4-agent-failures-behavior-improvement",
+  "type": "single",
+  "text": "An agent's workflow fails with:\n\nnpm ci\nERR! code E401\n\nWhat is the correct first fix?",
+  "options": [
+   {"text": "Grant the agent broad shell access so it can authenticate manually.", "correct": false, "why": "Widening capability in response to an auth failure is the wrong instinct and the trap here. Broad shell access is never the first fix."},
+   {"text": "Fix the setup steps, package registry authentication, or the missing secret.", "correct": true, "why": "E401 is unauthorized — a registry credential problem. It belongs to the setup and environment layer, so fix the auth or the secret rather than changing the agent."},
+   {"text": "Switch the agent to a more capable model.", "correct": false, "why": "Model choice is the last lever, and this is not a reasoning failure at all."},
+   {"text": "Add --no-ask-user so the install does not prompt.", "correct": false, "why": "That addresses interactive hangs. The install is failing on authorization, not waiting for input."}
+  ],
+  "takeaway": "Match the fix to the layer. Dependency and auth failures are environment problems — never answer them by widening agent capability."
+ },
+ {
+  "id": "adv-32", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d4", "objective": "4.3.1", "module": "m4", "unit": "m4-agent-failures-behavior-improvement",
+  "type": "single",
+  "text": "In the recommended tuning order, where does changing the model sit?",
+  "options": [
+   {"text": "First — an underpowered model is the most common root cause.", "correct": false, "why": "It is the most tempting and least often correct first move."},
+   {"text": "Last, unless documentation explicitly points there — after prompt clarity, instructions, tool scope, setup, repo state and memory.", "correct": true, "why": "The order runs from cheapest and most likely to most expensive and least likely: task clarity, instructions, tool scope, setup/environment, current repo state, memory/session state, then model."},
+   {"text": "Immediately after checking prompt clarity.", "correct": false, "why": "Instructions, tools, environment, repo state and memory all come before it."},
+   {"text": "It is never appropriate to change the model.", "correct": false, "why": "It is a legitimate lever — just the last one."}
+  ],
+  "takeaway": "Tuning order: prompt → instructions → tools → setup → repo state → memory/session → model last."
+ },
+ {
+  "id": "adv-33", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d4", "objective": "4.2.1", "module": "m4", "unit": "m4-agent-failures-behavior-improvement",
+  "type": "multi",
+  "text": "A workflow artifact has vanished and you must establish who removed it. Which are true? (Select all that apply.)",
+  "options": [
+   {"text": "The audit event to search for is artifact.destroy.", "correct": true, "why": "Correct — that is the event recorded for manual artifact deletion."},
+   {"text": "You search the organization or enterprise audit log, not the repository's Actions tab.", "correct": true, "why": "Correct. The Actions tab shows that it is gone; the audit log shows who removed it and when."},
+   {"text": "Useful fields include actor, repo, created_at or @timestamp, operation_type and user_agent.", "correct": true, "why": "Correct — those are the fields that turn the event into an account of what happened."},
+   {"text": "A deleted artifact can be restored from the audit log entry.", "correct": false, "why": "No. The audit log records the deletion; it does not retain the artifact. Deleted artifacts cannot be restored."}
+  ],
+  "takeaway": "`artifact.destroy` in the org or enterprise audit log names the actor and time — but the artifact itself is gone for good."
+ },
+ {
+  "id": "adv-34", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d4", "objective": "4.2.2", "module": "m4", "unit": "m4-agent-failures-behavior-improvement",
+  "type": "single",
+  "text": "A session log shows:\n\ntool=execute command=\"git push origin main\"\n\nWhich response best matches the guidance?",
+  "options": [
+   {"text": "Add an instruction telling the agent to open a pull request instead.", "correct": false, "why": "Necessary but not sufficient. An instruction is guidance; the capability is still there and will be used again."},
+   {"text": "Deny the command through tool policy or a pre-tool hook, and enforce branch protection or a ruleset as well.", "correct": true, "why": "Layered: the hook or tool policy blocks the action before it executes, and branch protection makes the push impossible even if the hook is bypassed or fails open. Instructing the agent to open a PR is a third, softer layer."},
+   {"text": "Remove the execute tool entirely.", "correct": false, "why": "Too blunt if the agent legitimately needs to run tests. Deny the specific dangerous command rather than the whole capability."},
+   {"text": "Rotate the token the agent used.", "correct": false, "why": "A response to credential compromise, not to an agent using a capability it was granted."}
+  ],
+  "takeaway": "Block at the hook or tool-policy layer, and back it with branch protection — hooks can fail open, repository policy does not."
+ },
+ {
+  "id": "adv-35", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d5", "objective": "5.1.2", "module": "m5", "unit": "m5-execution-isolation-permissions-concurrency",
+  "type": "single",
+  "text": "Several agents push to the same PR branch. Every push must be validated in order, with no run cancelled. Which concurrency block?",
+  "options": [
+   {"text": "group: ${{ github.workflow }}-${{ github.head_ref }} with cancel-in-progress: true", "correct": false, "why": "That is the right choice when only the latest result matters — it cancels the older runs the requirement says must complete."},
+   {"text": "group: production-agent-work with queue: max", "correct": true, "why": "`queue: max` serialises runs so each one executes in turn rather than being cancelled. That is the pattern for \"every run must happen\"."},
+   {"text": "group: production-agent-work with queue: max and cancel-in-progress: true", "correct": false, "why": "Explicitly warned against — do not combine `queue: max` with `cancel-in-progress: true`. They express contradictory intents."},
+   {"text": "Job-level concurrency on the validate job.", "correct": false, "why": "Job-level concurrency applies within a workflow run. It does not serialise separate runs triggered by successive pushes."}
+  ],
+  "takeaway": "`cancel-in-progress: true` = only the latest matters. `queue: max` = every run must happen. Never both."
+ },
+ {
+  "id": "adv-36", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d5", "objective": "5.1.2", "module": "m5", "unit": "m5-execution-isolation-permissions-concurrency",
+  "type": "single",
+  "text": "Why is the concurrency group written as ${{ github.workflow }}-${{ github.head_ref || github.run_id }} rather than just ${{ github.head_ref }}?",
+  "options": [
+   {"text": "github.run_id makes the group unique so nothing is ever cancelled.", "correct": false, "why": "That would defeat the purpose. `run_id` is a fallback for the case where `head_ref` is unset, not the normal grouping key."},
+   {"text": "github.workflow stops other workflows on the same branch being cancelled, and github.run_id is a fallback for events with no head_ref.", "correct": true, "why": "Both halves matter. Omitting `github.workflow` makes the group branch-global, so unrelated workflows cancel each other. `head_ref` is only populated for pull_request events, so `run_id` keeps the expression valid elsewhere."},
+   {"text": "github.head_ref is unavailable on pull_request events, so a fallback is always required.", "correct": false, "why": "Reversed — `head_ref` is the PR source branch and is populated *on* pull_request events. It is empty on push or schedule."},
+   {"text": "It is stylistic; the two behave identically.", "correct": false, "why": "They behave very differently for any repository with more than one workflow."}
+  ],
+  "takeaway": "`github.workflow` scopes the group per workflow; `head_ref || run_id` keeps it valid when there is no PR branch."
+ },
+ {
+  "id": "adv-37", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d5", "objective": "5.1.1", "module": "m5", "unit": "m5-agent-orchestration-github-workflows",
+  "type": "multi",
+  "text": "A matrix job fans out one agent per area. Which statements are correct? (Select all that apply.)",
+  "options": [
+   {"text": "fail-fast: false prevents one failed matrix job cancelling the others.", "correct": true, "why": "Correct, and important for agent fan-out — you usually want every area's result even if one fails."},
+   {"text": "A matrix can generate up to 256 jobs in a single workflow run.", "correct": true, "why": "Correct. That is the documented ceiling."},
+   {"text": "matrix.agent is a list of agent names expanded into one job each.", "correct": true, "why": "Correct — each value produces a job, typically passed to `--agent=${{ matrix.agent }}`."},
+   {"text": "strategy.matrix orders the jobs so each waits for the previous one.", "correct": false, "why": "No. Matrix jobs run in parallel. Ordering comes from `needs`."}
+  ],
+  "takeaway": "Matrix = parallel fan-out, up to 256 jobs, with `fail-fast: false` to keep the rest alive. Ordering is `needs`, never matrix."
+ },
+ {
+  "id": "adv-38", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d5", "objective": "5.2.2", "module": "m5", "unit": "m5-system-observability-evidence-workflows",
+  "type": "single",
+  "text": "A review job and an audit job each produce a markdown file. A third job must read both. What is the mechanism?",
+  "options": [
+   {"text": "Write both files to the workspace; the third job checks out the same repository and reads them.", "correct": false, "why": "Jobs run on separate runners with separate filesystems. Files written in one job do not exist in another."},
+   {"text": "Upload each file with actions/upload-artifact, then download both in the consolidating job, which declares needs: [review, audit].", "correct": true, "why": "Artifacts carry files between jobs and `needs` guarantees both producers finished first. This is also the auditable handoff — the artifacts survive as evidence."},
+   {"text": "Pass the file contents through job outputs.", "correct": false, "why": "Job outputs carry values, not files. Multi-kilobyte markdown is the wrong shape and hits output limits."},
+   {"text": "Have the first two jobs commit their files to the branch.", "correct": false, "why": "Committing generated files pollutes history and races when two jobs push."}
+  ],
+  "takeaway": "Files between jobs = artifacts. Values between jobs = job outputs. Ordering = `needs`."
+ },
+ {
+  "id": "adv-39", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d5", "objective": "5.2.3", "module": "m5", "unit": "m5-system-observability-evidence-workflows",
+  "type": "single",
+  "text": "A workflow reruns after a failure. You need to know who clicked rerun, as distinct from who originally triggered the run. Which context?",
+  "options": [
+   {"text": "github.actor", "correct": false, "why": "`github.actor` is the original actor who triggered the run — it does not change on rerun."},
+   {"text": "github.triggering_actor", "correct": true, "why": "`triggering_actor` is the account that started this attempt, which is what differs on a rerun. Pair it with `github.run_attempt` to see which attempt you are looking at."},
+   {"text": "github.run_number", "correct": false, "why": "The workflow's run number — an ordinal, not a person."},
+   {"text": "github.sha", "correct": false, "why": "The triggering commit. Identifies code, not the actor."}
+  ],
+  "takeaway": "`github.actor` = original trigger. `github.triggering_actor` = who started this attempt. `run_attempt` = which attempt."
+ },
+ {
+  "id": "adv-40", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d5", "objective": "5.1.3", "module": "m5", "unit": "m5-conflict-resolution-github-arbitration",
+  "type": "multi",
+  "text": "When should you NOT split work across multiple agents? (Select all that apply.)",
+  "options": [
+   {"text": "The task is inherently sequential.", "correct": true, "why": "Yes. Parallelism buys nothing when step two cannot start until step one finishes."},
+   {"text": "The agents would have to edit the same files.", "correct": true, "why": "Yes. Shared file ownership is the primary source of collisions and reverted work."},
+   {"text": "State handoff between them is unclear.", "correct": true, "why": "Yes. Without a defined handoff artifact the coordination is invisible and undiagnosable."},
+   {"text": "The agents have different areas of expertise.", "correct": false, "why": "No — that is an argument *for* multiple agents, provided the work splits cleanly by area."}
+  ],
+  "takeaway": "Split by area with disjoint files and a defined handoff. Do not split sequential work or work that shares files."
+ },
+ {
+  "id": "adv-41", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d6", "objective": "6.2.2", "module": "m6", "unit": "m6-enforce-governance-github-controls",
+  "type": "single",
+  "text": "You must block a cloud agent from running a destructive shell command. Which hook event and response shape?",
+  "options": [
+   {"text": "permissionRequest, returning { \"behavior\": \"deny\", \"message\": \"...\" }", "correct": false, "why": "`permissionRequest` is CLI-only — it runs before the CLI's own permission flow and is not used for cloud-agent permissioning. Its shape is right for the CLI, wrong for this scenario."},
+   {"text": "preToolUse, returning { \"permissionDecision\": \"deny\", \"permissionDecisionReason\": \"...\" }", "correct": true, "why": "`preToolUse` fires before a tool executes and is the cloud-agent decision point. It returns `permissionDecision` with an accompanying `permissionDecisionReason` when denying."},
+   {"text": "postToolUse, returning { \"permissionDecision\": \"deny\" }", "correct": false, "why": "`postToolUse` runs after a successful tool call. By then the command has already run."},
+   {"text": "agentStop, returning { \"interrupt\": true }", "correct": false, "why": "`agentStop` fires when the main agent finishes a turn and can force another turn. It is not a tool gate."}
+  ],
+  "takeaway": "Cloud-agent gating is `preToolUse` with `permissionDecision`. `permissionRequest` with `behavior` is CLI-only."
+ },
+ {
+  "id": "adv-42", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d6", "objective": "6.2.2", "module": "m6", "unit": "m6-enforce-governance-github-controls",
+  "type": "single",
+  "text": "A preToolUse hook returns \"ask\" for a risky command. The cloud agent is running the task unattended. What happens?",
+  "options": [
+   {"text": "The agent pauses until someone responds in the session UI.", "correct": false, "why": "There is no interactive prompt to answer — that is precisely the situation the rule exists for."},
+   {"text": "It is treated as a denial, because the cloud agent is non-interactive.", "correct": true, "why": "`ask` only means something in an interactive CLI. In the cloud agent it resolves to deny, so a hook written for local use will silently become stricter there."},
+   {"text": "It is treated as allow, since no one objected.", "correct": false, "why": "Failing open on an explicit `ask` would invert the intent of the hook."},
+   {"text": "The session errors out with an unsupported-decision fault.", "correct": false, "why": "It is a valid decision value; it simply resolves to deny in a non-interactive context."}
+  ],
+  "takeaway": "`allow` / `deny` / `ask` are the three decisions — and `ask` becomes `deny` in the cloud agent."
+ },
+ {
+  "id": "adv-43", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d6", "objective": "6.2.3", "module": "m6", "unit": "m6-control-agent-capabilities",
+  "type": "single",
+  "text": "A hook is configured with matcher: \"bash\" to intercept shell commands. A colleague argues it will also catch a tool named bash-runner. Who is right?",
+  "options": [
+   {"text": "The colleague — matcher is a substring test.", "correct": false, "why": "This is the intuitive reading and it is wrong."},
+   {"text": "You — the matcher regex is anchored, so \"bash\" matches exactly bash and nothing else.", "correct": true, "why": "The matcher is a full-match regex. `\"bash\"` matches only `bash`; `\"bash|powershell\"` matches exactly those two names, not any string containing them."},
+   {"text": "Neither — matcher applies to the command string, not the tool name.", "correct": false, "why": "`matcher` filters on the event-specific value, which for `preToolUse` is the tool name."},
+   {"text": "The colleague, but only on Windows.", "correct": false, "why": "Anchoring is not platform-dependent."}
+  ],
+  "takeaway": "`matcher` is an anchored full-match regex. `\"bash|powershell\"` means exactly those two tool names."
+ },
+ {
+  "id": "adv-44", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d6", "objective": "6.2.2", "module": "m6", "unit": "m6-enforce-governance-github-controls",
+  "type": "single",
+  "text": "A repository hook defines only a powershell command for its preToolUse entry. It works on a developer's Windows machine but never fires for the cloud agent. Why?",
+  "options": [
+   {"text": "Cloud agent hooks must be registered in the agent profile as well.", "correct": false, "why": "Repository hooks in `.github/hooks/*.json` are picked up from the cloned repo without profile registration."},
+   {"text": "The cloud agent runs on Linux, so a PowerShell-only entry has nothing to execute — it needs bash or command.", "correct": true, "why": "Cloud agent hooks run in Linux with a working directory of `/workspace` when a repo is cloned. Only `bash` or the cross-platform `command` field is usable there."},
+   {"text": "Cloud agent hooks only support HTTP hooks, not command hooks.", "correct": false, "why": "Command, HTTP and prompt hooks are all valid entry types."},
+   {"text": "The hook needs a longer timeoutSec than the 30-second default.", "correct": false, "why": "A timeout would show as a failure after running, not as never firing."}
+  ],
+  "takeaway": "Cloud agent hooks are Linux, cwd `/workspace`. Provide `bash` or `command`; PowerShell-only entries never run there."
+ },
+ {
+  "id": "adv-45", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d6", "objective": "6.2.2", "module": "m6", "unit": "m6-make-actions-observable-traceable-auditable",
+  "type": "single",
+  "text": "A hook log records toolName: \"grep\". What did the agent do?",
+  "options": [
+   {"text": "Searched the internet.", "correct": false, "why": "Web access is `web_fetch`. Nothing about `grep` reaches outside the repository."},
+   {"text": "Searched repository file contents — grep maps to the search capability.", "correct": true, "why": "Hook tool names sit a level below the agent `tools` list. `grep` searches file contents and `glob` finds files by pattern; both roll up to `search`."},
+   {"text": "Read a single file's contents.", "correct": false, "why": "That is `view`, which maps to `read`."},
+   {"text": "Ran a shell command.", "correct": false, "why": "That is `bash` (or `powershell`), which maps to `execute`."}
+  ],
+  "takeaway": "Hook names → capability: `view`=read, `grep`/`glob`=search, `edit`/`create`=edit, `bash`/`powershell`=execute, `task`=agent, `web_fetch`=web."
+ },
+ {
+  "id": "adv-46", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d6", "objective": "6.2.4", "module": "m6", "unit": "m6-enforce-governance-github-controls",
+  "type": "single",
+  "text": "Your team relies on a preToolUse hook as the sole control preventing agents from pushing to main. What is the flaw?",
+  "options": [
+   {"text": "Hooks cannot inspect command arguments.", "correct": false, "why": "They can — the payload carries `toolArgs`, commonly as a JSON string that must be parsed."},
+   {"text": "Hook failures usually fail open, so hard enforcement must come from branch protection, required checks and reviews.", "correct": true, "why": "If the hook script errors, times out, or returns nothing, default behaviour continues. A control that fails open cannot be the only thing standing between an agent and the default branch."},
+   {"text": "Hooks only run for interactive CLI sessions.", "correct": false, "why": "Repository hooks in `.github/hooks/*.json` apply to both the CLI and the cloud agent."},
+   {"text": "preToolUse cannot deny — only ask.", "correct": false, "why": "`deny` is a valid decision and is the intended way to block."}
+  ],
+  "takeaway": "Hooks intercept, rulesets enforce. Hooks fail open; branch protection does not. Layer them."
+ },
+ {
+  "id": "adv-47", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d6", "objective": "6.2.3", "module": "m6", "unit": "m6-control-agent-capabilities",
+  "type": "single",
+  "text": "A developer's ~/.copilot/hooks/ contains a policy hook that works locally. Does the cloud agent enforce it?",
+  "options": [
+   {"text": "Yes — hooks are synchronised to the cloud agent from the user's configuration.", "correct": false, "why": "There is no synchronisation of user configuration into the cloud environment."},
+   {"text": "No — the cloud agent only gets repository hooks from the cloned repo, and does not load user-level hooks, local settings or plugins.", "correct": true, "why": "User-level hooks are a CLI convenience on that machine. Anything that must apply to cloud-agent work belongs in `.github/hooks/*.json`, committed to the repository."},
+   {"text": "Yes, if the hook file is also referenced from the agent profile.", "correct": false, "why": "Agent profiles do not reference hook files, and the cloud agent still would not read the user's home directory."},
+   {"text": "Only if the developer is the one who assigned the task.", "correct": false, "why": "Who assigns the task has no bearing on which hook files the cloud environment loads."}
+  ],
+  "takeaway": "Cloud agent loads repository hooks only. User-level hooks, local settings and plugins are CLI-side."
+ },
+ {
+  "id": "adv-48", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d6", "objective": "6.2.1", "module": "m6", "unit": "m6-design-human-workflows",
+  "type": "single",
+  "text": "A PR shows \"Copilot started work\" but no commits appear and nothing has changed for twenty minutes. What is the first diagnostic step?",
+  "options": [
+   {"text": "Unassign and reassign Copilot to the issue.", "correct": false, "why": "A valid recovery for issue-assigned work that is genuinely stuck, but it discards context before you have looked at what happened."},
+   {"text": "Open View session to see what the agent is actually doing.", "correct": true, "why": "Look before you act. The session view shows the agent's actions and whether it is working, blocked, or waiting — which determines which recovery applies."},
+   {"text": "Comment @copilot on the pull request.", "correct": false, "why": "Useful when Copilot is not responding to a comment on an open assigned PR, but it is a nudge, not a diagnosis."},
+   {"text": "Approve and run workflows.", "correct": false, "why": "That is the fix when workflows are blocked after a Copilot push — but you would only know that from the session or the checks."}
+  ],
+  "takeaway": "Diagnose first with View session, then choose: reassign for stuck issue work, `@copilot` for an unresponsive PR, Approve and run workflows for blocked checks."
+ },
+ {
+  "id": "adv-49", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d6", "objective": "6.2.2", "module": "m6", "unit": "m6-enforce-governance-github-controls",
+  "type": "single",
+  "text": "Copilot pushes a change to .github/workflows/ on a PR. Checks do not start. What is happening?",
+  "options": [
+   {"text": "A build error is preventing the workflow from compiling.", "correct": false, "why": "Nothing has run yet, so there is nothing to fail."},
+   {"text": "An accountability gate — a reviewer must select \"Approve and run workflows\" before they execute.", "correct": true, "why": "Workflow changes pushed by Copilot require explicit human approval before running. It is a deliberate control against unreviewed privileged execution, not a fault."},
+   {"text": "The workflow lacks contents: write permission.", "correct": false, "why": "Permissions govern what a run can do once started. They do not prevent it starting."},
+   {"text": "Concurrency cancelled the run before it began.", "correct": false, "why": "A cancelled run appears in the run history as cancelled. Here nothing was queued at all."}
+  ],
+  "takeaway": "\"Approve and run workflows\" after a Copilot push is a governance gate, not an error."
+ },
+ {
+  "id": "adv-50", "difficulty": "advanced",
+  "source": "advanced-guide", "sourceLabel": "Advanced study guide",
+  "sourceUrl": "https://gist.github.com/naim149/a8aa41c7468685b7d984822c38863aae",
+  "domain": "d6", "objective": "6.1.1", "module": "m6", "unit": "m6-define-risk-based-autonomy",
+  "type": "multi",
+  "text": "Classify these as preventive, detective, or corrective — which pairings are right? (Select all that apply.)",
+  "options": [
+   {"text": "MCP allowlists and least-privilege tools are preventive.", "correct": true, "why": "Correct. They stop the unsafe action from being possible in the first place."},
+   {"text": "Secret scanning, session logs and audit logs are detective.", "correct": true, "why": "Correct. They surface what happened; they do not block it."},
+   {"text": "Reverting a PR, rotating secrets and unassigning Copilot are corrective.", "correct": true, "why": "Correct. They restore a safe state after something has occurred."},
+   {"text": "Branch protection is detective, because it reports policy violations.", "correct": false, "why": "No. Branch protection prevents the merge outright, which makes it preventive."}
+  ],
+  "takeaway": "Preventive stops it, detective reveals it, corrective repairs it. High-risk work needs all three."
+ }
+]
