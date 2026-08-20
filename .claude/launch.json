@@ -1,7 +1,11 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "gh600", "runtimeExecutable": "python3", "runtimeArgs": ["-m","http.server","8787","--directory","docs"], "port": 8787 },
-    { "name": "diagrams", "runtimeExecutable": "python3", "runtimeArgs": ["-m","http.server","8788","--directory","/private/tmp/claude-501/-Users-edwardkranz-git-gh600/25e837c6-f240-48ba-b62e-9067d11cd7f7/scratchpad/dgpreview"], "port": 8788 }
+    {
+      "name": "gh600",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8787", "--directory", "docs"],
+      "port": 8787
+    }
   ]
 }
