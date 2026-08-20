@@ -1,0 +1,961 @@
+[
+ {
+  "id": "fc-1",
+  "domain": "d1",
+  "section": "1.1 Integrate agents into the SDLC",
+  "front": "What is the conceptual lifecycle every agent task should follow?",
+  "back": "plan \u2192 act \u2192 evaluate. The plan is inspectable, the act is bounded by tools/permissions, and the evaluate step gates the merge."
+ },
+ {
+  "id": "fc-2",
+  "domain": "d1",
+  "section": "1.1 Integrate agents into the SDLC",
+  "front": "Name three common agent anti-patterns to mitigate.",
+  "back": "(1) Acting before producing a structured plan; (2) granting blanket repo-wide write access instead of branch-scoped; (3) running without producing inspectable artifacts (PRs, run logs, traces)."
+ },
+ {
+  "id": "fc-3",
+  "domain": "d1",
+  "section": "1.1 Integrate agents into the SDLC",
+  "front": "What three things must be defined for *every* agent task?",
+  "back": "Inputs (what the agent receives), outputs (what artifacts it must produce \u2014 usually a PR), and success criteria (the checks that must pass for the work to be accepted)."
+ },
+ {
+  "id": "fc-4",
+  "domain": "d1",
+  "section": "1.2 Boundaries: planning vs. reasoning vs. action",
+  "front": "Why configure planning as a distinct phase from execution?",
+  "back": "A separately produced plan is *inspectable*: a human or another agent can review and approve it before any irreversible action runs. This is the basis of human-in-the-loop without bottlenecking."
+ },
+ {
+  "id": "fc-5",
+  "domain": "d1",
+  "section": "1.2 Boundaries: planning vs. reasoning vs. action",
+  "front": "What does a \"structured plan\" output from an agent look like in practice?",
+  "back": "Machine-parseable artifact (markdown checklist, JSON, or a PR description) listing intended steps, files to touch, tools to invoke, and rollback steps \u2014 committed as a draft PR, issue comment, or workflow artifact *before* execution begins."
+ },
+ {
+  "id": "fc-6",
+  "domain": "d1",
+  "section": "1.2 Boundaries: planning vs. reasoning vs. action",
+  "front": "How do you prevent an agent from acting until its plan is approved?",
+  "back": "Gate execution on an external signal \u2014 a required reviewer's approval, a \"planner\" job that uploads the plan as an artifact, then a manually-triggered workflow_dispatch or environment approval to start the \"act\" job."
+ },
+ {
+  "id": "fc-7",
+  "domain": "d1",
+  "section": "1.3 Observability and control",
+  "front": "What are the standard \"inspectable artifacts\" an agent should produce in GitHub?",
+  "back": "Pull requests, run logs, workflow artifacts (uploaded via actions/upload-artifact), check-run outputs, issue comments, and security alerts (code scanning, secret scanning, Dependabot)."
+ },
+ {
+  "id": "fc-8",
+  "domain": "d1",
+  "section": "1.3 Observability and control",
+  "front": "How do you raise an agent's autonomy level without losing safety?",
+  "back": "Restrict the *blast radius* (branch scope, allow-listed tools, least-privilege token) rather than restricting the agent's actions case-by-case. Then required checks and CODEOWNERS act as the safety net."
+ },
+ {
+  "id": "fc-9",
+  "domain": "d1",
+  "section": "1.3 Observability and control",
+  "front": "How do you add human intervention *without* slowing delivery?",
+  "back": "Require approval only for irreversible or compliance-sensitive actions (production deploys, external API calls, dependency bumps). Use environment protection rules to scope approvals; let routine PRs flow."
+ },
+ {
+  "id": "fc-10",
+  "domain": "d2",
+  "section": "2.1 Select and configure agent tools",
+  "front": "Where do you declare what tools a Copilot custom agent can use?",
+  "back": "In the agent's manifest / configuration \u2014 tools are listed explicitly, with permissions (read/write/execute) per tool. The agent cannot invoke tools not on its list."
+ },
+ {
+  "id": "fc-11",
+  "domain": "d2",
+  "section": "2.1 Select and configure agent tools",
+  "front": "What's the principle behind agent tool permissions?",
+  "back": "Least privilege per tool, scoped per task. Each tool gets the narrowest permission needed; the agent's overall token gets the union, not the maximum."
+ },
+ {
+  "id": "fc-12",
+  "domain": "d2",
+  "section": "2.2 Configure MCP servers",
+  "front": "What does an MCP (Model Context Protocol) server do for an agent?",
+  "back": "Exposes external tools, APIs, or data sources to the agent through a standardized protocol, so the agent can invoke them without bespoke integration code per tool."
+ },
+ {
+  "id": "fc-13",
+  "domain": "d2",
+  "section": "2.2 Configure MCP servers",
+  "front": "How do you add an MCP server as a tool to a Copilot agent?",
+  "back": "Register the server in the agent's MCP configuration (local config file or organization-level setting), declare which of the server's tools the agent may use, and ensure the server appears in the org/enterprise MCP registry."
+ },
+ {
+  "id": "fc-14",
+  "domain": "d2",
+  "section": "2.2 Configure MCP servers",
+  "front": "What is the GitHub remote MCP server for?",
+  "back": "A hosted MCP server that exposes GitHub's own APIs (issues, PRs, code search, etc.) as MCP tools \u2014 letting Copilot custom agents act on the GitHub platform itself without per-action API plumbing."
+ },
+ {
+  "id": "fc-15",
+  "domain": "d2",
+  "section": "2.2 Configure MCP servers",
+  "front": "What does an MCP allow list do?",
+  "back": "Restricts which MCP servers an agent (or organization's agents) may connect to. Any server not on the allow list is blocked \u2014 the primary defense against supply-chain attacks via untrusted MCP servers."
+ },
+ {
+  "id": "fc-16",
+  "domain": "d2",
+  "section": "2.2 Configure MCP servers",
+  "front": "Where do MCP registries fit in?",
+  "back": "They're the curated catalog of approved MCP servers for the org/enterprise. Agents discover available servers through the registry; admins control the registry to enforce the allow list centrally."
+ },
+ {
+  "id": "fc-17",
+  "domain": "d2",
+  "section": "2.3 Integrate agents within development environments",
+  "front": "How do you scope a Copilot custom agent to a single repository?",
+  "back": "Define the agent in that repo's .github/ directory (custom instructions / agent config) so it isn't visible at org scope, and/or limit the token used by the agent's workflow to that single repo."
+ },
+ {
+  "id": "fc-18",
+  "domain": "d2",
+  "section": "2.3 Integrate agents within development environments",
+  "front": "How do you invoke an agent inside a CI workflow?",
+  "back": "Trigger a GitHub Actions workflow on the relevant event (pull_request, issue_comment, workflow_dispatch); a step in that workflow runs the agent (e.g., via Copilot setup steps or a custom action), with the workflow's GITHUB_TOKEN providing scoped access."
+ },
+ {
+  "id": "fc-19",
+  "domain": "d2",
+  "section": "2.3 Integrate agents within development environments",
+  "front": "What does \"branch-based scope\" mean for an agent?",
+  "back": "The agent can only read/write a specific branch (often a feature branch it creates), enforced by token permissions and branch protection rules on protected branches."
+ },
+ {
+  "id": "fc-20",
+  "domain": "d2",
+  "section": "2.3 Integrate agents within development environments",
+  "front": "What lets an agent autonomously create branches and PRs?",
+  "back": "A token with contents: write and pull-requests: write permissions (either a fine-grained PAT, a GitHub App installation token, or a properly scoped GITHUB_TOKEN), plus workflow code that invokes the REST/GraphQL endpoints or gh pr create."
+ },
+ {
+  "id": "fc-21",
+  "domain": "d2",
+  "section": "2.3 Integrate agents within development environments",
+  "front": "How does an agent handle environment-specific constraints (network egress, secrets)?",
+  "back": "Copilot cloud agent firewall controls outbound network access; environment secrets and protection rules gate access to credentials per environment (dev/staging/prod); the agent must operate within those constraints rather than around them."
+ },
+ {
+  "id": "fc-22",
+  "domain": "d2",
+  "section": "2.4 Safe execution paths and error handling",
+  "front": "Where does error handling live in an agent workflow?",
+  "back": "At every boundary: tool-call failure handlers in the agent loop, continue-on-error / step-level if: failure() in the GitHub Actions wrapping job, and a finalizer step that always uploads logs and posts a comment."
+ },
+ {
+  "id": "fc-23",
+  "domain": "d2",
+  "section": "2.4 Safe execution paths and error handling",
+  "front": "How are retries implemented safely?",
+  "back": "Bounded retry count, exponential backoff, idempotency keys on the underlying operation, and *retry only on transient errors* (network, rate limit) \u2014 not on logic errors that would compound damage."
+ },
+ {
+  "id": "fc-24",
+  "domain": "d2",
+  "section": "2.4 Safe execution paths and error handling",
+  "front": "How are rollbacks implemented for agent-authored changes?",
+  "back": "PR-based changes give natural rollback (revert the merge). For runtime changes, use environment promotion patterns: roll back by re-deploying the previous artifact. Agents shouldn't perform direct prod mutations without a versioned, reversible artifact."
+ },
+ {
+  "id": "fc-25",
+  "domain": "d2",
+  "section": "2.4 Safe execution paths and error handling",
+  "front": "What is an \"escalation path\" for an agent?",
+  "back": "A predefined route to human attention when the agent's confidence is low or it hits an unsafe condition \u2014 typically by tagging a CODEOWNER, opening an issue with a needs-human label, or pausing in an environment that requires approval."
+ },
+ {
+  "id": "fc-26",
+  "domain": "d2",
+  "section": "2.4 Safe execution paths and error handling",
+  "front": "How do you ensure traceability for agent actions?",
+  "back": "Every agent action runs inside a workflow run with full logs, every artifact (plans, diffs, evaluations) is uploaded as a workflow artifact or PR comment, and every commit is signed/attributed to the agent's identity (bot account or GitHub App)."
+ },
+ {
+  "id": "fc-27",
+  "domain": "d3",
+  "section": "3.1 Memory strategies",
+  "front": "When do you use short-term vs. long-term vs. external memory?",
+  "back": "Short-term for context within a single task/run (prompt window). Long-term for stable facts about the project/team (custom instructions, AGENTS.md, repo-level config). External for task-spanning artifacts (issue history, PR comments, knowledge bases accessed via MCP)."
+ },
+ {
+  "id": "fc-28",
+  "domain": "d3",
+  "section": "3.1 Memory strategies",
+  "front": "What does \"scope agent memory to task-relevant information\" mean?",
+  "back": "Only inject memory items that the *current task* needs. Avoid loading the entire project context \u2014 it dilutes signal, increases cost, and leaks information across task boundaries."
+ },
+ {
+  "id": "fc-29",
+  "domain": "d3",
+  "section": "3.1 Memory strategies",
+  "front": "How do you define memory expiration, pruning, and reset rules?",
+  "back": "Expire ephemeral memory at task end; prune long-term memory items that aren't referenced for N runs; reset memory on context change (new branch, new issue) \u2014 implemented via the agent's config and/or a memory store TTL."
+ },
+ {
+  "id": "fc-30",
+  "domain": "d3",
+  "section": "3.2 State persistence and drift",
+  "front": "What is a \"durable artifact\" for agent task progress?",
+  "back": "A persisted, inspectable record \u2014 PR description checkboxes, an issue with progress comments, a workflow artifact JSON, or a state file in a tracking branch \u2014 that survives a run termination."
+ },
+ {
+  "id": "fc-31",
+  "domain": "d3",
+  "section": "3.2 State persistence and drift",
+  "front": "How does an agent resume work without repeating steps?",
+  "back": "Read its durable state artifact at the start of every run, skip already-completed steps, and continue from the last incomplete step. Idempotent tools make this safe."
+ },
+ {
+  "id": "fc-32",
+  "domain": "d3",
+  "section": "3.2 State persistence and drift",
+  "front": "What is \"context drift\" during extended execution?",
+  "back": "Gradual divergence between the agent's working assumptions and the actual repo/task state \u2014 e.g., the agent edits an outdated copy of a file because it's still working from cached context. Detected by re-reading source state at checkpoints and comparing to in-memory state."
+ },
+ {
+  "id": "fc-33",
+  "domain": "d3",
+  "section": "3.3 Continuity across tools and environments",
+  "front": "How do you share agent state across tools and runs?",
+  "back": "A canonical state artifact (issue, PR, dedicated tracking branch, or external store) that every tool reads/writes. No tool keeps private mutable state."
+ },
+ {
+  "id": "fc-34",
+  "domain": "d3",
+  "section": "3.3 Continuity across tools and environments",
+  "front": "How do you prevent conflicting context?",
+  "back": "Single source of truth (one state artifact), serialized writes (no two agents updating the same state simultaneously), and explicit handoffs between agents."
+ },
+ {
+  "id": "fc-35",
+  "domain": "d3",
+  "section": "3.3 Continuity across tools and environments",
+  "front": "How do you prevent stale context?",
+  "back": "Re-read the canonical state at the start of each tool invocation, and validate any cached assumption against current repo state before acting on it."
+ },
+ {
+  "id": "fc-36",
+  "domain": "d4",
+  "section": "4.1 Success criteria and evaluation signals",
+  "front": "How are success criteria specified for an agent task?",
+  "back": "As pass/fail checks against expected outcomes: tests must pass, code scanning must be clean, the PR must meet template requirements, performance metrics must stay within bounds. Encoded as required status checks."
+ },
+ {
+  "id": "fc-37",
+  "domain": "d4",
+  "section": "4.1 Success criteria and evaluation signals",
+  "front": "Qualitative vs. quantitative evaluation signals \u2014 examples of each.",
+  "back": "Quantitative: test pass rate, code scanning alerts count, performance delta, coverage delta. Qualitative: reviewer comments, custom-rubric LLM-judge scores, adherence to coding conventions."
+ },
+ {
+  "id": "fc-38",
+  "domain": "d4",
+  "section": "4.1 Success criteria and evaluation signals",
+  "front": "How do you align evaluation with development intent?",
+  "back": "The eval signals should be the *same signals a human developer would be judged on* \u2014 tests, lint, security scans, review comments \u2014 not artificial agent-only metrics. This keeps agents accountable to the team's actual quality bar."
+ },
+ {
+  "id": "fc-39",
+  "domain": "d4",
+  "section": "4.1 Success criteria and evaluation signals",
+  "front": "What automated scanning tools produce evaluation signals?",
+  "back": "GitHub code scanning (CodeQL), secret scanning, Dependabot, dependency review action, and any third-party scanners surfaced as check runs or SARIF uploads."
+ },
+ {
+  "id": "fc-40",
+  "domain": "d4",
+  "section": "4.2 Failure analysis",
+  "front": "What artifacts do you inspect to diagnose an agent failure?",
+  "back": "Workflow run logs, the agent's structured plan, execution traces (tool calls in order), final outputs/diffs, and any uploaded artifacts (intermediate state, evaluations)."
+ },
+ {
+  "id": "fc-41",
+  "domain": "d4",
+  "section": "4.2 Failure analysis",
+  "front": "Three root-cause categories for agent failures.",
+  "back": "(1) Reasoning errors \u2014 wrong plan, wrong inference; (2) Tool misuse \u2014 calling the right tool incorrectly or the wrong tool; (3) Context/environment issues \u2014 stale context, missing permissions, network/firewall blocks."
+ },
+ {
+  "id": "fc-42",
+  "domain": "d4",
+  "section": "4.3 Tuning",
+  "front": "How do you tune an agent that produces wrong reasoning?",
+  "back": "Revise its custom instructions / system prompt, add few-shot examples in the agent config, or constrain its allowed plans via a structured planning schema."
+ },
+ {
+  "id": "fc-43",
+  "domain": "d4",
+  "section": "4.3 Tuning",
+  "front": "How do you tune memory usage problems?",
+  "back": "Adjust what's loaded into context (scope memory more tightly), shorten or expire stale memory, or move stable facts from prompt-context into long-term memory."
+ },
+ {
+  "id": "fc-44",
+  "domain": "d4",
+  "section": "4.3 Tuning",
+  "front": "How do you tune tool-usage problems?",
+  "back": "Remove or rename ambiguously named tools, tighten permissions, add tool descriptions/examples to the agent config, or route through an orchestrator agent that picks the tool for sub-agents."
+ },
+ {
+  "id": "fc-45",
+  "domain": "d5",
+  "section": "5.1 Operate multi-agent workflows",
+  "front": "Common orchestration patterns for coordinating multiple agents.",
+  "back": "Sequential pipeline (planner \u2192 coder \u2192 reviewer), fan-out/fan-in (planner splits work to N parallel agents, then merges), supervisor pattern (one agent dispatches and reviews others), debate/critic pattern (two agents argue, third decides)."
+ },
+ {
+  "id": "fc-46",
+  "domain": "d5",
+  "section": "5.1 Operate multi-agent workflows",
+  "front": "How do you isolate agents for parallel execution?",
+  "back": "Each agent works on its own branch (no shared working directory), with non-overlapping file scopes, separate workflow runs, and independent token scopes. Merge conflicts are detected at the PR layer."
+ },
+ {
+  "id": "fc-47",
+  "domain": "d5",
+  "section": "5.1 Operate multi-agent workflows",
+  "front": "How do you detect overlapping code changes between agents?",
+  "back": "Branch-level conflict detection at merge time, file-scope declarations in each agent's plan compared before execution, or a coordination layer (supervisor) that allocates non-overlapping file sets."
+ },
+ {
+  "id": "fc-48",
+  "domain": "d5",
+  "section": "5.1 Operate multi-agent workflows",
+  "front": "Resolving contradictory outputs from multiple agents \u2014 approaches.",
+  "back": "A judge/reconciler agent with a defined arbitration rule, a voting scheme over N agent outputs, or human-in-the-loop review when disagreement exceeds a threshold."
+ },
+ {
+  "id": "fc-49",
+  "domain": "d5",
+  "section": "5.2 Multi-agent observability",
+  "front": "What artifacts make multi-agent workflows auditable?",
+  "back": "Per-agent workflow runs with logs, a top-level orchestration record (issue or workflow run) that links every sub-run, decision logs at each handoff, and a final reconciled output artifact."
+ },
+ {
+  "id": "fc-50",
+  "domain": "d5",
+  "section": "5.2 Multi-agent observability",
+  "front": "How do you perform post-hoc analysis of multi-agent behavior?",
+  "back": "Replay traces from logs, compare each agent's plan vs. outcome, look for repeated handoff failures, and use the audit trail to identify which agent introduced the divergence."
+ },
+ {
+  "id": "fc-51",
+  "domain": "d5",
+  "section": "5.3 Failure detection and recovery",
+  "front": "How do you identify a stalled agent execution?",
+  "back": "Workflow timeouts (timeout-minutes), heartbeat artifacts the agent updates periodically, and orchestrator checks that flag sub-agents that have produced no progress within a budget."
+ },
+ {
+  "id": "fc-52",
+  "domain": "d5",
+  "section": "5.3 Failure detection and recovery",
+  "front": "Recovery patterns for multi-agent failures.",
+  "back": "Rollback the entire pipeline (revert orchestrator's branch), rerun the failed sub-agent in isolation, fall back to a simpler agent or human, and circuit-break further automation when failure rates exceed a threshold."
+ },
+ {
+  "id": "fc-53",
+  "domain": "d5",
+  "section": "5.4 Lifecycle of agents in multi-agent workflows",
+  "front": "How do you safely add a new agent to an existing workflow?",
+  "back": "Deploy in shadow mode first (run alongside, compare outputs, no merge authority), gate behind a feature flag, then promote once metrics are equivalent or better."
+ },
+ {
+  "id": "fc-54",
+  "domain": "d5",
+  "section": "5.4 Lifecycle of agents in multi-agent workflows",
+  "front": "How do you replace an agent without disrupting active workflows?",
+  "back": "Versioned agent configs, route a percentage of traffic to the new agent (canary), then swap once parity confirmed. In-flight runs complete on the old version."
+ },
+ {
+  "id": "fc-55",
+  "domain": "d5",
+  "section": "5.4 Lifecycle of agents in multi-agent workflows",
+  "front": "How do you retire an agent while preserving auditability?",
+  "back": "Archive the agent's config in git history, retain all past workflow runs and artifacts (subject to retention policy), and document the retirement decision in a CHANGELOG or governance doc so the audit trail survives."
+ },
+ {
+  "id": "fc-56",
+  "domain": "d6",
+  "section": "6.1 Autonomy levels",
+  "front": "How do you classify agent actions by risk?",
+  "back": "Triage on three axes: operational risk (does failure break things?), security risk (could it leak or compromise secrets/data?), compliance risk (does it touch regulated systems or require auditable change-control?). Highest risk \u2192 most human oversight."
+ },
+ {
+  "id": "fc-57",
+  "domain": "d6",
+  "section": "6.1 Autonomy levels",
+  "front": "How do you \"right-size\" human intervention?",
+  "back": "Map each action category to an autonomy level: fully autonomous for low-risk (lint fixes, doc updates), approval-gated for medium-risk (logic changes, dependency bumps), human-authored for highest-risk (production deploys, secrets, schema migrations)."
+ },
+ {
+  "id": "fc-58",
+  "domain": "d6",
+  "section": "6.2 Guardrails and human-in-the-loop",
+  "front": "What actions require explicit human authorization?",
+  "back": "Irreversible changes (data deletion, schema destructive ops), compliance-sensitive changes, anything touching production secrets, dependency additions, and CI/CD pipeline modifications."
+ },
+ {
+  "id": "fc-59",
+  "domain": "d6",
+  "section": "6.2 Guardrails and human-in-the-loop",
+  "front": "How do you block actions that violate policy?",
+  "back": "Pre-action policy checks in the agent (refusal logic), org-level rulesets preventing forbidden push patterns, required workflows that enforce policy scans, and CODEOWNERS on sensitive paths requiring named approvers."
+ },
+ {
+  "id": "fc-60",
+  "domain": "d6",
+  "section": "6.2 Guardrails and human-in-the-loop",
+  "front": "How do you enforce least-privilege execution context?",
+  "back": "Use the smallest-scope token possible (GITHUB_TOKEN with minimal permissions: block, fine-grained PAT scoped to one repo, or GitHub App installation token per repo), environment-scoped secrets, branch-scoped workflows."
+ },
+ {
+  "id": "fc-61",
+  "domain": "d6",
+  "section": "6.2 Guardrails and human-in-the-loop",
+  "front": "What does \"controlled path for irreversible changes\" mean?",
+  "back": "Wrap the change in a workflow that requires environment approval, runs only on a specific protected branch, produces an inspectable plan before applying, and emits an immutable audit record."
+ },
+ {
+  "id": "fc-62",
+  "domain": "d6",
+  "section": "6.2 Guardrails and human-in-the-loop",
+  "front": "How do you preserve velocity while still enforcing guardrails?",
+  "back": "Approvals only where they actually reduce risk. Routine, reversible PRs flow through automated checks; high-risk operations get gated. Every approval should buy meaningful safety, not perform compliance theater."
+ },
+ {
+  "id": "fc-63",
+  "domain": null,
+  "section": "Cross-cutting",
+  "front": "What does \"GitHub as the system of record\" mean for an agent?",
+  "back": "All agent activity is anchored in a GitHub primitive \u2014 commit, PR, issue, workflow run, artifact, or check \u2014 so there's no off-platform state to lose, dispute, or hide. Everything is auditable, attributable, and replayable."
+ },
+ {
+  "id": "fc-64",
+  "domain": null,
+  "section": "Cross-cutting",
+  "front": "What does \"GitHub as the control plane\" mean?",
+  "back": "The same GitHub primitives that record activity (branch protection, CODEOWNERS, required checks, environments) also *enforce* policy. Control and observation use the same surface."
+ },
+ {
+  "id": "fc-65",
+  "domain": null,
+  "section": "Cross-cutting",
+  "front": "Where do custom instructions live for an agent?",
+  "back": "Repository-level: .github/copilot-instructions.md (or AGENTS.md per repo). Org-level: organization custom instructions. The agent reads these in addition to its task-specific prompt."
+ },
+ {
+  "id": "fc-66",
+  "domain": null,
+  "section": "Cross-cutting",
+  "front": "What's the \"contributor model\" for agent-generated work?",
+  "back": "Agents are treated as contributors: they open PRs, get reviewed by humans/CODEOWNERS, follow the same branch protection rules, and their work is judged by the same standards. They don't get a bypass lane."
+ },
+ {
+  "id": "fc-67",
+  "domain": null,
+  "section": "Cross-cutting",
+  "front": "Copilot setup steps \u2014 what are they?",
+  "back": "Per-repository configuration steps that prepare the Copilot agent's environment for that codebase (install dependencies, set up tools, configure language servers) so it has the context to be effective on first invocation."
+ },
+ {
+  "id": "nlm-1",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "In the context of GitHub agents, how does an 'agent' differ from an 'assistant'?",
+  "back": "An agent is goal-driven and uses tools to take repository actions, whereas an assistant is reactive and suggestion-only."
+ },
+ {
+  "id": "nlm-2",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What are the three stages of the foundational agentic AI lifecycle loop?",
+  "back": "Plan, Act, and Evaluate."
+ },
+ {
+  "id": "nlm-3",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Why is GitHub defined as the 'system of record' for agent workflows?",
+  "back": "It stores all artifacts, including plans, commits, PR discussions, and workflow evidence, for inspectability."
+ },
+ {
+  "id": "nlm-4",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What does it mean for GitHub to function as the 'control plane' for AI agents?",
+  "back": "It provides enforcement points such as rulesets, required checks, and environments to govern agent behavior."
+ },
+ {
+  "id": "nlm-5",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Which SDLC stage is mapped to 'Workflow runs, checks, and artifacts' in GitHub?",
+  "back": "Validation."
+ },
+ {
+  "id": "nlm-6",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "According to the task contract model, what are the three essential components of a structured agent task?",
+  "back": "Inputs, Outputs, and Success criteria."
+ },
+ {
+  "id": "nlm-7",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the primary architectural benefit of a 'Plan-first' pull request workflow?",
+  "back": "It allows human validation of intent before any code is generated, reducing early risk exposure."
+ },
+ {
+  "id": "nlm-8",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "True or False: In a 'Plan + execution' workflow, human validation is still required before the work is merged.",
+  "back": "True."
+ },
+ {
+  "id": "nlm-9",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the specific GitHub mechanism used to route reviews automatically based on changed file paths?",
+  "back": "CODEOWNERS."
+ },
+ {
+  "id": "nlm-10",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Concept: Model Context Protocol (MCP)",
+  "back": "Definition: A standard protocol allowing AI clients to discover and use external tools and services through MCP servers."
+ },
+ {
+  "id": "nlm-11",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "How does an 'MCP allow list' differ from an 'MCP registry' in agent governance?",
+  "back": "The registry provides discovery of available servers, while the allow list enforces which specific servers are permitted for use."
+ },
+ {
+  "id": "nlm-12",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the only required field in a custom agent's YAML frontmatter profile?",
+  "back": "description."
+ },
+ {
+  "id": "nlm-13",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Where must an agent profile be stored to be considered a repository-level custom agent?",
+  "back": "The .github/agents/ directory."
+ },
+ {
+  "id": "nlm-14",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the mandatory name for the repository used to store organization-level custom agents?",
+  "back": ".github-private."
+ },
+ {
+  "id": "nlm-15",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "In a custom agent profile, what does setting 'tools: []' accomplish?",
+  "back": "It disables all tools for that specific agent."
+ },
+ {
+  "id": "nlm-16",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Which YAML property in custom agent configuration recently replaced the retired 'infer' field?",
+  "back": "disable-model-invocation."
+ },
+ {
+  "id": "nlm-17",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the default permission level of the out-of-the-box 'github' MCP server?",
+  "back": "Read-only."
+ },
+ {
+  "id": "nlm-18",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "To what network range is the out-of-the-box 'playwright' MCP server restricted?",
+  "back": "localhost only."
+ },
+ {
+  "id": "nlm-19",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "The GitHub Copilot cloud agent firewall only applies to processes started via which specific tool?",
+  "back": "The Bash tool."
+ },
+ {
+  "id": "nlm-20",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "In agent firewall rules, how does a 'Domain' rule differ from a 'URL' rule?",
+  "back": "A domain rule allows the domain and all subdomains, while a URL rule is limited to a specific scheme, host, and path-prefix."
+ },
+ {
+  "id": "nlm-21",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "How long do Copilot Memory entries persist if they remain unused?",
+  "back": "28 days."
+ },
+ {
+  "id": "nlm-22",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Who is permitted to create repository-level facts in Copilot Memory?",
+  "back": "Users with write access to the repository who have Copilot Memory enabled."
+ },
+ {
+  "id": "nlm-23",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "The gradual divergence between an agent's working assumptions and the actual repository state is known as _____.",
+  "back": "Context drift."
+ },
+ {
+  "id": "nlm-24",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the recommended method for an agent to resume work across different workflow runs without repeating steps?",
+  "back": "Persisting progress in a durable artifact, such as a PR checklist or state file."
+ },
+ {
+  "id": "nlm-25",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "In agent failure analysis, what are the three primary root-cause categories?",
+  "back": "Reasoning errors, Tool misuse, and Context/Environment issues."
+ },
+ {
+  "id": "nlm-26",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "How should an architect tune an agent that consistently uses the correct tool but provides the wrong arguments?",
+  "back": "By revising the tool's description and adding usage examples in the agent configuration."
+ },
+ {
+  "id": "nlm-27",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "According to the contributor model, what is the 'natural unit of contribution' for evaluating agent work?",
+  "back": "The pull request."
+ },
+ {
+  "id": "nlm-28",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What criteria does the sub-agent runtime use to match user intent to a specific specialized agent?",
+  "back": "The agent's name and description."
+ },
+ {
+  "id": "nlm-29",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Concept: Supervisor Pattern",
+  "back": "Definition: An orchestration pattern where one agent dispatches sub-tasks to worker agents and reviews their outputs."
+ },
+ {
+  "id": "nlm-30",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Which sub-agent lifecycle event is emitted when the runtime first picks an agent for a task?",
+  "back": "subagent.selected."
+ },
+ {
+  "id": "nlm-31",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the purpose of the 'toolCallId' in multi-agent orchestration events?",
+  "back": "It acts as a join key to track a specific sub-agent's lifecycle from start to completion or failure."
+ },
+ {
+  "id": "nlm-32",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Which autonomy design is recommended for 'Critical' risk tasks like production deployments?",
+  "back": "The agent prepares the changes, but execution is blocked until human approval in an Environment."
+ },
+ {
+  "id": "nlm-33",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the purpose of a 'pre-action hook' in agent operations?",
+  "back": "To validate or block unsafe actions before they are executed by a tool."
+ },
+ {
+  "id": "nlm-34",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "How does GitHub prevent 'untrusted' changes from running privileged workflows automatically in an agent PR?",
+  "back": "By requiring a user with write access to click the 'Approve and run workflows' button."
+ },
+ {
+  "id": "nlm-35",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "True or False: The user who triggers a Copilot cloud agent to create a PR is allowed to approve that same PR.",
+  "back": "False."
+ },
+ {
+  "id": "nlm-36",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "How does a GitHub Agentic Workflow differ from a traditional GitHub Actions workflow?",
+  "back": "Agentic workflows describe outcomes in Markdown for an agent to interpret, rather than explicitly defining steps in YAML."
+ },
+ {
+  "id": "nlm-37",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the maximum character limit for the prompt body in a custom agent profile?",
+  "back": "30,000 characters."
+ },
+ {
+  "id": "nlm-38",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Which custom agent property is used to restrict an agent to either 'vscode' or 'github-copilot'?",
+  "back": "target."
+ },
+ {
+  "id": "nlm-39",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Who remains accountable for the outcomes and controls of an autonomous agent system?",
+  "back": "The humans who defined the task, set permissions, and approved the changes."
+ },
+ {
+  "id": "nlm-40",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What mechanism ensures that custom agent interactions within a PR remain consistent even if the agent profile is updated?",
+  "back": "The session is pinned to the Git commit SHA of the agent profile at the time of assignment."
+ },
+ {
+  "id": "nlm-41",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Which tool alias is used in agent profiles to grant permission for executing shell commands?",
+  "back": "execute."
+ },
+ {
+  "id": "nlm-42",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the override hierarchy for custom agent profiles with the same name?",
+  "back": "The lowest level wins (Repository > Organization > Enterprise)."
+ },
+ {
+  "id": "nlm-43",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "How does Copilot ensure its stored 'memories' haven't become stale?",
+  "back": "It re-validates the memory's citation against the current branch's code before use."
+ },
+ {
+  "id": "nlm-44",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the primary method for preventing parallel agents from creating conflicting code changes?",
+  "back": "Assigning non-overlapping file scopes to each agent in their respective plans."
+ },
+ {
+  "id": "nlm-45",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "A pattern where two agents critique each other's work and a third agent makes a final decision is called _____.",
+  "back": "The debate or critic pattern."
+ },
+ {
+  "id": "nlm-46",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the standard escalation path if an agent fails the same required check multiple times?",
+  "back": "Handing off to a human reviewer with a summary of attempts, evidence, and suggested next steps."
+ },
+ {
+  "id": "nlm-47",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the purpose of the 'copilot-setup-steps.yml' file?",
+  "back": "To define the environment setup steps required for the agent to function effectively in a specific repository."
+ },
+ {
+  "id": "nlm-48",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Can a Copilot cloud agent access standard GitHub Actions secrets?",
+  "back": "No, it can only access specifically configured 'Agents secrets'."
+ },
+ {
+  "id": "nlm-49",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "How does GitHub mitigate prompt injection risks from hidden characters in issues or comments?",
+  "back": "It filters out hidden characters and HTML comments before passing input to the agent."
+ },
+ {
+  "id": "nlm-50",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Which 'Traceability Primitive' allows developers to view the internal monologue of an agent for a specific change?",
+  "back": "The session-log link included in every agent-authored commit message."
+ },
+ {
+  "id": "nlm-51",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Which GitHub CLI command is used to follow live agent task logs?",
+  "back": "gh agent-task view --log --follow."
+ },
+ {
+  "id": "nlm-52",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the default state of 'Agentic Workflows' relative to traditional CI/CD pipelines?",
+  "back": "They augment and extend traditional pipelines with 'Continuous AI' rather than replacing them."
+ },
+ {
+  "id": "nlm-53",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What happens if an MCP server is listed in a registry but is not on the organization's allow list?",
+  "back": "The server is blocked and the tool call will fail."
+ },
+ {
+  "id": "nlm-54",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "In the YAML frontmatter of an Agentic Workflow, what does 'safe outputs' refer to?",
+  "back": "A mechanism where the agent proposes actions that are only applied after passing a gated validation step."
+ },
+ {
+  "id": "nlm-55",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "If an agent produces a diff but provides no plan or rationale, it is exhibiting the anti-pattern of _____.",
+  "back": "Planless execution."
+ },
+ {
+  "id": "nlm-56",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the syntax for referencing an 'Agents secret' within a custom agent profile?",
+  "back": "${{ secrets.VAR_NAME }}."
+ },
+ {
+  "id": "nlm-57",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Which GitHub primitive provides a 'Verified' status to agent-authored commits?",
+  "back": "Digital signatures (Signed commits)."
+ },
+ {
+  "id": "nlm-58",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the primary purpose of 'retries' in a reliable agent workflow?",
+  "back": "To handle transient failures like network issues or rate limits."
+ },
+ {
+  "id": "nlm-59",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Which YAML property identifies an agent that should not be visible in the user interface?",
+  "back": "user-invocable: false."
+ },
+ {
+  "id": "nlm-60",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "The 'Any-yes-routes-up' principle for guardrails dictates that if any risk dimension trips, the system must _____.",
+  "back": "Escalate to the next tier of human oversight."
+ },
+ {
+  "id": "nlm-61",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the URL for the centralized Agents tab on GitHub.com?",
+  "back": "github.com/copilot/agents."
+ },
+ {
+  "id": "nlm-62",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "True or False: Environment variables in GitHub should be used as a replacement for structured job outputs.",
+  "back": "False."
+ },
+ {
+  "id": "nlm-63",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Which context is used to determine 'what triggered this run' in a GitHub workflow?",
+  "back": "github.*."
+ },
+ {
+  "id": "nlm-64",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Why should agent tool allowlists be treated as 'governance-sensitive' changes?",
+  "back": "Expanding tools increases the agent's potential blast radius and security risk."
+ },
+ {
+  "id": "nlm-65",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "In an agentic workflow, what is the role of the 'lock file'?",
+  "back": "It contains the compiled execution instructions derived from the Markdown intent and frontmatter."
+ },
+ {
+  "id": "nlm-66",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What happens when the 'Registry only' policy is enabled for MCP access?",
+  "back": "Developers are restricted to using only MCP servers defined in the configured organization/enterprise registry."
+ },
+ {
+  "id": "nlm-67",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "Which artifact type makes agent evidence 'durable' even after workflow logs are rotated?",
+  "back": "Uploaded workflow artifacts (e.g., test reports, logs)."
+ },
+ {
+  "id": "nlm-68",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "How are 'user-level preferences' in Copilot Memory isolated?",
+  "back": "They are only available to the specific user who created them across different repositories."
+ },
+ {
+  "id": "nlm-69",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the 'Capability boundary' of a planning agent?",
+  "back": "It should be limited to read-only tools to prevent accidental modifications during the planning phase."
+ },
+ {
+  "id": "nlm-70",
+  "domain": null,
+  "section": "Rapid recall",
+  "front": "What is the 'Delegation boundary' in multi-agent systems?",
+  "back": "The policy defining which sub-agents can be invoked and how handoffs are managed."
+ }
+]

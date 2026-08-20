@@ -1,0 +1,242 @@
+[
+ {
+  "id": "auth-d6-01",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d6", "objective": "6.1.1", "module": "m6",
+  "unit": "m6-define-risk-based-autonomy",
+  "type": "multi",
+  "text": "Risk is not determined by the action alone. Which additional factors does the module say determine an action's risk? (Select all that apply.)",
+  "options": [
+   {"text": "Where the change is applied", "correct": true, "why": "Yes. Editing a README and editing .github/workflows/ are the same verb with very different consequences."},
+   {"text": "How easily the change can be reversed", "correct": true, "why": "Yes. Reversibility is the pivot: full automation is appropriate only when failures are reversible."},
+   {"text": "How quickly it affects users or systems", "correct": true, "why": "Yes. Blast speed determines how much time a control has to catch a problem before it reaches production."},
+   {"text": "How many lines of code the change contains", "correct": false, "why": "No. Diff size is a poor proxy - workflow and infrastructure paths are explicitly called out as \"small diff, big consequence\" areas."}
+  ],
+  "takeaway": "Classify risk by location, reversibility, and speed of impact - never by diff size."
+ },
+ {
+  "id": "auth-d6-02",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d6", "objective": "6.1.2", "module": "m6",
+  "unit": "m6-define-risk-based-autonomy",
+  "type": "single",
+  "text": "Which autonomy level describes an agent that can create branches and pull requests but cannot merge or deploy?",
+  "options": [
+   {"text": "Read-only autonomy", "correct": false, "why": "Read-only means the agent can inspect, summarize, classify, and recommend, but cannot modify anything - including creating branches."},
+   {"text": "Propose-only autonomy", "correct": true, "why": "Propose-only is exactly this level: the agent can create branches and pull requests but cannot merge or deploy. It is the level that implements \"agents propose; humans and policy accept\"."},
+   {"text": "Execute with guardrails", "correct": false, "why": "That level allows running pre-approved workflows such as tests, builds, and staging deploys within defined limits."},
+   {"text": "Human-authorized execution", "correct": false, "why": "That level allows high-impact actions - production deploys, workflow changes, secret access - but only after a human approves."}
+  ],
+  "takeaway": "Four levels: read-only, propose-only, execute with guardrails, and human-authorized execution. Autonomy is usually a combination of controls, not one setting."
+ },
+ {
+  "id": "auth-d6-03",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d6", "objective": "6.1.2", "module": "m6",
+  "unit": "m6-define-risk-based-autonomy",
+  "type": "single",
+  "text": "A team wants to grow agent autonomy safely over several quarters. Which progression matches the module's guidance?",
+  "options": [
+   {"text": "Start with production deploy access and remove permissions if incidents occur.", "correct": false, "why": "This starts at maximum blast radius and learns from damage. Progressive autonomy starts strict and relaxes on evidence."},
+   {"text": "Open pull requests only, then merge low-risk PRs after checks, then deploy to staging automatically, then deploy to production only through environment approval.", "correct": true, "why": "This is the documented safe progression. Teams begin with strict controls and relax them gradually as agent behavior proves reliable, so autonomy scales on evidence rather than optimism."},
+   {"text": "Grant full autonomy in a sandbox repository, then copy the same settings to production repositories.", "correct": false, "why": "Sandbox behavior does not transfer: the risk profile of the repository, not the agent's sandbox record, determines appropriate controls."},
+   {"text": "Alternate weekly between full and read-only autonomy to gather comparative data.", "correct": false, "why": "Unpredictable capability makes both the agent and the review process unreliable, and it gathers noise rather than evidence."}
+  ],
+  "takeaway": "Progressive autonomy: PRs only, then low-risk merges after checks, then automatic staging deploys, then production only via environment approval."
+ },
+ {
+  "id": "auth-d6-04",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d6", "objective": "6.1.1", "module": "m6",
+  "unit": "m6-define-risk-based-autonomy",
+  "type": "single",
+  "text": "An agent emits a plan with a risk rating. What is the recommended way to act on that rating?",
+  "options": [
+   {"text": "Include a narrative risk paragraph in the PR description for reviewers to interpret.", "correct": false, "why": "The guidance is explicit: do not rely on narrative explanations of risk. Interpretation varies between reviewers and cannot be enforced."},
+   {"text": "Emit a machine-readable signal, such as a risk field in plan.json, and route execution on it - low risk applies automatically, anything else goes to a job in an approval-gated environment.", "correct": true, "why": "Reading the risk value into a job output and using it in an if: condition to choose between an auto-apply job and an approval-gated one enforces the decision consistently, rather than leaving it to interpretation."},
+   {"text": "Have the agent decide for itself whether approval is needed.", "correct": false, "why": "The agent proposing the rating and enforcing it are different responsibilities. Enforcement belongs to the workflow."},
+   {"text": "Apply the strictest gate to every plan regardless of the rating.", "correct": false, "why": "That discards the rating entirely and reintroduces approval fatigue on low-risk work."}
+  ],
+  "takeaway": "Emit risk as a machine-readable signal and enforce routing on it. Narrative risk is not a control."
+ },
+ {
+  "id": "auth-d6-05",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d6", "objective": "6.2.1", "module": "m6",
+  "unit": "m6-design-human-workflows",
+  "type": "multi",
+  "text": "Which decision points should human oversight be placed at, according to the module? (Select all that apply.)",
+  "options": [
+   {"text": "Merge", "correct": true, "why": "Yes. Merge is where a proposal becomes part of the codebase."},
+   {"text": "Deployment", "correct": true, "why": "Yes. Deployment is where a change reaches users and systems."},
+   {"text": "Access to sensitive resources such as production secrets", "correct": true, "why": "Yes. Secret access is a named high-impact decision point."},
+   {"text": "Every analysis and formatting step the agent performs", "correct": false, "why": "No. The guidance is to put humans at decision points, not at every step - analysis, formatting, and routine checks should flow automatically."}
+  ],
+  "takeaway": "Humans at merge, deploy, and secret access. Analysis, formatting, and routine checks stay automated."
+ },
+ {
+  "id": "auth-d6-06",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d6", "objective": "6.2.1", "module": "m6",
+  "unit": "m6-design-human-workflows",
+  "type": "single",
+  "text": "A terminal agent should search and read freely, but any edit or command execution must be approved at the time of use. How do you express that?",
+  "options": [
+   {"text": "Grant all tools and instruct the agent to ask before editing.", "correct": false, "why": "Asking is voluntary. Tool-based approval boundaries are a control; instructions are not."},
+   {"text": "Allow the low-risk tools explicitly - for example --allow-tool 'read,search' - leaving edit and execute available but approval-gated at the point of use.", "correct": true, "why": "This is the tool-based approval boundary pattern: it removes friction for low-risk tools while ensuring high-risk tools remain available but require explicit approval when they are actually invoked."},
+   {"text": "Remove the edit and execute tools entirely.", "correct": false, "why": "That removes the capability rather than gating it, so the agent can never do the work even when a human would approve."},
+   {"text": "Require a human to approve the whole session before it starts.", "correct": false, "why": "A blanket session approval cannot distinguish the read the human intended from the destructive edit they did not."}
+  ],
+  "takeaway": "Auto-allow low-risk tools; leave high-risk tools available but approval-gated at the moment of use."
+ },
+ {
+  "id": "auth-d6-07",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d6", "objective": "6.2.2", "module": "m6",
+  "unit": "m6-enforce-governance-github-controls",
+  "type": "single",
+  "text": "Your organization wants sudo, rm -rf /, and curl-piped-to-bash blocked before a local agent can execute them. What implements this?",
+  "options": [
+   {"text": "A banner printed at session start warning against dangerous commands.", "correct": false, "why": "The guidance is blunt: logging and banners are helpful, but they do not prevent execution."},
+   {"text": "A Copilot CLI preToolUse hook with deny rules matching those patterns for shell tools.", "correct": true, "why": "A preToolUse hook with permissionDecision: deny rules turns policy into a technical control by blocking the command before execution, reducing the risk of unintended or destructive actions."},
+   {"text": "A CODEOWNERS entry for the scripts directory.", "correct": false, "why": "CODEOWNERS routes review of file changes. It cannot intercept a command at runtime."},
+   {"text": "A required status check that scans commits for those strings.", "correct": false, "why": "A check runs after a commit exists. The hook prevents the command from running at all."}
+  ],
+  "takeaway": "Use enforceable hooks for blocking. If the platform cannot enforce it, it will eventually be bypassed."
+ },
+ {
+  "id": "auth-d6-08",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d6", "objective": "6.2.2", "module": "m6",
+  "unit": "m6-enforce-governance-github-controls",
+  "type": "single",
+  "text": "A team needs a rule that branch protection settings cannot express: agent-authored pull requests must never be approved solely by another bot. What is the recommended approach?",
+  "options": [
+   {"text": "Accept the limitation - if settings cannot express it, it cannot be enforced.", "correct": false, "why": "Guardrail workflows exist precisely to enforce rules that are not expressible via settings alone."},
+   {"text": "Add a guardrail workflow that inspects reviews via the API and fails the check unless at least one approval comes from a human user.", "correct": true, "why": "This is the defense-in-depth pattern: a workflow that lists PR reviews and calls core.setFailed unless an approval exists from a user account that is not the agent identity. You still keep branch protections and CODEOWNERS - the guardrail workflow adds what settings cannot express."},
+   {"text": "Remove the agent's ability to open pull requests.", "correct": false, "why": "That eliminates the workflow rather than governing it."},
+   {"text": "Document the rule in CONTRIBUTING.md and rely on reviewer discipline.", "correct": false, "why": "\"Controls in docs only\" is a named anti-pattern."}
+  ],
+  "takeaway": "Layer enforcement: rulesets and CODEOWNERS for what settings can express, guardrail workflows for what they cannot."
+ },
+ {
+  "id": "auth-d6-09",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d6", "objective": "6.2.2", "module": "m6",
+  "unit": "m6-enforce-governance-github-controls",
+  "type": "single",
+  "text": "The layered enforcement model spans three stages. Which listing is correct?",
+  "options": [
+   {"text": "Pre-action constraints (permissions), in-action validation (checks), post-action traceability (logs and artifacts).", "correct": true, "why": "These are the three layers. The accompanying rule is decisive: if a control is not enforced by the platform, treat it as optional."},
+   {"text": "Planning review, implementation review, deployment review.", "correct": false, "why": "These are review moments, not the enforcement layers the module defines."},
+   {"text": "Repository rules, organization rules, enterprise rules.", "correct": false, "why": "That is a scope hierarchy, not the temporal enforcement model."},
+   {"text": "Authentication, authorization, auditing.", "correct": false, "why": "A reasonable general security triad, but not the model taught here."}
+  ],
+  "takeaway": "Constrain before (permissions), validate during (checks), trace after (logs and artifacts) - and treat unenforced controls as optional."
+ },
+ {
+  "id": "auth-d6-10",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d6", "objective": "6.2.3", "module": "m6",
+  "unit": "m6-control-agent-capabilities",
+  "type": "multi",
+  "text": "Beyond the permissions block, which additional controls support least-privilege agent execution? (Select all that apply.)",
+  "options": [
+   {"text": "Restrict secrets access using environments", "correct": true, "why": "Yes. Environment-scoped secrets mean a job that does not target the environment cannot read them."},
+   {"text": "Isolate workflows so high-risk jobs do not share permissions with low-risk jobs", "correct": true, "why": "Yes. Separation stops a low-risk job inheriting capability it never needs."},
+   {"text": "Minimize third-party actions and pin versions where possible", "correct": true, "why": "Yes. Every third-party action is executing code inside your permission context; fewer and pinned reduces that exposure."},
+   {"text": "Store a broadly scoped personal access token as a repository secret for convenience", "correct": false, "why": "No. A broad PAT is the excess-permissions anti-pattern - a small mistake becomes a major incident."}
+  ],
+  "takeaway": "Least privilege is layered: minimal permissions, environment-scoped secrets, workflow isolation, and minimal pinned third-party actions."
+ },
+ {
+  "id": "auth-d6-11",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d6", "objective": "6.2.4", "module": "m6",
+  "unit": "m6-enforce-governance-github-controls",
+  "type": "multi",
+  "text": "For a protected branch such as main, which rules should a ruleset enforce for agent-driven work? (Select all that apply.)",
+  "options": [
+   {"text": "Require a pull request to merge and require checks to pass", "correct": true, "why": "Yes. These make the PR the mandatory path and evaluation an enforceable gate."},
+   {"text": "Require approving reviews per risk, including CODEOWNERS review for sensitive paths", "correct": true, "why": "Yes - and note the caveat: unless \"require CODEOWNERS review\" is enabled, CODEOWNERS is advisory only."},
+   {"text": "Restrict direct pushes and block force pushes and branch deletion", "correct": true, "why": "Yes. These close the bypass paths that would otherwise let policy be skipped."},
+   {"text": "Require every pull request to be squash-merged", "correct": false, "why": "No. Merge strategy is a history-shape preference, not a governance control for agent work."}
+  ],
+  "takeaway": "Protected-branch rules: PR required, checks required, reviews per risk with CODEOWNERS on sensitive paths, no direct or force pushes, no branch deletion."
+ },
+ {
+  "id": "auth-d6-12",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d6", "objective": "6.2.5", "module": "m6",
+  "unit": "m6-maintain-governance-operational-reliability",
+  "type": "single",
+  "text": "Six months after setup, required checks have been renamed, CODEOWNERS lists people who left, and several workflow tokens now hold write permissions. What is this, and what is the remedy?",
+  "options": [
+   {"text": "A configuration bug; restore the repository from a backup.", "correct": false, "why": "Each individual change was probably deliberate and reasonable at the time. The failure is cumulative, not a single fault."},
+   {"text": "Governance drift; treat governance as an ongoing operational responsibility with a periodic review cadence - weekly failed runs and policy violations, monthly permissions and secret scopes, quarterly rulesets, CODEOWNERS, environment reviewers, and retention.", "correct": true, "why": "Controls degrade as checks are renamed or removed, review requirements are relaxed, CODEOWNERS goes stale, permissions expand, and secrets move into broader scopes. The prescribed answer is a continuous governance loop on that cadence."},
+   {"text": "Normal evolution; no action is needed as long as no incident has occurred.", "correct": false, "why": "Waiting for an incident is how small gaps accumulate into a large one."},
+   {"text": "Excess permissions only; revoke all write tokens.", "correct": false, "why": "That addresses one symptom and leaves the stale checks and ownership untouched."}
+  ],
+  "takeaway": "Governance drifts. Run the loop: weekly failures and violations, monthly permissions and secrets, quarterly rulesets, ownership, reviewers, and retention."
+ },
+ {
+  "id": "auth-d6-13",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d6", "objective": "6.2.5", "module": "m6",
+  "unit": "m6-maintain-governance-operational-reliability",
+  "type": "single",
+  "text": "Match the governance anti-pattern to its mitigation: approvals have become \"click to unblock\" and nobody actually reviews.",
+  "options": [
+   {"text": "Unbounded autonomy; add environments with required reviewers.", "correct": false, "why": "That anti-pattern is having no approval at all for production deploys. Here approvals exist - they are just hollow."},
+   {"text": "Rubber-stamping; fix it with better evidence, CODEOWNERS routing, and smaller pull requests.", "correct": true, "why": "Rubber-stamping is the named anti-pattern where approvals become a formality. The mitigation is making review genuinely easy: attach evidence so review is fast, route to people with context, and keep PRs small enough to actually read."},
+   {"text": "Missing audit trail; fix it with artifact uploads.", "correct": false, "why": "That is about being unable to prove what happened, not about approvals losing meaning."},
+   {"text": "Bypass paths exist; fix it with branch protections.", "correct": false, "why": "Bypass paths are direct pushes to main or disabled checks - policy being skipped rather than performed emptily."}
+  ],
+  "takeaway": "Rubber-stamping is fixed by making review worth doing: good evidence, targeted routing, and small scope."
+ },
+ {
+  "id": "auth-d6-14",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d6", "objective": "6.2.4", "module": "m6",
+  "unit": "m6-make-actions-observable-traceable-auditable",
+  "type": "single",
+  "text": "A change is ready to merge but no artifacts, plan, or execution report were produced. What does the governance module say to do?",
+  "options": [
+   {"text": "Merge it - the required checks passed, which is the enforceable signal.", "correct": false, "why": "Passing checks is necessary, not sufficient. The module treats missing evidence as a failure in its own right."},
+   {"text": "Treat missing evidence as a failure: if a change cannot be audited, it should not be merged.", "correct": true, "why": "The rule is stated directly - missing evidence equals failure. Without durable evidence you cannot debug reliably, investigate incidents, prove compliance, or trust autonomous changes over time."},
+   {"text": "Merge it and backfill evidence afterwards from the run logs.", "correct": false, "why": "Logs expire under retention and cannot reconstruct a plan that was never produced."},
+   {"text": "Merge it but add a label indicating evidence was missing.", "correct": false, "why": "A label records the gap without closing it, and the unauditable change still lands."}
+  ],
+  "takeaway": "Missing evidence = failure. Every meaningful action must leave a trace a reviewer can inspect."
+ },
+ {
+  "id": "auth-d6-15",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d6", "objective": "6.2.3", "module": "m6",
+  "unit": "m6-make-actions-observable-traceable-auditable",
+  "type": "multi",
+  "text": "Under the observability model, what must every meaningful agent action produce? (Select all that apply.)",
+  "options": [
+   {"text": "Pull request and commit history", "correct": true, "why": "Yes. What changed, and in what sequence."},
+   {"text": "Workflow results including job logs, timing, and the acting identity", "correct": true, "why": "Yes. What ran, how long it took, and who or what ran it."},
+   {"text": "Uploaded artifacts such as a plan, test results, or an execution report - and for production, the environment approval record", "correct": true, "why": "Yes. Machine-readable evidence such as plan.json and execution-report, plus approval and merge events, is what makes the action auditable."},
+   {"text": "A screenshot of the agent's chat session attached to the pull request", "correct": false, "why": "No. Chat screenshots are neither machine-readable nor authoritative. Evidence-first workflows output structured artifacts."}
+  ],
+  "takeaway": "Produce PR and commits, workflow results with actor and timing, structured artifacts, and approval and merge events - including the environment approval record for production."
+ }
+]

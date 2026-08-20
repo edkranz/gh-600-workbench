@@ -1,0 +1,285 @@
+{
+  "title": "Agent Flashcards",
+  "cards": [
+    {
+      "front": "In the context of GitHub agents, how does an 'agent' differ from an 'assistant'?",
+      "back": "An agent is goal-driven and uses tools to take repository actions, whereas an assistant is reactive and suggestion-only."
+    },
+    {
+      "front": "What are the three stages of the foundational agentic AI lifecycle loop?",
+      "back": "Plan, Act, and Evaluate."
+    },
+    {
+      "front": "Why is GitHub defined as the 'system of record' for agent workflows?",
+      "back": "It stores all artifacts, including plans, commits, PR discussions, and workflow evidence, for inspectability."
+    },
+    {
+      "front": "What does it mean for GitHub to function as the 'control plane' for AI agents?",
+      "back": "It provides enforcement points such as rulesets, required checks, and environments to govern agent behavior."
+    },
+    {
+      "front": "Which SDLC stage is mapped to 'Workflow runs, checks, and artifacts' in GitHub?",
+      "back": "Validation."
+    },
+    {
+      "front": "According to the task contract model, what are the three essential components of a structured agent task?",
+      "back": "Inputs, Outputs, and Success criteria."
+    },
+    {
+      "front": "What is the primary architectural benefit of a 'Plan-first' pull request workflow?",
+      "back": "It allows human validation of intent before any code is generated, reducing early risk exposure."
+    },
+    {
+      "front": "True or False: In a 'Plan + execution' workflow, human validation is still required before the work is merged.",
+      "back": "True."
+    },
+    {
+      "front": "What is the specific GitHub mechanism used to route reviews automatically based on changed file paths?",
+      "back": "CODEOWNERS."
+    },
+    {
+      "front": "Concept: Model Context Protocol (MCP)",
+      "back": "Definition: A standard protocol allowing AI clients to discover and use external tools and services through MCP servers."
+    },
+    {
+      "front": "How does an 'MCP allow list' differ from an 'MCP registry' in agent governance?",
+      "back": "The registry provides discovery of available servers, while the allow list enforces which specific servers are permitted for use."
+    },
+    {
+      "front": "What is the only required field in a custom agent's YAML frontmatter profile?",
+      "back": "description."
+    },
+    {
+      "front": "Where must an agent profile be stored to be considered a repository-level custom agent?",
+      "back": "The .github/agents/ directory."
+    },
+    {
+      "front": "What is the mandatory name for the repository used to store organization-level custom agents?",
+      "back": ".github-private."
+    },
+    {
+      "front": "In a custom agent profile, what does setting 'tools: []' accomplish?",
+      "back": "It disables all tools for that specific agent."
+    },
+    {
+      "front": "Which YAML property in custom agent configuration recently replaced the retired 'infer' field?",
+      "back": "disable-model-invocation."
+    },
+    {
+      "front": "What is the default permission level of the out-of-the-box 'github' MCP server?",
+      "back": "Read-only."
+    },
+    {
+      "front": "To what network range is the out-of-the-box 'playwright' MCP server restricted?",
+      "back": "localhost only."
+    },
+    {
+      "front": "The GitHub Copilot cloud agent firewall only applies to processes started via which specific tool?",
+      "back": "The Bash tool."
+    },
+    {
+      "front": "In agent firewall rules, how does a 'Domain' rule differ from a 'URL' rule?",
+      "back": "A domain rule allows the domain and all subdomains, while a URL rule is limited to a specific scheme, host, and path-prefix."
+    },
+    {
+      "front": "How long do Copilot Memory entries persist if they remain unused?",
+      "back": "28 days."
+    },
+    {
+      "front": "Who is permitted to create repository-level facts in Copilot Memory?",
+      "back": "Users with write access to the repository who have Copilot Memory enabled."
+    },
+    {
+      "front": "The gradual divergence between an agent's working assumptions and the actual repository state is known as _____.",
+      "back": "Context drift."
+    },
+    {
+      "front": "What is the recommended method for an agent to resume work across different workflow runs without repeating steps?",
+      "back": "Persisting progress in a durable artifact, such as a PR checklist or state file."
+    },
+    {
+      "front": "In agent failure analysis, what are the three primary root-cause categories?",
+      "back": "Reasoning errors, Tool misuse, and Context/Environment issues."
+    },
+    {
+      "front": "How should an architect tune an agent that consistently uses the correct tool but provides the wrong arguments?",
+      "back": "By revising the tool's description and adding usage examples in the agent configuration."
+    },
+    {
+      "front": "According to the contributor model, what is the 'natural unit of contribution' for evaluating agent work?",
+      "back": "The pull request."
+    },
+    {
+      "front": "What criteria does the sub-agent runtime use to match user intent to a specific specialized agent?",
+      "back": "The agent's name and description."
+    },
+    {
+      "front": "Concept: Supervisor Pattern",
+      "back": "Definition: An orchestration pattern where one agent dispatches sub-tasks to worker agents and reviews their outputs."
+    },
+    {
+      "front": "Which sub-agent lifecycle event is emitted when the runtime first picks an agent for a task?",
+      "back": "subagent.selected."
+    },
+    {
+      "front": "What is the purpose of the 'toolCallId' in multi-agent orchestration events?",
+      "back": "It acts as a join key to track a specific sub-agent's lifecycle from start to completion or failure."
+    },
+    {
+      "front": "Which autonomy design is recommended for 'Critical' risk tasks like production deployments?",
+      "back": "The agent prepares the changes, but execution is blocked until human approval in an Environment."
+    },
+    {
+      "front": "What is the purpose of a 'pre-action hook' in agent operations?",
+      "back": "To validate or block unsafe actions before they are executed by a tool."
+    },
+    {
+      "front": "How does GitHub prevent 'untrusted' changes from running privileged workflows automatically in an agent PR?",
+      "back": "By requiring a user with write access to click the 'Approve and run workflows' button."
+    },
+    {
+      "front": "True or False: The user who triggers a Copilot cloud agent to create a PR is allowed to approve that same PR.",
+      "back": "False."
+    },
+    {
+      "front": "How does a GitHub Agentic Workflow differ from a traditional GitHub Actions workflow?",
+      "back": "Agentic workflows describe outcomes in Markdown for an agent to interpret, rather than explicitly defining steps in YAML."
+    },
+    {
+      "front": "What is the maximum character limit for the prompt body in a custom agent profile?",
+      "back": "30,000 characters."
+    },
+    {
+      "front": "Which custom agent property is used to restrict an agent to either 'vscode' or 'github-copilot'?",
+      "back": "target."
+    },
+    {
+      "front": "Who remains accountable for the outcomes and controls of an autonomous agent system?",
+      "back": "The humans who defined the task, set permissions, and approved the changes."
+    },
+    {
+      "front": "What mechanism ensures that custom agent interactions within a PR remain consistent even if the agent profile is updated?",
+      "back": "The session is pinned to the Git commit SHA of the agent profile at the time of assignment."
+    },
+    {
+      "front": "Which tool alias is used in agent profiles to grant permission for executing shell commands?",
+      "back": "execute."
+    },
+    {
+      "front": "What is the override hierarchy for custom agent profiles with the same name?",
+      "back": "The lowest level wins (Repository > Organization > Enterprise)."
+    },
+    {
+      "front": "How does Copilot ensure its stored 'memories' haven't become stale?",
+      "back": "It re-validates the memory's citation against the current branch's code before use."
+    },
+    {
+      "front": "What is the primary method for preventing parallel agents from creating conflicting code changes?",
+      "back": "Assigning non-overlapping file scopes to each agent in their respective plans."
+    },
+    {
+      "front": "A pattern where two agents critique each other's work and a third agent makes a final decision is called _____.",
+      "back": "The debate or critic pattern."
+    },
+    {
+      "front": "What is the standard escalation path if an agent fails the same required check multiple times?",
+      "back": "Handing off to a human reviewer with a summary of attempts, evidence, and suggested next steps."
+    },
+    {
+      "front": "What is the purpose of the 'copilot-setup-steps.yml' file?",
+      "back": "To define the environment setup steps required for the agent to function effectively in a specific repository."
+    },
+    {
+      "front": "Can a Copilot cloud agent access standard GitHub Actions secrets?",
+      "back": "No, it can only access specifically configured 'Agents secrets'."
+    },
+    {
+      "front": "How does GitHub mitigate prompt injection risks from hidden characters in issues or comments?",
+      "back": "It filters out hidden characters and HTML comments before passing input to the agent."
+    },
+    {
+      "front": "Which 'Traceability Primitive' allows developers to view the internal monologue of an agent for a specific change?",
+      "back": "The session-log link included in every agent-authored commit message."
+    },
+    {
+      "front": "Which GitHub CLI command is used to follow live agent task logs?",
+      "back": "gh agent-task view --log --follow."
+    },
+    {
+      "front": "What is the default state of 'Agentic Workflows' relative to traditional CI/CD pipelines?",
+      "back": "They augment and extend traditional pipelines with 'Continuous AI' rather than replacing them."
+    },
+    {
+      "front": "What happens if an MCP server is listed in a registry but is not on the organization's allow list?",
+      "back": "The server is blocked and the tool call will fail."
+    },
+    {
+      "front": "In the YAML frontmatter of an Agentic Workflow, what does 'safe outputs' refer to?",
+      "back": "A mechanism where the agent proposes actions that are only applied after passing a gated validation step."
+    },
+    {
+      "front": "If an agent produces a diff but provides no plan or rationale, it is exhibiting the anti-pattern of _____.",
+      "back": "Planless execution."
+    },
+    {
+      "front": "What is the syntax for referencing an 'Agents secret' within a custom agent profile?",
+      "back": "${{ secrets.VAR_NAME }}."
+    },
+    {
+      "front": "Which GitHub primitive provides a 'Verified' status to agent-authored commits?",
+      "back": "Digital signatures (Signed commits)."
+    },
+    {
+      "front": "What is the primary purpose of 'retries' in a reliable agent workflow?",
+      "back": "To handle transient failures like network issues or rate limits."
+    },
+    {
+      "front": "Which YAML property identifies an agent that should not be visible in the user interface?",
+      "back": "user-invocable: false."
+    },
+    {
+      "front": "The 'Any-yes-routes-up' principle for guardrails dictates that if any risk dimension trips, the system must _____.",
+      "back": "Escalate to the next tier of human oversight."
+    },
+    {
+      "front": "What is the URL for the centralized Agents tab on GitHub.com?",
+      "back": "github.com/copilot/agents."
+    },
+    {
+      "front": "True or False: Environment variables in GitHub should be used as a replacement for structured job outputs.",
+      "back": "False."
+    },
+    {
+      "front": "Which context is used to determine 'what triggered this run' in a GitHub workflow?",
+      "back": "github.*."
+    },
+    {
+      "front": "Why should agent tool allowlists be treated as 'governance-sensitive' changes?",
+      "back": "Expanding tools increases the agent's potential blast radius and security risk."
+    },
+    {
+      "front": "In an agentic workflow, what is the role of the 'lock file'?",
+      "back": "It contains the compiled execution instructions derived from the Markdown intent and frontmatter."
+    },
+    {
+      "front": "What happens when the 'Registry only' policy is enabled for MCP access?",
+      "back": "Developers are restricted to using only MCP servers defined in the configured organization/enterprise registry."
+    },
+    {
+      "front": "Which artifact type makes agent evidence 'durable' even after workflow logs are rotated?",
+      "back": "Uploaded workflow artifacts (e.g., test reports, logs)."
+    },
+    {
+      "front": "How are 'user-level preferences' in Copilot Memory isolated?",
+      "back": "They are only available to the specific user who created them across different repositories."
+    },
+    {
+      "front": "What is the 'Capability boundary' of a planning agent?",
+      "back": "It should be limited to read-only tools to prevent accidental modifications during the planning phase."
+    },
+    {
+      "front": "What is the 'Delegation boundary' in multi-agent systems?",
+      "back": "The policy defining which sub-agents can be invoked and how handoffs are managed."
+    }
+  ]
+}

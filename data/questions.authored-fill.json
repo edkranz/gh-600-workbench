@@ -1,0 +1,82 @@
+[
+ {
+  "id": "auth-fill-01",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.4.1", "module": "m2",
+  "unit": "m2-agent-operations-controls",
+  "type": "multi",
+  "text": "Where should error handling live in an agent workflow so that a failure is never silent? (Select all that apply.)",
+  "options": [
+   {"text": "At the tool-call boundary, so a failing tool invocation is caught rather than ignored", "correct": true, "why": "Yes. The first boundary is where the agent calls out to a tool; an unhandled failure there propagates as confusing downstream behavior."},
+   {"text": "At the step and job level in the wrapping workflow, using explicit failure conditions instead of letting execution continue", "correct": true, "why": "Yes. Failing fast at the step level prevents partial or inconsistent changes from being committed by later steps."},
+   {"text": "In a finalizing step that always runs, uploading logs and posting the outcome to the pull request", "correct": true, "why": "Yes. A step that runs regardless of outcome guarantees evidence exists even for failed runs - which is exactly when you need it most."},
+   {"text": "In the agent's system prompt, instructing it to report any errors it notices", "correct": false, "why": "No. That is guidance, not handling. An error the agent does not notice is not reported, and a prompt cannot stop a workflow."}
+  ],
+  "takeaway": "Handle errors at every boundary: the tool call, the workflow step and job, and a finalizer that always emits evidence."
+ },
+ {
+  "id": "auth-fill-02",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.4.3", "module": "m6",
+  "unit": "m6-maintain-governance-operational-reliability",
+  "type": "single",
+  "text": "Which recovery strategy does the module specifically warn against retrying, and what should happen instead?",
+  "options": [
+   {"text": "Transient network failures - escalate immediately rather than retrying.", "correct": false, "why": "Backwards. Transient failures are exactly what bounded retries are for."},
+   {"text": "Security failures - investigate them rather than repeatedly retrying.", "correct": true, "why": "The recovery guidance lists this explicitly: retry transient failures within bounds, escalate after repeated failures, roll back quickly using small PRs and safe revert paths, and investigate security failures instead of repeatedly retrying. A blocked security check is telling you something, and retrying only hides it."},
+   {"text": "Merge conflicts - always retry until the rebase succeeds.", "correct": false, "why": "Repeated conflicts are an escalation trigger, not something to retry indefinitely."},
+   {"text": "Test failures - roll back the entire branch on the first failure.", "correct": false, "why": "A failing test is normal iteration; the agent may revise the branch within retry limits."}
+  ],
+  "takeaway": "Retry transient faults, escalate on repetition, roll back with small PRs - but investigate security failures rather than retrying them."
+ },
+ {
+  "id": "auth-fill-03",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.4.4", "module": "m2",
+  "unit": "m2-agent-operations-controls",
+  "type": "single",
+  "text": "An escalation fires and a human is paged. What should the escalation itself contain to be useful?",
+  "options": [
+   {"text": "A link to the failing workflow run and nothing else, to keep the notification short.", "correct": false, "why": "A bare link makes the human reconstruct the entire situation from scratch, which is the slow path."},
+   {"text": "What failed, what was attempted, what evidence exists, and what the suggested next step is.", "correct": true, "why": "This is the escalation payload the safe-iteration policy prescribes. It converts a notification into an actionable handoff and is what stops escalations becoming noise."},
+   {"text": "A full dump of the agent's reasoning trace.", "correct": false, "why": "A raw trace is unsummarized. The receiving human needs a decision-ready brief, with the trace available if they want it."},
+   {"text": "A request for the human to re-run the workflow and see what happens.", "correct": false, "why": "That delegates the diagnosis back to the human without any of the context the system already has."}
+  ],
+  "takeaway": "Escalate with a brief: what failed, what was tried, what evidence exists, and the suggested next step."
+ },
+ {
+  "id": "auth-fill-04",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d5", "objective": "5.2.2", "module": "m5",
+  "unit": "m5-system-observability-evidence-workflows",
+  "type": "single",
+  "text": "A handoff between two agents is recorded as \"passed to the security agent\". Why is that insufficient?",
+  "options": [
+   {"text": "It should name the model version used by the receiving agent.", "correct": false, "why": "Model provenance is useful telemetry but is not what makes a handoff reviewable."},
+   {"text": "It records the transition but not the decision, the rationale, or the next owner - so a reviewer cannot tell why the handoff happened or who is accountable now.", "correct": true, "why": "The recommended structure captures decision, rationale, and next owner. Without those three, the handoff is an event rather than a documented decision, and accountability is ambiguous."},
+   {"text": "Handoffs should never be documented in pull requests.", "correct": false, "why": "The pull request is exactly where handoffs should be documented, in a standard structure."},
+   {"text": "It should be recorded in the audit log rather than the pull request.", "correct": false, "why": "The audit log records platform events. Design decisions and handoff rationale belong where reviewers read them."}
+  ],
+  "takeaway": "Document handoffs as decision, rationale, and next owner - not just as \"who has it now\"."
+ },
+ {
+  "id": "auth-fill-05",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d5", "objective": "5.4.3", "module": "m6",
+  "unit": "m6-maintain-governance-operational-reliability",
+  "type": "multi",
+  "text": "An agent is being retired. Which steps preserve auditability and workflow continuity? (Select all that apply.)",
+  "options": [
+   {"text": "Leave the agent's configuration in git history rather than scrubbing it", "correct": true, "why": "Yes. Git history is the durable record of what the agent was configured to do at any point in the past."},
+   {"text": "Retain its past workflow runs and artifacts under the retention policy", "correct": true, "why": "Yes. Those are the evidence for anything the agent did, and deleted artifacts cannot be restored."},
+   {"text": "Document the retirement decision and reassign ownership of anything it used to handle", "correct": true, "why": "Yes. Lifecycle management requires clearly defined ownership, so retirement must say who now owns the work and why the agent was retired."},
+   {"text": "Delete the agent's branches and close its open pull requests without comment", "correct": false, "why": "No. Silent deletion destroys context. Open work should be reassigned or closed with a recorded reason so the trail stays intact."}
+  ],
+  "takeaway": "Retire by preserving: config in git history, runs and artifacts under retention, a documented decision, and reassigned ownership."
+ }
+]

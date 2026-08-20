@@ -1,0 +1,1226 @@
+[
+ {
+  "id": "off-m1-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.1.1",
+  "module": "m1",
+  "unit": "m1-define-agentic-ai",
+  "type": "single",
+  "text": "Which is the best indicator that an AI system is acting as an agent in GitHub?",
+  "options": [
+   {
+    "text": "It suggests code snippets in chat.",
+    "correct": false,
+    "why": "Suggesting code snippets is assistive behavior, but it doesn't demonstrate autonomous action in the development workflow."
+   },
+   {
+    "text": "It opens a pull request from a branch it created.",
+    "correct": true,
+    "why": "An agent doesn't only generate suggestions-it can take goal-driven actions in the SDLC. Creating a branch and opening a pull request are concrete, durable repository actions that move work forward through standard GitHub workflows."
+   },
+   {
+    "text": "It summarizes documentation.",
+    "correct": false,
+    "why": "Summarizing documentation is helpful assistance, but it doesn't represent taking workflow actions."
+   },
+   {
+    "text": "It explains an error message.",
+    "correct": false,
+    "why": "Explaining errors is advisory behavior, not autonomous execution of tasks."
+   }
+  ],
+  "takeaway": "An agent doesn't only generate suggestions-it can take goal-driven actions in the SDLC. Creating a branch and opening a pull request are concrete, durable repository actions that move work forward through standard GitHub workflows."
+ },
+ {
+  "id": "off-m1-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.3.2",
+  "module": "m1",
+  "unit": "m1-describe-github-system-record-control-plane",
+  "type": "single",
+  "text": "Why is GitHub considered a system of record for agent workflows?",
+  "options": [
+   {
+    "text": "It prevents all bugs.",
+    "correct": false,
+    "why": "GitHub helps manage development processes, but it can't prevent all bugs."
+   },
+   {
+    "text": "It stores plans, commits, pull request discussion, and workflow evidence.",
+    "correct": true,
+    "why": "GitHub captures the artifacts that document what the agent intended, what changed, and what evidence was produced-such as pull requests, commit history, reviews, and workflow runs. This creates an auditable record of agent activity."
+   },
+   {
+    "text": "It replaces CI/CD.",
+    "correct": false,
+    "why": "GitHub can integrate with CI/CD systems, but it doesn't inherently replace them."
+   },
+   {
+    "text": "It automatically approves changes.",
+    "correct": false,
+    "why": "Changes still require configured review and approval processes."
+   }
+  ],
+  "takeaway": "GitHub captures the artifacts that document what the agent intended, what changed, and what evidence was produced-such as pull requests, commit history, reviews, and workflow runs. This creates an auditable record of agent activity."
+ },
+ {
+  "id": "off-m1-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.3.1",
+  "module": "m1",
+  "unit": "m1-describe-github-system-record-control-plane",
+  "type": "single",
+  "text": "Which GitHub control is most directly used to require the right reviewers for sensitive paths?",
+  "options": [
+   {
+    "text": "Issues",
+    "correct": false,
+    "why": "Issues are used for tracking work, not enforcing code review ownership."
+   },
+   {
+    "text": "CODEOWNERS",
+    "correct": true,
+    "why": "CODEOWNERS maps file paths to owners and automatically requests reviews when those paths change. When combined with required reviews, it helps ensure the appropriate teams review high-risk or high-impact changes."
+   },
+   {
+    "text": "Stars",
+    "correct": false,
+    "why": "Stars indicate interest in a repository and don't control reviews."
+   },
+   {
+    "text": "Forks",
+    "correct": false,
+    "why": "Forks support development workflows but don't assign reviewers."
+   }
+  ],
+  "takeaway": "CODEOWNERS maps file paths to owners and automatically requests reviews when those paths change. When combined with required reviews, it helps ensure the appropriate teams review high-risk or high-impact changes."
+ },
+ {
+  "id": "off-m1-4",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.1.2",
+  "module": "m1",
+  "unit": "m1-identify-risks-traceability",
+  "type": "single",
+  "text": "Which scenario is an example of hidden reasoning?",
+  "options": [
+   {
+    "text": "The plan is included in the pull request description.",
+    "correct": false,
+    "why": "Making the plan visible reduces hidden reasoning."
+   },
+   {
+    "text": "The change is proposed via a pull request.",
+    "correct": false,
+    "why": "Using a pull request creates visibility and reviewability."
+   },
+   {
+    "text": "The agent provides a diff but no plan, assumptions, or execution context.",
+    "correct": true,
+    "why": "Hidden reasoning occurs when reviewers can see the output but can't see the intermediate decision-making artifacts such as plans, assumptions, constraints, or context."
+   },
+   {
+    "text": "The agent reruns a failing workflow after a test fix.",
+    "correct": false,
+    "why": "Rerunning workflows is an observable action, not hidden reasoning."
+   }
+  ],
+  "takeaway": "Hidden reasoning occurs when reviewers can see the output but can't see the intermediate decision-making artifacts such as plans, assumptions, constraints, or context."
+ },
+ {
+  "id": "off-m1-5",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.1.2",
+  "module": "m1",
+  "unit": "m1-apply-contributor-model-agent-generated-work",
+  "type": "single",
+  "text": "Under the contributor model, what should reviewers evaluate first?",
+  "options": [
+   {
+    "text": "Whether the author is human or AI.",
+    "correct": false,
+    "why": "Review should focus on contribution quality and compliance, not author identity."
+   },
+   {
+    "text": "Whether the change meets the repo's definition of done (scope, checks, review, policy).",
+    "correct": true,
+    "why": "The contributor model treats agent output like any other contribution. Review starts with whether the change meets the repository's standards rather than focusing on who or what authored it."
+   },
+   {
+    "text": "Whether the pull request is small.",
+    "correct": false,
+    "why": "Pull request size alone doesn't determine readiness or quality."
+   },
+   {
+    "text": "Whether the agent is popular.",
+    "correct": false,
+    "why": "Popularity is irrelevant to repository governance and quality standards."
+   }
+  ],
+  "takeaway": "The contributor model treats agent output like any other contribution. Review starts with whether the change meets the repository's standards rather than focusing on who or what authored it."
+ },
+ {
+  "id": "off-m2-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.2.4",
+  "module": "m2",
+  "unit": "m2-pull-request-governance-controls",
+  "type": "single",
+  "text": "What is the most reliable way to prevent planless execution from being merged?",
+  "options": [
+   {
+    "text": "Ask the agent to be careful.",
+    "correct": false,
+    "why": "Asking for caution relies on voluntary behavior and doesn't create enforceable controls."
+   },
+   {
+    "text": "Require a plan template only.",
+    "correct": false,
+    "why": "Templates encourage good behavior, but templates alone don't prevent merges when requirements are skipped."
+   },
+   {
+    "text": "Make a plan check a required status check and require pull request reviews.",
+    "correct": true,
+    "why": "Templates encourage good behavior, but required checks and required reviews enforce it. This converts plan required into a guaranteed merge condition."
+   },
+   {
+    "text": "Allow direct pushes but require tests.",
+    "correct": false,
+    "why": "Direct pushes bypass pull request governance and review controls."
+   }
+  ],
+  "takeaway": "Templates encourage good behavior, but required checks and required reviews enforce it. This converts plan required into a guaranteed merge condition."
+ },
+ {
+  "id": "off-m2-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.3.1",
+  "module": "m2",
+  "unit": "m2-pull-request-governance-controls",
+  "type": "single",
+  "text": "Which GitHub feature most directly routes reviews based on changed file paths?",
+  "options": [
+   {
+    "text": "Issues",
+    "correct": false,
+    "why": "Issues track work but don't automatically assign code reviewers by path."
+   },
+   {
+    "text": "CODEOWNERS",
+    "correct": true,
+    "why": "CODEOWNERS maps paths to owners so the right experts are automatically requested for review and can be enforced with required review policies."
+   },
+   {
+    "text": "Actions artifacts",
+    "correct": false,
+    "why": "Artifacts store outputs from workflows, not review routing rules."
+   },
+   {
+    "text": "Releases",
+    "correct": false,
+    "why": "Releases package delivered versions but don't control code review ownership."
+   }
+  ],
+  "takeaway": "CODEOWNERS maps paths to owners so the right experts are automatically requested for review and can be enforced with required review policies."
+ },
+ {
+  "id": "off-m2-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.3.2",
+  "module": "m2",
+  "unit": "m2-agent-operations-controls",
+  "type": "single",
+  "text": "In a plan-act-evaluate architecture, where should evaluation evidence primarily live?",
+  "options": [
+   {
+    "text": "Only inside the agent's private logs",
+    "correct": false,
+    "why": "Private logs are not easily reviewable or auditable by collaborators."
+   },
+   {
+    "text": "In PR comments only",
+    "correct": false,
+    "why": "Comments can help explain results, but they are not the strongest source of durable execution evidence."
+   },
+   {
+    "text": "In GitHub-native artifacts like workflow runs, checks, and uploaded artifacts",
+    "correct": true,
+    "why": "Workflow runs, checks, and artifacts are durable, reviewable, and auditable. They provide objective evidence independent of the agent."
+   },
+   {
+    "text": "In a separate external document",
+    "correct": false,
+    "why": "External documents may be harder to verify and disconnect evidence from the workflow."
+   }
+  ],
+  "takeaway": "Workflow runs, checks, and artifacts are durable, reviewable, and auditable. They provide objective evidence independent of the agent."
+ },
+ {
+  "id": "off-m2-4",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.3.1",
+  "module": "m2",
+  "unit": "m2-reliable-workflows",
+  "type": "single",
+  "text": "Which design best expresses risk-based autonomy for production deployments?",
+  "options": [
+   {
+    "text": "Let the agent deploy after tests pass",
+    "correct": false,
+    "why": "Passing tests alone may not be sufficient for high-risk production changes."
+   },
+   {
+    "text": "Use GitHub Environments with required reviewers for production",
+    "correct": true,
+    "why": "Environments create a human approval gate for high-risk execution and can restrict access to protected secrets and deployments."
+   },
+   {
+    "text": "Allow direct pushes to main",
+    "correct": false,
+    "why": "Direct pushes reduce governance and increase deployment risk."
+   },
+   {
+    "text": "Disable workflow approvals",
+    "correct": false,
+    "why": "Removing approvals weakens controls for sensitive deployments."
+   }
+  ],
+  "takeaway": "Environments create a human approval gate for high-risk execution and can restrict access to protected secrets and deployments."
+ },
+ {
+  "id": "off-m2-5",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.1.2",
+  "module": "m2",
+  "unit": "m2-plan-reason-execution",
+  "type": "single",
+  "text": "Which is an architectural anti-pattern in agent design?",
+  "options": [
+   {
+    "text": "Clear success criteria",
+    "correct": false,
+    "why": "Clear success criteria improve reliability and accountability."
+   },
+   {
+    "text": "Required checks",
+    "correct": false,
+    "why": "Required checks are a governance best practice."
+   },
+   {
+    "text": "Mixed planning and execution with no inspectable plan",
+    "correct": true,
+    "why": "Without an inspectable plan, reviewers can't validate intent or scope. This increases hidden reasoning and reduces reliability."
+   },
+   {
+    "text": "Uploading artifacts",
+    "correct": false,
+    "why": "Uploading artifacts can improve traceability and evidence collection."
+   }
+  ],
+  "takeaway": "Without an inspectable plan, reviewers can't validate intent or scope. This increases hidden reasoning and reduces reliability."
+ },
+ {
+  "id": "off-m3-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.3.1",
+  "module": "m3",
+  "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "Where do agents execute tasks when working with GitHub repositories?",
+  "options": [
+   {
+    "text": "Directly on the developer's local machine.",
+    "correct": false,
+    "why": "Agents do not execute tasks on your local machine."
+   },
+   {
+    "text": "Within workflows powered by GitHub Actions.",
+    "correct": true,
+    "why": "Agent tasks are executed through workflows."
+   },
+   {
+    "text": "Inside the GitHub web interface without workflows.",
+    "correct": false,
+    "why": "Execution is not handled directly in the UI."
+   },
+   {
+    "text": "On external servers without using GitHub workflows.",
+    "correct": false,
+    "why": "Agent execution in GitHub relies on workflows."
+   }
+  ],
+  "takeaway": "Agent tasks are executed through workflows."
+ },
+ {
+  "id": "off-m3-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.3.4",
+  "module": "m3",
+  "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "How are agent-generated code changes isolated before review?",
+  "options": [
+   {
+    "text": "By committing directly to the default branch.",
+    "correct": false,
+    "why": "Changes are not made directly to the default branch."
+   },
+   {
+    "text": "By creating and working within a separate branch.",
+    "correct": true,
+    "why": "Changes are isolated on a branch before review."
+   },
+   {
+    "text": "By storing changes in a temporary external system.",
+    "correct": false,
+    "why": "Changes are made within the repository."
+   },
+   {
+    "text": "By applying changes only after deployment.",
+    "correct": false,
+    "why": "Changes are reviewed before deployment."
+   }
+  ],
+  "takeaway": "Changes are isolated on a branch before review."
+ },
+ {
+  "id": "off-m3-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.1.3",
+  "module": "m3",
+  "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "What determines what an agent can do during workflow execution?",
+  "options": [
+   {
+    "text": "The number of contributors in the repository.",
+    "correct": false,
+    "why": "Contributors do not control permissions."
+   },
+   {
+    "text": "Workflow permissions and the GITHUB_TOKEN scope.",
+    "correct": true,
+    "why": "Permissions define allowed actions."
+   },
+   {
+    "text": "The size of the repository.",
+    "correct": false,
+    "why": "Repository size does not affect permissions."
+   },
+   {
+    "text": "The number of workflow runs completed.",
+    "correct": false,
+    "why": "Execution count does not determine permissions."
+   }
+  ],
+  "takeaway": "Permissions define allowed actions."
+ },
+ {
+  "id": "off-m3-4",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.3.5",
+  "module": "m3",
+  "unit": "m3-agent-execution-limits-protections",
+  "type": "single",
+  "text": "What is the purpose of a pull request in agent workflows?",
+  "options": [
+   {
+    "text": "To automatically merge agent changes into the default branch.",
+    "correct": false,
+    "why": "Pull requests require review before merging."
+   },
+   {
+    "text": "To provide a place to review and validate changes before merging.",
+    "correct": true,
+    "why": "Pull requests enable review and validation."
+   },
+   {
+    "text": "To bypass workflow execution.",
+    "correct": false,
+    "why": "Pull requests often trigger workflows."
+   },
+   {
+    "text": "To execute code changes immediately without checks.",
+    "correct": false,
+    "why": "Changes are validated before merging."
+   }
+  ],
+  "takeaway": "Pull requests enable review and validation."
+ },
+ {
+  "id": "off-m3-5",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.3.3",
+  "module": "m3",
+  "unit": "m3-interact-github-apis-workflows",
+  "type": "single",
+  "text": "How can workflows be triggered after an agent updates code?",
+  "options": [
+   {
+    "text": "Only manually by a repository administrator.",
+    "correct": false,
+    "why": "Workflows can run automatically."
+   },
+   {
+    "text": "Through events such as push or pull request.",
+    "correct": true,
+    "why": "Events trigger workflow runs."
+   },
+   {
+    "text": "Only when a repository is forked.",
+    "correct": false,
+    "why": "Forking does not trigger workflows."
+   },
+   {
+    "text": "Only when code is downloaded locally.",
+    "correct": false,
+    "why": "Local downloads do not trigger workflows."
+   }
+  ],
+  "takeaway": "Events trigger workflow runs."
+ },
+ {
+  "id": "off-m3-6",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.2.1",
+  "module": "m3",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "What is the role of an MCP server?",
+  "options": [
+   {
+    "text": "To replace GitHub workflows.",
+    "correct": false,
+    "why": "MCP does not replace workflows."
+   },
+   {
+    "text": "To expose tools and services that agents can use.",
+    "correct": true,
+    "why": "MCP servers provide access to tools."
+   },
+   {
+    "text": "To store repository code.",
+    "correct": false,
+    "why": "Code is stored in repositories."
+   },
+   {
+    "text": "To execute workflows instead of GitHub Actions.",
+    "correct": false,
+    "why": "Workflows are handled by GitHub Actions."
+   }
+  ],
+  "takeaway": "MCP servers provide access to tools."
+ },
+ {
+  "id": "off-m3-7",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.2.4",
+  "module": "m3",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "What controls which MCP servers an agent can use?",
+  "options": [
+   {
+    "text": "Repository size limits.",
+    "correct": false,
+    "why": "Size does not control access."
+   },
+   {
+    "text": "Registries and allow lists.",
+    "correct": true,
+    "why": "Registries provide discovery and allow lists enforce usage."
+   },
+   {
+    "text": "Workflow execution time limits.",
+    "correct": false,
+    "why": "Time limits do not control MCP access."
+   },
+   {
+    "text": "The number of commits in the repository.",
+    "correct": false,
+    "why": "Commits do not affect MCP access."
+   }
+  ],
+  "takeaway": "Registries provide discovery and allow lists enforce usage."
+ },
+ {
+  "id": "off-m3-8",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.3.6",
+  "module": "m3",
+  "unit": "m3-agent-execution-limits-protections",
+  "type": "single",
+  "text": "Why are environment protections used in GitHub workflows?",
+  "options": [
+   {
+    "text": "To increase workflow execution speed.",
+    "correct": false,
+    "why": "Protections are not for performance."
+   },
+   {
+    "text": "To require approvals and protect sensitive operations.",
+    "correct": true,
+    "why": "Environments enforce approvals and access control."
+   },
+   {
+    "text": "To automatically merge pull requests.",
+    "correct": false,
+    "why": "Protections do not merge changes."
+   },
+   {
+    "text": "To disable workflows on certain branches.",
+    "correct": false,
+    "why": "Protections control execution, not disable workflows."
+   }
+  ],
+  "takeaway": "Environments enforce approvals and access control."
+ },
+ {
+  "id": "off-m3-9",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.1.3",
+  "module": "m3",
+  "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "What is the effect of using least-privilege permissions in workflows?",
+  "options": [
+   {
+    "text": "It gives agents full access to all resources.",
+    "correct": false,
+    "why": "Least privilege restricts access."
+   },
+   {
+    "text": "It limits actions to only what is required.",
+    "correct": true,
+    "why": "Permissions are restricted to necessary actions."
+   },
+   {
+    "text": "It prevents workflows from running.",
+    "correct": false,
+    "why": "Workflows still run."
+   },
+   {
+    "text": "It automatically approves pull requests.",
+    "correct": false,
+    "why": "Permissions do not approve PRs."
+   }
+  ],
+  "takeaway": "Permissions are restricted to necessary actions."
+ },
+ {
+  "id": "off-m3-10",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.4.5",
+  "module": "m3",
+  "unit": "m3-agent-execution-limits-protections",
+  "type": "single",
+  "text": "How are agent actions kept visible and reviewable?",
+  "options": [
+   {
+    "text": "By hiding logs and restricting access.",
+    "correct": false,
+    "why": "Visibility is required."
+   },
+   {
+    "text": "Through workflow logs and pull request review.",
+    "correct": true,
+    "why": "Logs and PRs provide visibility."
+   },
+   {
+    "text": "By executing actions outside GitHub.",
+    "correct": false,
+    "why": "Actions remain within GitHub systems."
+   },
+   {
+    "text": "By skipping validation steps.",
+    "correct": false,
+    "why": "Validation improves visibility and safety."
+   }
+  ],
+  "takeaway": "Logs and PRs provide visibility."
+ },
+ {
+  "id": "off-m5-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d5",
+  "objective": "5.1.1",
+  "module": "m5",
+  "unit": "m5-agent-orchestration-github-workflows",
+  "type": "single",
+  "text": "What is the most effective coordination primitive for multi-agent work in GitHub?",
+  "options": [
+   {
+    "text": "Private agent-to-agent messaging",
+    "correct": false,
+    "why": "Private coordination lacks durable visibility and reviewability for repository governance."
+   },
+   {
+    "text": "Pull requests and surrounding artifacts (checks, reviews, history)",
+    "correct": true,
+    "why": "Pull requests define the boundary of change and expose the evidence needed for review, validation, and auditing."
+   },
+   {
+    "text": "A shared spreadsheet",
+    "correct": false,
+    "why": "Spreadsheets don't provide enforceable repository workflows or integrated validation."
+   },
+   {
+    "text": "A single long-running workflow without branches",
+    "correct": false,
+    "why": "Without isolation boundaries like branches and pull requests, coordination becomes difficult and risky."
+   }
+  ],
+  "takeaway": "Pull requests define the boundary of change and expose the evidence needed for review, validation, and auditing."
+ },
+ {
+  "id": "off-m5-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d5",
+  "objective": "5.1.2",
+  "module": "m5",
+  "unit": "m5-execution-isolation-permissions-concurrency",
+  "type": "single",
+  "text": "Which configuration helps prevent repeated overlapping workflow runs when a PR is updated frequently?",
+  "options": [
+   {
+    "text": "Larger runners",
+    "correct": false,
+    "why": "Larger runners may improve performance, but they don't prevent overlapping executions."
+   },
+   {
+    "text": "Concurrency with cancel-in-progress",
+    "correct": true,
+    "why": "Concurrency reduces workflow noise and prevents overlapping runs from creating instability."
+   },
+   {
+    "text": "Removing required checks",
+    "correct": false,
+    "why": "Removing checks weakens governance and doesn't address overlapping runs."
+   },
+   {
+    "text": "Disabling PR triggers",
+    "correct": false,
+    "why": "Disabling triggers prevents automation rather than coordinating it safely."
+   }
+  ],
+  "takeaway": "Concurrency reduces workflow noise and prevents overlapping runs from creating instability."
+ },
+ {
+  "id": "off-m5-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d5",
+  "objective": "5.1.3",
+  "module": "m5",
+  "unit": "m5-conflict-resolution-github-arbitration",
+  "type": "single",
+  "text": "What is the best GitHub-native mechanism to route review for sensitive paths touched by agent pull requests?",
+  "options": [
+   {
+    "text": "Asking reviewers in chat",
+    "correct": false,
+    "why": "Chat requests are informal and not enforceable repository controls."
+   },
+   {
+    "text": "CODEOWNERS (with required reviews policy)",
+    "correct": true,
+    "why": "CODEOWNERS routes review based on file paths and ensures consistent and enforceable review ownership."
+   },
+   {
+    "text": "Adding more labels",
+    "correct": false,
+    "why": "Labels help organize work but don't enforce review routing."
+   },
+   {
+    "text": "Squashing commits",
+    "correct": false,
+    "why": "Squashing affects commit history but not review ownership."
+   }
+  ],
+  "takeaway": "CODEOWNERS routes review based on file paths and ensures consistent and enforceable review ownership."
+ },
+ {
+  "id": "off-m5-4",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d5",
+  "objective": "5.3.1",
+  "module": "m5",
+  "unit": "m5-scale-failure-recovery",
+  "type": "single",
+  "text": "Which is an example of a coordination failure rather than an individual agent failure?",
+  "options": [
+   {
+    "text": "A single unit test fails once",
+    "correct": false,
+    "why": "A single test failure is typically an isolated execution issue."
+   },
+   {
+    "text": "Two agent pull requests repeatedly conflict because they change the same files",
+    "correct": true,
+    "why": "Persistent pull request conflicts indicate missing isolation or coordination rules between agents."
+   },
+   {
+    "text": "A reviewer requests changes",
+    "correct": false,
+    "why": "Requested changes are part of the normal review process."
+   },
+   {
+    "text": "A workflow run finishes successfully",
+    "correct": false,
+    "why": "A successful workflow run is not a failure condition."
+   }
+  ],
+  "takeaway": "Persistent pull request conflicts indicate missing isolation or coordination rules between agents."
+ },
+ {
+  "id": "off-m5-5",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d5",
+  "objective": "5.3.3",
+  "module": "m5",
+  "unit": "m5-scale-failure-recovery",
+  "type": "single",
+  "text": "What is a safe pattern for high-risk actions like production deployments?",
+  "options": [
+   {
+    "text": "Auto-deploy after tests pass",
+    "correct": false,
+    "why": "High-risk actions should include explicit authorization steps beyond automated testing."
+   },
+   {
+    "text": "Use environments with required reviewers so jobs pause for approval",
+    "correct": true,
+    "why": "Environment approvals separate preparation from authorization, ensuring high-risk actions require explicit review."
+   },
+   {
+    "text": "Allow direct pushes to main",
+    "correct": false,
+    "why": "Direct pushes bypass governance and increase operational risk."
+   },
+   {
+    "text": "Disable workflow approvals",
+    "correct": false,
+    "why": "Disabling approvals removes an important safety control for sensitive operations."
+   }
+  ],
+  "takeaway": "Environment approvals separate preparation from authorization, ensuring high-risk actions require explicit review."
+ },
+ {
+  "id": "off-m4-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d3",
+  "objective": "3.1.1",
+  "module": "m4",
+  "unit": "m4-agent-memory-strategies",
+  "type": "single",
+  "text": "Which type of memory is considered the most reliable source of truth in agent workflows?",
+  "options": [
+   {
+    "text": "Short-term memory stored in prompts.",
+    "correct": false,
+    "why": "Short-term memory is temporary and not reliable across sessions."
+   },
+   {
+    "text": "Long-term memory stored in cached responses.",
+    "correct": false,
+    "why": "Cached responses aren't authoritative sources of truth."
+   },
+   {
+    "text": "External memory stored in GitHub artifacts such as issues and pull requests.",
+    "correct": true,
+    "why": ". External memory is durable and serves as the source of truth."
+   },
+   {
+    "text": "Logs that are automatically deleted after execution.",
+    "correct": false,
+    "why": "Logs are temporary and not intended as the primary source of truth."
+   }
+  ],
+  "takeaway": ". External memory is durable and serves as the source of truth."
+ },
+ {
+  "id": "off-m4-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d3",
+  "objective": "3.2.1",
+  "module": "m4",
+  "unit": "m4-agent-state-context-drift",
+  "type": "single",
+  "text": "What is the primary role of a pull request in agent workflows?",
+  "options": [
+   {
+    "text": "To automatically deploy changes to production.",
+    "correct": false,
+    "why": "Deployment is handled separately."
+   },
+   {
+    "text": "To act as a central place to track progress, decisions, and validation results.",
+    "correct": true,
+    "why": ". Pull requests serve as a state anchor for agent workflows."
+   },
+   {
+    "text": "To store workflow logs permanently.",
+    "correct": false,
+    "why": "Logs are stored in workflow runs, not PRs."
+   },
+   {
+    "text": "To replace issues as the source of requirements.",
+    "correct": false,
+    "why": "Issues typically define requirements."
+   }
+  ],
+  "takeaway": ". Pull requests serve as a state anchor for agent workflows."
+ },
+ {
+  "id": "off-m4-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d3",
+  "objective": "3.2.3",
+  "module": "m4",
+  "unit": "m4-agent-state-context-drift",
+  "type": "single",
+  "text": "What is context drift in agent workflows?",
+  "options": [
+   {
+    "text": "When workflows exceed their execution time.",
+    "correct": false,
+    "why": "Execution time is unrelated to drift."
+   },
+   {
+    "text": "When the agent\u2019s actions no longer align with the original goal or prior decisions.",
+    "correct": true,
+    "why": ". Context drift occurs when alignment is lost."
+   },
+   {
+    "text": "When logs are deleted after retention expires.",
+    "correct": false,
+    "why": "This is artifact expiration."
+   },
+   {
+    "text": "When a branch is merged into the default branch.",
+    "correct": false,
+    "why": "Merging doesn't indicate drift."
+   }
+  ],
+  "takeaway": ". Context drift occurs when alignment is lost."
+ },
+ {
+  "id": "off-m4-4",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.1.1",
+  "module": "m4",
+  "unit": "m4-evaluation-signals-quality-gates",
+  "type": "single",
+  "text": "Which GitHub feature ensures validation must pass before merging changes?",
+  "options": [
+   {
+    "text": "Workflow logs.",
+    "correct": false,
+    "why": "Logs provide information but don't enforce rules."
+   },
+   {
+    "text": "Required status checks.",
+    "correct": true,
+    "why": ". Required checks must pass before merging."
+   },
+   {
+    "text": "Issue comments.",
+    "correct": false,
+    "why": "Comments don't enforce validation."
+   },
+   {
+    "text": "Commit messages.",
+    "correct": false,
+    "why": "Messages don't control merging."
+   }
+  ],
+  "takeaway": ". Required checks must pass before merging."
+ },
+ {
+  "id": "off-m4-5",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.2.1",
+  "module": "m4",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "type": "single",
+  "text": "Which GitHub artifacts are most useful for analyzing agent failures?",
+  "options": [
+   {
+    "text": "Workflow logs, workflow runs, and pull requests.",
+    "correct": true,
+    "why": ". These provide execution and decision history."
+   },
+   {
+    "text": "Repository stars and watchers.",
+    "correct": false,
+    "why": "These are unrelated to execution."
+   },
+   {
+    "text": "Branch names only.",
+    "correct": false,
+    "why": "Names don't provide failure details."
+   },
+   {
+    "text": "Issue labels.",
+    "correct": false,
+    "why": "Labels don't show execution behavior."
+   }
+  ],
+  "takeaway": ". These provide execution and decision history."
+ },
+ {
+  "id": "off-m4-6",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.3.1",
+  "module": "m4",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "type": "single",
+  "text": "How can agent behavior be improved after identifying a failure?",
+  "options": [
+   {
+    "text": "By rerunning the workflow without changes.",
+    "correct": false,
+    "why": "This doesn't address the root cause."
+   },
+   {
+    "text": "By adjusting prompts, memory structure, or workflow configuration.",
+    "correct": true,
+    "why": ". Improvements should target the root cause."
+   },
+   {
+    "text": "By deleting the pull request.",
+    "correct": false,
+    "why": "This removes useful context."
+   },
+   {
+    "text": "By ignoring the failure.",
+    "correct": false,
+    "why": "Failures should be analyzed and fixed."
+   }
+  ],
+  "takeaway": ". Improvements should target the root cause."
+ },
+ {
+  "id": "off-m6-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d6",
+  "objective": "6.2.3",
+  "module": "m6",
+  "unit": "m6-define-risk-based-autonomy",
+  "type": "single",
+  "text": "What is the best way to allow a terminal agent to perform a low-risk, read-only task like summarizing recent commits without granting broad capabilities?",
+  "options": [
+   {
+    "text": "Allow all tools so the agent never prompts for approval",
+    "correct": false,
+    "why": "This option does not match what the module teaches."
+   },
+   {
+    "text": "Scope tool access to only what is required for read-only Git inspection",
+    "correct": true,
+    "why": "Tool-scoped autonomy limits the agent to only the minimum read-only capability needed, reducing blast radius and preventing accidental high-risk actions."
+   },
+   {
+    "text": "Grant write access by default and rely on audits afterward",
+    "correct": false,
+    "why": "This option does not match what the module teaches."
+   },
+   {
+    "text": "Deny all shell access and require manual copy/paste of commit history",
+    "correct": false,
+    "why": "This option does not match what the module teaches."
+   }
+  ],
+  "takeaway": "Tool-scoped autonomy limits the agent to only the minimum read-only capability needed, reducing blast radius and preventing accidental high-risk actions."
+ },
+ {
+  "id": "off-m6-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d6",
+  "objective": "6.2.4",
+  "module": "m6",
+  "unit": "m6-enforce-governance-github-controls",
+  "type": "single",
+  "text": "Which GitHub-native control is most effective for requiring explicit approval before production workflows access production secrets?",
+  "options": [
+   {
+    "text": "A PR template that asks for review",
+    "correct": false,
+    "why": "This option does not match what the module teaches."
+   },
+   {
+    "text": "A repository README policy statement",
+    "correct": false,
+    "why": "This option does not match what the module teaches."
+   },
+   {
+    "text": "A protected environment with required reviewers",
+    "correct": true,
+    "why": "Protected environments enforce approvals and can scope secrets so they are only released after authorization."
+   },
+   {
+    "text": "A label applied by the agent",
+    "correct": false,
+    "why": "This option does not match what the module teaches."
+   }
+  ],
+  "takeaway": "Protected environments enforce approvals and can scope secrets so they are only released after authorization."
+ },
+ {
+  "id": "off-m6-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d6",
+  "objective": "6.2.3",
+  "module": "m6",
+  "unit": "m6-control-agent-capabilities",
+  "type": "single",
+  "text": "What is the recommended least-privilege pattern for GITHUB_TOKEN permissions in agent-driven workflows?",
+  "options": [
+   {
+    "text": "Set write permissions globally so any job can push if needed",
+    "correct": false,
+    "why": "This option does not match what the module teaches."
+   },
+   {
+    "text": "Default to read-only and elevate permissions only for the job that performs write operations",
+    "correct": true,
+    "why": "Read-only defaults prevent unintended writes across the workflow, and job-level elevation limits high-risk capability to the smallest necessary scope."
+   },
+   {
+    "text": "Disable permissions entirely and store a PAT in the repository",
+    "correct": false,
+    "why": "This option does not match what the module teaches."
+   },
+   {
+    "text": "Grant all permissions during business hours only",
+    "correct": false,
+    "why": "This option does not match what the module teaches."
+   }
+  ],
+  "takeaway": "Read-only defaults prevent unintended writes across the workflow, and job-level elevation limits high-risk capability to the smallest necessary scope."
+ },
+ {
+  "id": "off-m6-4",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d6",
+  "objective": "6.2.4",
+  "module": "m6",
+  "unit": "m6-design-human-workflows",
+  "type": "single",
+  "text": "Which configuration helps prevent overlapping production deployments and cancels in-progress deployments when a newer run starts?",
+  "options": [
+   {
+    "text": "Using larger runners",
+    "correct": false,
+    "why": "This option does not match what the module teaches."
+   },
+   {
+    "text": "Adding more approvals",
+    "correct": false,
+    "why": "This option does not match what the module teaches."
+   },
+   {
+    "text": "Concurrency with a shared group and cancel-in-progress",
+    "correct": true,
+    "why": "Concurrency serializes deployments by group, and cancel-in-progress prevents overlapping deployments that can create inconsistent production state."
+   },
+   {
+    "text": "Disabling workflow_dispatch",
+    "correct": false,
+    "why": "This option does not match what the module teaches."
+   }
+  ],
+  "takeaway": "Concurrency serializes deployments by group, and cancel-in-progress prevents overlapping deployments that can create inconsistent production state."
+ },
+ {
+  "id": "off-m6-5",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d6",
+  "objective": "6.2.2",
+  "module": "m6",
+  "unit": "m6-enforce-governance-github-controls",
+  "type": "single",
+  "text": "What is the best GitHub-native mechanism to route required review for sensitive paths like .github/workflows/ and infra/?",
+  "options": [
+   {
+    "text": "Asking reviewers in chat",
+    "correct": false,
+    "why": "This option does not match what the module teaches."
+   },
+   {
+    "text": "CODEOWNERS (with required reviews policy)",
+    "correct": true,
+    "why": "CODEOWNERS routes review based on file paths and, when required, ensures sensitive changes cannot merge without the correct approvals."
+   },
+   {
+    "text": "Adding labels and milestones",
+    "correct": false,
+    "why": "This option does not match what the module teaches."
+   },
+   {
+    "text": "Squashing commits before merge",
+    "correct": false,
+    "why": "This option does not match what the module teaches."
+   }
+  ],
+  "takeaway": "CODEOWNERS routes review based on file paths and, when required, ensures sensitive changes cannot merge without the correct approvals."
+ }
+]

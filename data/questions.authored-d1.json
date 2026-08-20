@@ -1,0 +1,290 @@
+[
+ {
+  "id": "auth-d1-01",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.1.1", "module": "m1",
+  "unit": "m1-explain-agent-lifecycle-plan-act-evaluate",
+  "type": "single",
+  "text": "An agent opens a pull request, CI fails on a lint rule, and the agent pushes a fixing commit and waits for the checks again. Which phase of the agent lifecycle drove that second commit?",
+  "options": [
+   {"text": "Plan - the agent re-derived the goal from the original issue.", "correct": false, "why": "Planning is where the goal is interpreted and steps are chosen. Here the goal never changed; a system signal did."},
+   {"text": "Evaluate - the failing status check is the feedback signal that sent the loop back around.", "correct": true, "why": "Plan to act to evaluate is a loop, not a one-way sequence. Evaluation consumes objective signals (workflow runs, status checks, review feedback, security alerts) and, when they fail, the agent revises and re-runs until success criteria are met or it escalates."},
+   {"text": "Act - pushing a commit is action, so the loop never left the act phase.", "correct": false, "why": "The commit is indeed an action, but the question asks what drove it. The trigger was the evaluation signal; the action is the consequence."},
+   {"text": "None - re-running checks happens outside the lifecycle.", "correct": false, "why": "Iteration on feedback is the defining behavior of an agentic system, not something outside its lifecycle."}
+  ],
+  "takeaway": "Plan to act to evaluate is a loop. Objective GitHub signals (checks, reviews, scans) feed the next iteration - the agent's own confidence does not."
+ },
+ {
+  "id": "auth-d1-02",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.1.1", "module": "m2",
+  "unit": "m2-agent-responsibilities",
+  "type": "single",
+  "text": "You are scoping a dependency-remediation agent for the first time. Which SDLC stages should it own, and where should its responsibility end?",
+  "options": [
+   {"text": "Planning through deployment, so it can ship the fix end to end without waiting on people.", "correct": false, "why": "Deployment is the stage the modules say to restrict. Agents prepare; environments and approvals decide whether the change ships."},
+   {"text": "Implementation and validation: detect, branch, update the dependency, open a PR with a plan - then stop and let checks, reviews, and policy decide.", "correct": true, "why": "Most teams start by scoping agents to implementation and validation, because pull requests and workflows give natural control points there. The design boundary is: agents propose; humans and policy accept."},
+   {"text": "Validation only, reviewing other people's dependency PRs rather than raising its own.", "correct": false, "why": "That is a legitimate agent role, but it wastes the capability in question. A remediation agent's value is producing the bounded change, and implementation is a controllable stage."},
+   {"text": "Planning only, so a human writes every line of the actual change.", "correct": false, "why": "Planning-only is appropriate for high-risk work such as infrastructure. A routine dependency bump is exactly the reversible, well-checked change agents handle well."}
+  ],
+  "takeaway": "Map agents to specific SDLC stages where GitHub can enforce a boundary. Implementation and validation are the usual starting point; deployment stays gated."
+ },
+ {
+  "id": "auth-d1-03",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.1.2", "module": "m1",
+  "unit": "m1-identify-risks-traceability",
+  "type": "single",
+  "text": "A team's post-incident review says: \"The agent's PR passed CI, so we merged it. Nobody looked at the blast radius.\" Which anti-pattern does this describe?",
+  "options": [
+   {"text": "Planless execution", "correct": false, "why": "Planless execution is starting to change code with no inspectable approach. Here the problem is what happened at review time, not at planning time."},
+   {"text": "Over-permissioned agents", "correct": false, "why": "Over-permissioning is about the agent's token and tool access being broader than the task requires. Nothing here suggests the agent could do more than it should."},
+   {"text": "Blind trust in automation", "correct": true, "why": "\"CI passed, ship it\" is the named anti-pattern. Checks only validate what they were designed to detect; a green build does not mean the change is complete, appropriate, or low risk. The mitigation is combining checks with CODEOWNERS, required reviews, and risk-based approvals."},
+   {"text": "Hidden reasoning", "correct": false, "why": "Hidden reasoning is the absence of plan, assumptions, and decision trail. The failure described is trusting the signals that were present, not missing ones."}
+  ],
+  "takeaway": "A passing check is evidence, not a verdict. Pair automated signals with ownership routing and risk-proportionate human review."
+ },
+ {
+  "id": "auth-d1-04",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.1.2", "module": "m1",
+  "unit": "m1-identify-risks-traceability",
+  "type": "multi",
+  "text": "Which of the following belong in a minimum audit trail for an agent contribution? (Select all that apply.)",
+  "options": [
+   {"text": "A stated goal, linked to an issue or captured in the PR description", "correct": true, "why": "Yes. Without a stated goal you cannot judge whether the change did what it was supposed to."},
+   {"text": "An inspectable plan and a bounded changeset on a branch", "correct": true, "why": "Yes. The plan makes intent reviewable and the bounded changeset keeps scope assessable."},
+   {"text": "Automated evidence (workflow runs and artifacts) plus the human review outcome", "correct": true, "why": "Yes. Evidence and judgment are both required - the modules pair objective signals with human decisions."},
+   {"text": "The model name and token count for the agent's inference calls", "correct": false, "why": "Interesting telemetry, but not part of the minimum audit trail. The trail is about goal, plan, change, evidence, judgment, and outcome - what a reviewer needs to reconstruct the decision."}
+  ],
+  "takeaway": "Minimum audit trail: goal, plan, bounded changeset, automated evidence, human judgment, and a clear outcome (merge, revert, or escalation)."
+ },
+ {
+  "id": "auth-d1-05",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.1.3", "module": "m2",
+  "unit": "m2-inputs-outputs-success-criteria",
+  "type": "single",
+  "text": "An agent closes a vulnerability task with a green build, but the vulnerable version is still reachable through a transitive dependency. Which part of the task contract was defective?",
+  "options": [
+   {"text": "The inputs - the agent was not given the security alert.", "correct": false, "why": "The agent clearly acted on the alert; it produced a change aimed at that dependency. The defect showed up at acceptance, not at input."},
+   {"text": "The success criteria - they measured \"tests pass\" instead of \"the vulnerability is resolved\".", "correct": true, "why": "Success criteria must reflect the real intent of the task. \"CI passed\" is necessary but not sufficient; the criterion should be that the security signal is actually resolved, which a transitive path leaves unmet."},
+   {"text": "The outputs - the agent should have produced a report instead of a pull request.", "correct": false, "why": "A pull request with a plan and evidence links is the right output shape. Swapping it for a report would not have caught the transitive path."},
+   {"text": "Nothing - transitive dependencies are outside any reasonable task contract.", "correct": false, "why": "They are exactly what a well-specified success criterion catches, and dependency review and code scanning surface them."}
+  ],
+  "takeaway": "Write success criteria against intent (\"vulnerability resolved\"), not against proxies (\"tests passed\"), and enforce them as required checks."
+ },
+ {
+  "id": "auth-d1-06",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.1.3", "module": "m2",
+  "unit": "m2-inputs-outputs-success-criteria",
+  "type": "single",
+  "text": "Which item belongs under Inputs rather than Outputs in an agent task contract?",
+  "options": [
+   {"text": "A structured plan in the pull request description", "correct": false, "why": "The plan is something the agent produces, so it is an output."},
+   {"text": "Repository scope: changes allowed under src/ and dependency files, but not infra/ unless explicitly requested", "correct": true, "why": "Scope and constraints are what the agent receives before it starts - alongside the issue context and boundaries. They define the box the agent works inside."},
+   {"text": "A bounded changeset of commits on an agent branch", "correct": false, "why": "Commits are produced by the work, so they are an output."},
+   {"text": "Evidence links to the workflow run", "correct": false, "why": "Evidence is generated during execution and attached to the PR, making it an output."}
+  ],
+  "takeaway": "Inputs are context, constraints, and boundaries. Outputs are plan, changeset, and evidence. Success criteria are how the outputs get judged."
+ },
+ {
+  "id": "auth-d1-07",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.2.1", "module": "m2",
+  "unit": "m2-plan-reason-execution",
+  "type": "single",
+  "text": "Your team runs a plan-first pull request workflow for infrastructure changes and a plan-plus-execution workflow for application code. What is the actual difference between the two?",
+  "options": [
+   {"text": "Plan-first requires review; plan-plus-execution does not.", "correct": false, "why": "Both are reviewed. GitHub's merge controls - required checks, CODEOWNERS, branch protection - apply identically to both."},
+   {"text": "Plan-first uses pull requests; plan-plus-execution pushes directly to the default branch.", "correct": false, "why": "Neither pattern pushes to the default branch. Both converge on a pull request as the governance surface."},
+   {"text": "The timing of human validation relative to code generation.", "correct": true, "why": "Both options use the same controls; the choice is when the system allows code to be generated relative to human validation. Plan-first approves intent before any code exists, which reduces early exposure. Plan-plus-execution generates code immediately but still cannot merge without approval."},
+   {"text": "Plan-first uses a read-only agent; plan-plus-execution grants write access to main.", "correct": false, "why": "A read-only planning agent is one way to enforce the capability boundary, but it is not what distinguishes the two workflows, and neither grants write access to main."}
+  ],
+  "takeaway": "The choice is not whether work is reviewed - it always is. It is when code is allowed to exist relative to human validation."
+ },
+ {
+  "id": "auth-d1-08",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.2.1", "module": "m2",
+  "unit": "m2-plan-reason-execution",
+  "type": "single",
+  "text": "A planning agent's instructions say \"do not edit any files during planning\", but it occasionally edits files anyway. What is the correct fix?",
+  "options": [
+   {"text": "Restate the instruction more forcefully and add it to the repository instructions file.", "correct": false, "why": "The modules are explicit: treat \"instructions not to edit\" as guidance, not enforcement. Restating guidance does not make it a control."},
+   {"text": "Limit the planning agent to a read-only toolset so file modification is not an available capability.", "correct": true, "why": "Capability boundaries are enforcement. A planning agent restricted to read-only tools cannot modify files regardless of what it reasons. Execution then happens through an explicit handoff to an implementation agent after the plan is approved."},
+   {"text": "Add a required status check that fails when the planning PR contains code changes.", "correct": false, "why": "This is a useful backstop, but it catches the violation after the fact rather than preventing it. Tool allowlists stop the action from happening at all."},
+   {"text": "Switch the planning agent to a model that follows instructions more reliably.", "correct": false, "why": "This reduces frequency and still relies on model compliance. The published guidance is to enforce with allowlists and gates, not to rely on reasoning."}
+  ],
+  "takeaway": "Treat instructions as guidance and tool allowlists or gates as enforcement. If the platform cannot enforce it, it will eventually be bypassed."
+ },
+ {
+  "id": "auth-d1-09",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.2.2", "module": "m2",
+  "unit": "m2-pull-request-governance-controls",
+  "type": "multi",
+  "text": "Your pull request template must force every agent PR to carry a usable structured plan. Which sections most directly serve that goal? (Select all that apply.)",
+  "options": [
+   {"text": "Goal and scope (paths/files to be changed)", "correct": true, "why": "Yes. Goal and scope let a reviewer check the changeset against declared intent - the core of plan validation."},
+   {"text": "Verifiable success criteria as a checklist", "correct": true, "why": "Yes. Criteria written as checkable items turn a narrative plan into something a reviewer, and often a check, can evaluate objectively."},
+   {"text": "Risks, mitigations, and a rollback or escalation plan", "correct": true, "why": "Yes. The modules call out rollback and escalation explicitly - a plan that cannot be undone is not a complete plan."},
+   {"text": "A rendering of the full diff pasted into the description", "correct": false, "why": "No. The diff is already visible in the Files tab. Duplicating it adds noise and tells the reviewer nothing about intent."}
+  ],
+  "takeaway": "A structured plan states goal, scope, steps, verifiable success criteria, risks, and a rollback or escalation path."
+ },
+ {
+  "id": "auth-d1-10",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.2.2", "module": "m2",
+  "unit": "m2-reliable-workflows",
+  "type": "single",
+  "text": "A planning job produces a plan that a later job in the same workflow must consume. What is the correct mechanism?",
+  "options": [
+   {"text": "Echo the plan to the job log and have the downstream job parse the log.", "correct": false, "why": "Logs are not a data contract. The modules are explicit that data downstream steps must consume should be an explicit output, not \"just logs\"."},
+   {"text": "Declare a job output on the plan job and reference it from the dependent job via needs.", "correct": true, "why": "Job outputs pass values across jobs through job dependencies: the plan job declares outputs, and the dependent job reads needs.plan.outputs.plan. Step outputs cover the same-job case; environment variables configure runtime behavior rather than carrying structured data."},
+   {"text": "Write the plan into an environment variable at workflow level.", "correct": false, "why": "Environment variables configure runtime behavior. They are not the mechanism for structured data flow between jobs."},
+   {"text": "Commit the plan file back to the branch so the next job can check it out.", "correct": false, "why": "Committing generated files back to the repository pollutes history. Artifacts (upload where produced, download where consumed) or job outputs are the intended patterns."}
+  ],
+  "takeaway": "Step outputs move data within a job; job outputs plus needs move it across jobs; artifacts carry files. Logs are for humans."
+ },
+ {
+  "id": "auth-d1-11",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.2.3", "module": "m2",
+  "unit": "m2-pull-request-governance-controls",
+  "type": "single",
+  "text": "Your repository has a pull request template with a required Plan section, but agent PRs still merge with the section left empty. What converts this expectation into a guarantee?",
+  "options": [
+   {"text": "Make the template's fields required in repository settings.", "correct": false, "why": "Pull request templates prefill the description; they do not validate that a contributor filled anything in."},
+   {"text": "Add a plan-gate workflow that fails when the plan is missing, and mark it as a required status check via rulesets or branch protection.", "correct": true, "why": "This is the published pattern: a check that validates the plan exists, promoted to a required status check by an administrator. That turns a process expectation into a system guarantee - the PR cannot merge without it."},
+   {"text": "Add a CODEOWNERS entry for the pull request template file.", "correct": false, "why": "CODEOWNERS routes review when that file itself changes. It has no effect on whether an individual PR body contains a plan."},
+   {"text": "Ask the agent to self-check its description before opening the PR.", "correct": false, "why": "Self-checking is voluntary behavior. Governance in GitHub is enforced through policy, not trust."}
+  ],
+  "takeaway": "Templates encourage; required checks enforce. Validate the plan in CI and make that check required."
+ },
+ {
+  "id": "auth-d1-12",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.2.3", "module": "m2",
+  "unit": "m2-plan-reason-execution",
+  "type": "single",
+  "text": "A reviewer is validating an agent's plan before approving execution. Which check is the most direct test of the plan's quality?",
+  "options": [
+   {"text": "Whether the plan is shorter than one page.", "correct": false, "why": "Length is not a quality signal. A short plan that omits scope and rollback is worse than a longer complete one."},
+   {"text": "Whether the declared scope, success criteria, and rollback path match the risk of the change.", "correct": true, "why": "Plan validation asks whether intent is stated clearly enough to judge: what will change, how you will know it worked, and what happens if it does not. High-risk work needs proportionally stronger criteria and an explicit rollback or escalation path."},
+   {"text": "Whether the agent expressed high confidence in the approach.", "correct": false, "why": "Agent confidence is exactly the signal the modules tell you not to rely on. Evaluation must be grounded in system signals and stated criteria."},
+   {"text": "Whether the plan names the model that generated it.", "correct": false, "why": "Provenance metadata is useful for auditing but says nothing about whether the approach is sound."}
+  ],
+  "takeaway": "Validate a plan against scope, verifiable success criteria, and a rollback path proportionate to the change's risk."
+ },
+ {
+  "id": "auth-d1-13",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.2.4", "module": "m2",
+  "unit": "m2-plan-reason-execution",
+  "type": "single",
+  "text": "In an automated orchestration, you need the agent to produce a plan and then genuinely stop until that plan is accepted. Which design achieves this?",
+  "options": [
+   {"text": "Run planning and execution in one job and add a log line saying \"awaiting approval\".", "correct": false, "why": "Nothing pauses. The job continues past the log line and executes the unapproved plan."},
+   {"text": "Force the planning phase to run with tools disabled, then enable execution tools only after the plan is accepted.", "correct": true, "why": "This is tool gating in orchestrators: planning runs without tool execution, and tools are enabled only once the plan is accepted. Combined with an explicit handoff to an implementation agent, the transition becomes deliberate rather than implicit."},
+   {"text": "Give the planning agent write access but instruct it to wait for a comment on the PR.", "correct": false, "why": "The capability still exists, so the boundary depends on the agent choosing to honor it. Capability boundaries beat instructions."},
+   {"text": "Set a long timeout-minutes on the execution job so a human has time to intervene.", "correct": false, "why": "A timeout is a deadline, not an approval gate. If nobody intervenes in time, the unapproved work still runs."}
+  ],
+  "takeaway": "Prevent premature action with capability boundaries and explicit transitions - tool gating, plan-mode workflows, environment approvals - not with instructions to wait."
+ },
+ {
+  "id": "auth-d1-14",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.2.4", "module": "m1",
+  "unit": "m1-describe-github-system-record-control-plane",
+  "type": "single",
+  "text": "For pull requests from untrusted contributors and agents, GitHub can require a human to click \"Approve and run workflows\" before any workflow executes. What risk does this guardrail primarily address?",
+  "options": [
+   {"text": "It stops the pull request from being merged before review.", "correct": false, "why": "Merge protection comes from rulesets, required reviews, and required checks. This gate is about execution, not merge."},
+   {"text": "It prevents privileged workflows from running automatically against changes nobody has looked at yet.", "correct": true, "why": "The gate stops workflow execution - and therefore access to runners, tokens, and potentially secrets - until a human with write access has looked at the change. It is a built-in guardrail against privileged execution on untrusted input."},
+   {"text": "It reduces GitHub Actions minutes consumption on draft pull requests.", "correct": false, "why": "Cost may drop as a side effect, but the control exists for security, not billing."},
+   {"text": "It guarantees the agent's commits are signed.", "correct": false, "why": "Commit signing is enforced by rulesets. It is unrelated to workflow-run approval."}
+  ],
+  "takeaway": "Approval before workflow execution is a distinct gate from approval before merge - it protects the runner, token, and secrets."
+ },
+ {
+  "id": "auth-d1-15",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.3.1", "module": "m2",
+  "unit": "m2-reliable-workflows",
+  "type": "single",
+  "text": "Using the risk-based autonomy model from the architecture module, how should changes under .github/workflows/ be governed compared with changes under docs/?",
+  "options": [
+   {"text": "Identically - both are text files and both go through a pull request.", "correct": false, "why": "Uniform rules are exactly what risk-based autonomy replaces. Workflow files are a \"small diff, big consequence\" area."},
+   {"text": "docs/ can be automerged after required checks pass; .github/workflows/ needs CODEOWNERS review, multiple approvals, and stricter rulesets.", "correct": true, "why": "The published model tiers autonomy by risk: low-risk paths such as docs and formatting can be automerged after checks; high-risk paths such as infra/ and .github/workflows/ require CODEOWNERS plus multiple reviews and stronger rules. Critical actions such as production deploys and secrets go further, to environment approvals."},
+   {"text": "Workflow changes should be blocked entirely for agents; docs changes need two human reviewers.", "correct": false, "why": "This inverts the intent: it over-restricts high-risk work into impossibility and taxes the low-risk work that should flow freely."},
+   {"text": "docs/ needs an environment approval; .github/workflows/ needs required checks only.", "correct": false, "why": "This applies the strongest control to the least risky path and the weakest to the most dangerous one."}
+  ],
+  "takeaway": "Tier autonomy by risk: low (automerge after checks), medium (PR plus checks plus a review), high (CODEOWNERS plus stricter rules), critical (environment approval)."
+ },
+ {
+  "id": "auth-d1-16",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.3.2", "module": "m2",
+  "unit": "m2-agent-operations-controls",
+  "type": "single",
+  "text": "During an audit you must answer: \"Which workflow run produced this test report, and against what code state?\" What design principle makes that answerable?",
+  "options": [
+   {"text": "Evidence must be traceable to a specific workflow run and a specific commit.", "correct": true, "why": "This is the naming and metadata principle the operations unit teaches. Without run-and-commit traceability you have an artifact you cannot tie to a code state, which defeats both audit and debugging."},
+   {"text": "Artifacts should be committed back into the repository so git history holds them.", "correct": false, "why": "Committing generated files back is the pattern the modules steer you away from. Upload where produced, download where consumed."},
+   {"text": "Every artifact should be uploaded with a random unique name to avoid collisions.", "correct": false, "why": "Random names guarantee uniqueness and destroy meaning. The point is traceability, not just distinctness."},
+   {"text": "Logs should be retained indefinitely.", "correct": false, "why": "Indefinite retention is neither available by default nor sufficient - an unbounded log pile without run and commit linkage still cannot answer the question."}
+  ],
+  "takeaway": "Evidence is only useful when it points at a specific run and a specific commit. Design artifact naming and metadata for that."
+ },
+ {
+  "id": "auth-d1-17",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.3.3", "module": "m6",
+  "unit": "m6-design-human-workflows",
+  "type": "single",
+  "text": "A team added mandatory human approval to every agent action. Six weeks later, approvals are rubber-stamped within seconds and one bad production change slipped through. What is the correct remedy?",
+  "options": [
+   {"text": "Add a second required approver to every action.", "correct": false, "why": "Doubling an approval nobody reads doubles the friction and halves nothing. Rubber-stamping is a named governance anti-pattern; more of the same makes it worse."},
+   {"text": "Move humans to decision points that matter - merge, deploy, secret access - and let analysis, formatting, and routine checks run automatically.", "correct": true, "why": "The published guidance is to put humans at decision points, not at every step. Concentrating approvals where risk is material restores the reviewer's attention and preserves velocity for reversible work."},
+   {"text": "Remove human approval entirely and rely on required status checks.", "correct": false, "why": "Checks validate only what they were designed to detect. High-impact and irreversible actions still need human judgment."},
+   {"text": "Require approvals only outside business hours so reviewers are less rushed.", "correct": false, "why": "Approval quality is a function of relevance and evidence, not of the clock."}
+  ],
+  "takeaway": "Every approval should buy meaningful safety. Approval everywhere produces approval theater and hides the decisions that matter."
+ },
+ {
+  "id": "auth-d1-18",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d1", "objective": "1.3.3", "module": "m6",
+  "unit": "m6-design-human-workflows",
+  "type": "multi",
+  "text": "Which practices reduce governance fatigue while keeping oversight intact? (Select all that apply.)",
+  "options": [
+   {"text": "Require evidence - tests, scans, artifacts - so review is fast", "correct": true, "why": "Yes. A reviewer with the evidence in front of them decides quickly and correctly. Missing evidence is what makes review slow and shallow."},
+   {"text": "Route reviews via CODEOWNERS so reviewers already have context", "correct": true, "why": "Yes. Path-based routing sends the change to people who understand it, instead of taxing everyone with everything."},
+   {"text": "Keep pull requests small and scoped", "correct": true, "why": "Yes. Small PRs are faster to review and safer to revert - the modules tie small scope directly to rollback safety."},
+   {"text": "Batch a week of agent changes into one large pull request to reduce review count", "correct": false, "why": "No. Fewer, larger reviews means each one is harder, riskier, and less likely to be read properly - and rollback becomes coarse."}
+  ],
+  "takeaway": "Fast review comes from good evidence, targeted routing, and small scope - not from removing the review."
+ }
+]

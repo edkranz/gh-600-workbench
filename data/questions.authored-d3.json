@@ -1,0 +1,210 @@
+[
+ {
+  "id": "auth-d3-01",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d3", "objective": "3.1.1", "module": "m4",
+  "unit": "m4-agent-memory-strategies",
+  "type": "single",
+  "text": "Match the information to the right memory tier: the acceptance criteria for the task currently in flight, the team's reusable review conventions, and the recent chat turns in this session.",
+  "options": [
+   {"text": "Acceptance criteria to external memory (issue), conventions to long-term memory (repository instructions), recent turns to short-term memory.", "correct": true, "why": "External memory is durable and reviewable, which is why requirements and acceptance criteria belong in issues or PR descriptions. Long-term memory holds curated, reusable knowledge such as conventions and repeatable processes. Short-term memory is the working context for the current task and is not preserved across sessions."},
+   {"text": "All three to short-term memory, since the agent needs them all right now.", "correct": false, "why": "Short-term memory does not survive the session, so requirements and conventions would be lost the moment work pauses."},
+   {"text": "Acceptance criteria to short-term memory, conventions to external memory, recent turns to long-term memory.", "correct": false, "why": "This inverts durability. Ephemeral chat turns do not deserve long-term storage, and criteria need to outlive the session."},
+   {"text": "All three to long-term memory, so nothing is ever lost.", "correct": false, "why": "Storing everything forever produces stale, diluted context. Memory should be selective and pruned."}
+  ],
+  "takeaway": "Short-term = current working context. Long-term = curated reusable knowledge. External (GitHub artifacts) = the durable source of truth."
+ },
+ {
+  "id": "auth-d3-02",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d3", "objective": "3.1.1", "module": "m4",
+  "unit": "m4-agent-memory-strategies",
+  "type": "single",
+  "text": "Why does the module call external memory the source of truth rather than long-term memory?",
+  "options": [
+   {"text": "Because external memory is faster to query.", "correct": false, "why": "Speed is not the criterion. Issues and PRs are not necessarily faster to read than in-context memory."},
+   {"text": "Because it is persistent and can be reviewed at any time by anyone, not just by the agent.", "correct": true, "why": "External memory lives in durable systems - issues, pull requests, documentation, workflow outputs. Persistence plus reviewability is what makes it authoritative: a human can inspect it, correct it, and hold the agent to it."},
+   {"text": "Because long-term memory is deleted at the end of every session.", "correct": false, "why": "That describes short-term memory. Long-term memory persists but is not independently inspectable in the same way."},
+   {"text": "Because external memory is encrypted at rest.", "correct": false, "why": "Encryption is unrelated to why the module designates it the source of truth."}
+  ],
+  "takeaway": "External memory wins because it is durable and inspectable - the same property that makes GitHub the system of record."
+ },
+ {
+  "id": "auth-d3-03",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d3", "objective": "3.1.2", "module": "m4",
+  "unit": "m4-agent-memory-strategies",
+  "type": "multi",
+  "text": "Which information is relevant enough to keep in an agent's memory for a task? (Select all that apply.)",
+  "options": [
+   {"text": "Requirements and constraints for the task", "correct": true, "why": "Yes. These directly affect the outcome and are the first thing to preserve."},
+   {"text": "Decisions that affect the implementation", "correct": true, "why": "Yes. Losing prior decisions is how an agent contradicts itself across sessions."},
+   {"text": "The validation and testing approach", "correct": true, "why": "Yes. How the work will be judged shapes how it should be done."},
+   {"text": "Every intermediate step the agent took while exploring the repository", "correct": false, "why": "No. Temporary intermediate steps and duplicated context do not affect the outcome. Keeping them dilutes signal and raises the chance of acting on outdated information."}
+  ],
+  "takeaway": "Keep what changes the outcome - requirements, constraints, decisions, validation approach. Drop transient exploration and duplicated context."
+ },
+ {
+  "id": "auth-d3-04",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d3", "objective": "3.1.3", "module": "m4",
+  "unit": "m4-agent-state-context-drift",
+  "type": "single",
+  "text": "By default, how long does GitHub retain workflow logs and artifacts, and how far can that be adjusted?",
+  "options": [
+   {"text": "30 days by default, adjustable up to 90 days for all repositories.", "correct": false, "why": "The default is longer than 30 days, and the private-repository ceiling is considerably higher."},
+   {"text": "90 days by default; retention is configurable at repository, organization, or enterprise level, with public repositories typically allowing 1-90 days and private repositories up to 400 days.", "correct": true, "why": "This matters for memory expiration design: evidence you expect to audit later must either be retained deliberately or summarized into a durable artifact before it expires."},
+   {"text": "Indefinitely, unless manually deleted.", "correct": false, "why": "Logs and artifacts are automatically deleted after the retention period."},
+   {"text": "400 days by default for every repository.", "correct": false, "why": "400 days is the upper bound configurable for private repositories, not the default."}
+  ],
+  "takeaway": "90 days by default; configurable (roughly 1-90 for public, up to 400 for private). Plan expiration and summarization around that."
+ },
+ {
+  "id": "auth-d3-05",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d3", "objective": "3.1.3", "module": "m4",
+  "unit": "m4-agent-state-context-drift",
+  "type": "single",
+  "text": "Requirements in the linked issue changed significantly halfway through an agent's task. Which memory-maintenance rule applies?",
+  "options": [
+   {"text": "Pruning - delete the workflow artifacts produced so far.", "correct": false, "why": "Pruning removes outdated or unnecessary artifacts to reduce clutter. It does not address carrying forward assumptions that are now wrong."},
+   {"text": "A reset rule - update or rewrite the pull request description, or close and recreate the PR, and document the new direction before continuing.", "correct": true, "why": "Reset rules exist for exactly this: requirements change significantly, a new implementation approach is chosen, or prior assumptions are no longer valid. The practical steps are to rewrite the PR description, recreate the PR if needed, and clearly document the new direction."},
+   {"text": "Summarization - condense the execution history into key points.", "correct": false, "why": "Summarization keeps memory manageable while preserving traceability. It does not invalidate assumptions that have become wrong."},
+   {"text": "Expiration - wait for the 90-day retention window to clear the old context.", "correct": false, "why": "Waiting three months is not a strategy, and the stale assumptions live in the PR description, not only in logs."}
+  ],
+  "takeaway": "Expiration is time-based, pruning is clutter-based, summarization is volume-based - reset is for when the premises themselves changed."
+ },
+ {
+  "id": "auth-d3-06",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d3", "objective": "3.2.1", "module": "m4",
+  "unit": "m4-agent-state-context-drift",
+  "type": "multi",
+  "text": "Which GitHub artifacts collectively act as durable state for an agent task? (Select all that apply.)",
+  "options": [
+   {"text": "An issue holding requirements and acceptance criteria", "correct": true, "why": "Yes. The issue anchors what \"done\" means and survives every session."},
+   {"text": "A pull request tracking implementation, plan, and decisions", "correct": true, "why": "Yes. GitHub aggregates commits, checks, and discussion in the PR, making it the primary place to track progress and decisions."},
+   {"text": "Commits representing incremental progress and workflow runs capturing validation results", "correct": true, "why": "Yes. Commits show what has already been done; workflow runs show what has been validated."},
+   {"text": "The agent's in-session chat transcript", "correct": false, "why": "No. Chat history is short-term context. The guidance is explicit: avoid storing critical information only in prompts or chat history."}
+  ],
+  "takeaway": "Issue plus pull request plus commits plus workflow runs is the durable state set. Chat history is not state."
+ },
+ {
+  "id": "auth-d3-07",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d3", "objective": "3.2.2", "module": "m4",
+  "unit": "m4-agent-state-context-drift",
+  "type": "single",
+  "text": "An agent resumes a task after a pause. Which sequence correctly reconstructs where it left off?",
+  "options": [
+   {"text": "Re-read the original prompt and start the implementation again from scratch.", "correct": false, "why": "This is the duplication the resume pattern exists to prevent, and it risks contradicting decisions already made."},
+   {"text": "Open the existing pull request, review its description and the linked issue, check commits already made, review workflow results in the Checks tab, then continue from the latest state.", "correct": true, "why": "This is the documented resume flow. Because GitHub preserves commit history and workflow runs, the agent can identify completed work and avoid repeating it."},
+   {"text": "Query the previous session's chat transcript to recover context.", "correct": false, "why": "Session context is not preserved across sessions and is not reviewable by anyone else."},
+   {"text": "Re-run every workflow first to regenerate all evidence.", "correct": false, "why": "Existing runs already record validation results. Blind re-runs burn time without telling you what is done."}
+  ],
+  "takeaway": "Resume by re-anchoring to durable state - PR, issue, commits, checks - not by replaying the conversation."
+ },
+ {
+  "id": "auth-d3-08",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d3", "objective": "3.2.3", "module": "m4",
+  "unit": "m4-agent-state-context-drift",
+  "type": "multi",
+  "text": "Which observations would indicate context drift during an extended agent execution? (Select all that apply.)",
+  "options": [
+   {"text": "The pull request's changes no longer satisfy the stated acceptance criteria", "correct": true, "why": "Yes. Divergence from acceptance criteria is the primary drift signal."},
+   {"text": "Recent commits contradict decisions recorded earlier in the PR", "correct": true, "why": "Yes. Contradicting prior decisions means the agent is no longer working from the agreed picture."},
+   {"text": "Workflow checks that used to run are now failing or missing entirely", "correct": true, "why": "Yes. Missing or newly failing checks suggest the agent's actions have moved away from the validated path."},
+   {"text": "The workflow run took longer than the previous run", "correct": false, "why": "No. Run duration is a performance observation. Drift is about alignment with goal and prior decisions, not speed."}
+  ],
+  "takeaway": "Detect drift by comparing current changes against acceptance criteria, recorded decisions, and expected checks. Correct it by re-reading the source of truth."
+ },
+ {
+  "id": "auth-d3-09",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d3", "objective": "3.3.1", "module": "m4",
+  "unit": "m4-memory-state-continuity",
+  "type": "single",
+  "text": "A task starts in the IDE, continues in the CLI, and finishes on GitHub. How should state be shared across those surfaces?",
+  "options": [
+   {"text": "Copy the accumulated context into each tool's prompt as the work moves.", "correct": false, "why": "Copied context is the mechanism by which conflicting versions appear. The guidance is to share durable references, not copied context."},
+   {"text": "Share durable references - pull request numbers, branch names, commit SHAs, workflow run links, issue and PR URLs - so every environment retrieves the same state.", "correct": true, "why": "Because all environments can access the same repository data, referencing rather than copying lets the agent maintain continuity without transferring session context. The pull request becomes the central reference point."},
+   {"text": "Export the session to a local file and re-import it in the next tool.", "correct": false, "why": "A local export is invisible to reviewers, not versioned, and diverges the moment the repository changes."},
+   {"text": "Keep each tool's state private and reconcile at the end.", "correct": false, "why": "Private per-tool state is precisely what produces conflicting context. No tool should keep private mutable state."}
+  ],
+  "takeaway": "Share references, not copies. The PR, branch, commit SHA, and run links resolve to the same state from any environment."
+ },
+ {
+  "id": "auth-d3-10",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d3", "objective": "3.3.1", "module": "m4",
+  "unit": "m4-memory-state-continuity",
+  "type": "single",
+  "text": "Which mapping of information type to source of truth matches the module's guidance?",
+  "options": [
+   {"text": "Requirements to issues; decisions and progress to pull requests; validation rules to repository instructions; execution results to workflow runs and artifacts.", "correct": true, "why": "Defining exactly one home per information type is what prevents conflicting context. Each type has a clear location and updates go to the original rather than to a new copy."},
+   {"text": "Requirements to the agent's prompt; decisions to chat history; results to reviewer memory.", "correct": false, "why": "None of these are durable or inspectable, and the guidance explicitly warns against storing critical information only in prompts or chat."},
+   {"text": "Everything to a single README file for simplicity.", "correct": false, "why": "One file for everything makes concurrent updates collide and cannot carry per-run execution evidence."},
+   {"text": "Requirements to pull requests; decisions to issues; results to commit messages.", "correct": false, "why": "This shuffles the roles. Issues define requirements; PRs carry decisions and progress; results live in workflow runs and artifacts."}
+  ],
+  "takeaway": "One information type, one home. Issues for requirements, PRs for decisions and progress, instructions for rules, runs and artifacts for results."
+ },
+ {
+  "id": "auth-d3-11",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d3", "objective": "3.3.2", "module": "m4",
+  "unit": "m4-memory-state-continuity",
+  "type": "single",
+  "text": "Acceptance criteria have been restated - slightly differently - in the issue, in the PR description, and in the agent's prompt. What is the correct correction?",
+  "options": [
+   {"text": "Pick whichever version is most recent and delete the other two.", "correct": false, "why": "Right instinct, wrong rule. Recency is not authority; the fix is to designate the source of truth and update it, not to race timestamps."},
+   {"text": "Keep the issue as the single source of truth for requirements, remove the duplicates, and have the PR and prompt reference it instead of restating it.", "correct": true, "why": "Conflicting context happens when the same information exists in multiple places with different values. The remedy is one source of truth per information type, no duplication, and updating the original rather than creating new copies."},
+   {"text": "Have the agent reconcile the three versions itself at the start of each run.", "correct": false, "why": "Reconciling ambiguity every run is expensive and non-deterministic. Removing the ambiguity is cheaper and reliable."},
+   {"text": "Add a required status check that compares the three copies.", "correct": false, "why": "This automates the maintenance of a structure that should not exist."}
+  ],
+  "takeaway": "Prevent conflicting context by refusing to duplicate it: one home per information type, and always update the original."
+ },
+ {
+  "id": "auth-d3-12",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d3", "objective": "3.3.3", "module": "m4",
+  "unit": "m4-memory-state-continuity",
+  "type": "multi",
+  "text": "Which practices prevent stale context in GitHub agent workflows? (Select all that apply.)",
+  "options": [
+   {"text": "Ensure the branch is up to date with the base branch before continuing work", "correct": true, "why": "Yes. An out-of-date branch is the classic stale-context case, and branch protection can require branches to be up to date before merging."},
+   {"text": "Review the latest commits and workflow runs before making changes", "correct": true, "why": "Yes. Re-anchoring to current state at the start of work is how you avoid acting on a cached picture."},
+   {"text": "Update issues and pull requests whenever requirements change", "correct": true, "why": "Yes. Stale context often originates from requirements that moved while the artifacts did not."},
+   {"text": "Cache the repository tree at the start of a long task and reuse it throughout", "correct": false, "why": "No. That is how stale context is created: the cached copy diverges from the real repository as other work lands."}
+  ],
+  "takeaway": "Stale context is defeated by re-reading current state - up-to-date branches, latest commits and runs, and artifacts kept current."
+ },
+ {
+  "id": "auth-d3-13",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d3", "objective": "3.1.3", "module": "m4",
+  "unit": "m4-agent-state-context-drift",
+  "type": "single",
+  "text": "A compliance reviewer asks for evidence from an agent run that happened four months ago in a public repository. Artifacts are gone. What should the team have done?",
+  "options": [
+   {"text": "Restored the deleted artifacts from the Actions tab.", "correct": false, "why": "Deleted artifacts cannot be restored, and expired ones are gone as well."},
+   {"text": "Summarized the outcome into durable artifacts - final decisions in the PR description, key commits referenced, workflow runs linked - before retention expired.", "correct": true, "why": "Summarization is the documented answer to the retention limit: reduce detailed execution history into key points and references while preserving traceability. That summary lives in the PR and outlives the artifacts."},
+   {"text": "Extended public repository retention to 400 days.", "correct": false, "why": "The 400-day ceiling applies to private repositories; public repositories typically allow around 1-90 days."},
+   {"text": "Disabled artifact expiration in organization settings.", "correct": false, "why": "Retention can be configured within limits, but it cannot be disabled outright."}
+  ],
+  "takeaway": "Retention is finite. Summarize decisions and link key runs into durable artifacts before evidence expires."
+ }
+]

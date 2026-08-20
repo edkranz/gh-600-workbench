@@ -1,0 +1,251 @@
+{
+ "exam": {
+  "code": "GH-600",
+  "name": "Developing in Agentic AI Systems",
+  "credential": "GitHub Certified: Agentic AI Developer",
+  "level": "Intermediate",
+  "duration": "120 minutes",
+  "passingScore": 700,
+  "scale": "1000",
+  "questionCount": "~40-60",
+  "languages": ["English"],
+  "proctored": true,
+  "certUrl": "https://learn.microsoft.com/en-us/credentials/certifications/agentic-ai-developer/",
+  "studyGuideUrl": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/gh-600",
+  "sandboxUrl": "https://ghcertdemo.starttest.com/",
+  "audience": "You should have subject matter expertise in operating, integrating, supervising, and governing AI agents inside production-grade SDLC workflows and development environments, ensuring reliability, safety, and velocity using GitHub as the system of record and control plane.",
+  "responsibilities": [
+   "Operating agent workflows inside the SDLC",
+   "Supervising autonomous behavior with GitHub controls",
+   "Evaluating and tuning agent outputs using scans and artifacts",
+   "Configuring custom agents",
+   "Coordinating multi-agent execution safely"
+  ],
+  "paths": [
+   {"title": "Developing in Agentic AI Systems Part 1 of 2", "url": "https://learn.microsoft.com/en-us/training/paths/gh-developing-agentic-systems-1/"},
+   {"title": "Developing in Agentic AI Systems Part 2 of 2", "url": "https://learn.microsoft.com/en-us/training/paths/gh-developing-agentic-systems-2/"}
+  ]
+ },
+ "domains": [
+  {
+   "id": "d1",
+   "number": 1,
+   "title": "Prepare agent architecture and SDLC processes",
+   "weight": "15-20%",
+   "weightMid": 17.5,
+   "modules": ["m1", "m2"],
+   "groups": [
+    {
+     "title": "Integrate agents into the software development lifecycle (SDLC)",
+     "objectives": [
+      {"id": "1.1.1", "text": "Identify steps for agents to perform"},
+      {"id": "1.1.2", "text": "Identify and mitigate common anti-patterns in agents"},
+      {"id": "1.1.3", "text": "Define inputs, outputs, and success criteria for agents"}
+     ]
+    },
+    {
+     "title": "Define boundaries between planning, reasoning, and action",
+     "objectives": [
+      {"id": "1.2.1", "text": "Configure agent planning to be distinct from agent execution"},
+      {"id": "1.2.2", "text": "Configure an agent to output a structured plan"},
+      {"id": "1.2.3", "text": "Validate agent plans"},
+      {"id": "1.2.4", "text": "Prevent agent action until the agent checked and approved"}
+     ]
+    },
+    {
+     "title": "Configure observability and control for autonomous agents",
+     "objectives": [
+      {"id": "1.3.1", "text": "Plan and implement the degree of agent autonomy, including guardrails"},
+      {"id": "1.3.2", "text": "Configure agent to produce inspectable artifacts within standard development tooling"},
+      {"id": "1.3.3", "text": "Configure human intervention for autonomous agents without slowing delivery"}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d2",
+   "number": 2,
+   "title": "Implement tool use and environment interaction",
+   "weight": "20-25%",
+   "weightMid": 22.5,
+   "modules": ["m3", "m2"],
+   "groups": [
+    {
+     "title": "Select and configure agent tools",
+     "objectives": [
+      {"id": "2.1.1", "text": "Identify required tools"},
+      {"id": "2.1.2", "text": "Configure agent tools"},
+      {"id": "2.1.3", "text": "Configure agent tool permissions"}
+     ]
+    },
+    {
+     "title": "Configure MCP servers",
+     "objectives": [
+      {"id": "2.2.1", "text": "Add an MCP server as a tool to an agent"},
+      {"id": "2.2.2", "text": "Configure a GitHub remote MCP server"},
+      {"id": "2.2.3", "text": "Configure the MCP registries"},
+      {"id": "2.2.4", "text": "Configure MCP allow lists"}
+     ]
+    },
+    {
+     "title": "Integrate agents within development environments",
+     "objectives": [
+      {"id": "2.3.1", "text": "Evaluate the execution context for an agent"},
+      {"id": "2.3.2", "text": "Configure an agent's scope to a specific repository"},
+      {"id": "2.3.3", "text": "Configure an agent to be invoked in a CI workflow"},
+      {"id": "2.3.4", "text": "Configure an agent to use branch-based scope"},
+      {"id": "2.3.5", "text": "Enable an agent to perform autonomous actions, including creating branches and pull requests"},
+      {"id": "2.3.6", "text": "Configure an agent to handle environment-specific constraints"}
+     ]
+    },
+    {
+     "title": "Operate agents with safe execution paths and robust error handling",
+     "objectives": [
+      {"id": "2.4.1", "text": "Implement error handling"},
+      {"id": "2.4.2", "text": "Implement retries"},
+      {"id": "2.4.3", "text": "Implement rollbacks"},
+      {"id": "2.4.4", "text": "Implement escalation paths"},
+      {"id": "2.4.5", "text": "Implement traceability and accountability for agent actions"}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d3",
+   "number": 3,
+   "title": "Manage memory, state, and execution",
+   "weight": "10-15%",
+   "weightMid": 12.5,
+   "modules": ["m4"],
+   "groups": [
+    {
+     "title": "Implement agent memory strategies",
+     "objectives": [
+      {"id": "3.1.1", "text": "Choose between short-term, long-term, and external memory"},
+      {"id": "3.1.2", "text": "Scope agent memory to task-relevant information"},
+      {"id": "3.1.3", "text": "Define memory expiration, pruning, and reset rules"}
+     ]
+    },
+    {
+     "title": "Persist agent state and manage context drift",
+     "objectives": [
+      {"id": "3.2.1", "text": "Capture task progress and decisions as durable artifacts"},
+      {"id": "3.2.2", "text": "Resume agent work without repeating steps or diverging from prior decisions"},
+      {"id": "3.2.3", "text": "Detect and correct drift during extended agent execution"}
+     ]
+    },
+    {
+     "title": "Ensure continuity of agent memory and state across tools and environments",
+     "objectives": [
+      {"id": "3.3.1", "text": "Share agent state"},
+      {"id": "3.3.2", "text": "Prevent conflicting context"},
+      {"id": "3.3.3", "text": "Prevent stale context"}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d4",
+   "number": 4,
+   "title": "Perform evaluation, error analysis, and tuning",
+   "weight": "15-20%",
+   "weightMid": 17.5,
+   "modules": ["m4"],
+   "groups": [
+    {
+     "title": "Define success criteria and evaluation signals for agent tasks",
+     "objectives": [
+      {"id": "4.1.1", "text": "Specify expected outcomes and operational constraints for agent tasks"},
+      {"id": "4.1.2", "text": "Identify qualitative and quantitative evaluation signals to evaluate agents"},
+      {"id": "4.1.3", "text": "Align evaluation criteria with development intent"},
+      {"id": "4.1.4", "text": "Generate evaluation signals by using automated scanning tools"}
+     ]
+    },
+    {
+     "title": "Analyze agent failures and identify root causes",
+     "objectives": [
+      {"id": "4.2.1", "text": "Identify failures by using logs, plans, traces, outputs, and workflow artifacts"},
+      {"id": "4.2.2", "text": "Classify root causes, including reasoning errors, tool misuse, and context or environment issues"}
+     ]
+    },
+    {
+     "title": "Tune agent behavior based on evaluation results",
+     "objectives": [
+      {"id": "4.3.1", "text": "Revise instructions, workflows, or constraints"},
+      {"id": "4.3.2", "text": "Refine memory usage"},
+      {"id": "4.3.3", "text": "Refine tool usage and tool access"}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d5",
+   "number": 5,
+   "title": "Orchestrate multi-agent coordination",
+   "weight": "15-20%",
+   "weightMid": 17.5,
+   "modules": ["m5"],
+   "groups": [
+    {
+     "title": "Operate and manage multi-agent workflows",
+     "objectives": [
+      {"id": "5.1.1", "text": "Apply an orchestration pattern to coordinate multiple agents"},
+      {"id": "5.1.2", "text": "Configure agent isolation for parallel execution"},
+      {"id": "5.1.3", "text": "Detect and resolve agent conflicts, including overlapping code changes, duplicated effort, and contradictory outputs"}
+     ]
+    },
+    {
+     "title": "Configure observability for multi-agent behavior by using logs, artifacts, and operational signals",
+     "objectives": [
+      {"id": "5.2.1", "text": "Configure multi-agent workflows to produce artifacts suitable for review and audit"},
+      {"id": "5.2.2", "text": "Document key decisions, handoffs, and outcomes across agents"},
+      {"id": "5.2.3", "text": "Perform post-hoc analysis of multi-agent behavior"}
+     ]
+    },
+    {
+     "title": "Detect and respond to multi-agent failures and degraded behavior",
+     "objectives": [
+      {"id": "5.3.1", "text": "Identify failed, partial, or stalled agent executions"},
+      {"id": "5.3.2", "text": "Respond to degraded behavior or coordination across agents"},
+      {"id": "5.3.3", "text": "Implement multi-agent recovery patterns, including rollback and human-in-the-loop"}
+     ]
+    },
+    {
+     "title": "Manage the lifecycle of agents within multi-agent workflows",
+     "objectives": [
+      {"id": "5.4.1", "text": "Add agents to existing multi-agent workflows"},
+      {"id": "5.4.2", "text": "Update, reconfigure, or replace agents without disrupting active workflows"},
+      {"id": "5.4.3", "text": "Retire agents while preserving auditability and workflow continuity"}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d6",
+   "number": 6,
+   "title": "Implement guardrails and accountability",
+   "weight": "10-15%",
+   "weightMid": 12.5,
+   "modules": ["m6"],
+   "groups": [
+    {
+     "title": "Define autonomy levels",
+     "objectives": [
+      {"id": "6.1.1", "text": "Classify agent actions by operational, security, and compliance risk to right-size human interventions"},
+      {"id": "6.1.2", "text": "Assign autonomy levels to maximize delivery speed while remaining compliant with organizational security and Responsible AI standards"}
+     ]
+    },
+    {
+     "title": "Implement guardrails and human-in-the-loop workflows",
+     "objectives": [
+      {"id": "6.2.1", "text": "Identify the subset of actions that require human judgment"},
+      {"id": "6.2.2", "text": "Block actions that violate defined security, compliance, or Responsible AI policies"},
+      {"id": "6.2.3", "text": "Scope permissions and execution contexts to enforce least-privilege access"},
+      {"id": "6.2.4", "text": "Require explicit authorization or controlled paths for irreversible or compliance-sensitive changes"},
+      {"id": "6.2.5", "text": "Preserve execution velocity by minimizing approvals that do not materially reduce risk"}
+     ]
+    }
+   ]
+  }
+ ]
+}

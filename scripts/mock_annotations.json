@@ -1,0 +1,588 @@
+{
+ "_comment": "Per-question mapping + per-option rationale for the community mock exam (jtur671/gh-600-study-guide). Option order matches the source markdown (A, B, C, D). 'correct' holds zero-based option indexes.",
+ "1": {
+  "domain": "d1",
+  "objective": "1.2.2",
+  "unit": "m2-plan-reason-execution",
+  "correct": [
+   1
+  ],
+  "why": [
+   "More diff context is more output, not earlier insight. The complaint is that reviewers cannot see intent before the code exists, and a bigger diff arrives at the same time as the small one.",
+   "Correct. A structured plan published as a workflow artifact (or PR description) before any code is written is exactly the 'separate planning from execution' pattern. Reviewers validate intent first.",
+   "CODEOWNERS approvals gate the merge, which happens after the code already exists. It does not surface the agent's intent any earlier.",
+   "Making the agent read-only removes the capability entirely instead of making its reasoning visible. That solves the symptom by deleting the feature."
+  ]
+ },
+ "2": {
+  "domain": "d1",
+  "objective": "1.1.2",
+  "unit": "m1-identify-risks-traceability",
+  "correct": [
+   0
+  ],
+  "why": [
+   "Correct. 'Planless execution' is the canonical anti-pattern in the Foundations module: the agent starts changing code without an inspectable approach, so reviewers only ever see the diff.",
+   "A read-only permissions block is least privilege done right, not an anti-pattern.",
+   "Attribution to the human who triggered the run is acceptable; the anti-pattern is having no attribution or audit trail at all.",
+   "Working on a protected feature branch is exactly the bounded, PR-based pattern the modules recommend."
+  ],
+  "type": "multi"
+ },
+ "3": {
+  "domain": "d1",
+  "objective": "1.2.1",
+  "unit": "m2-plan-reason-execution",
+  "correct": [
+   1
+  ],
+  "why": [
+   "Grouped logs improve readability but nothing gates the transition from planning to action, so an unreviewed plan still becomes code.",
+   "Correct. Plan artifact → human approval → action job → evaluation is the inspectable separation: each phase leaves durable evidence and execution cannot start until the plan is accepted.",
+   "Gating on `github.actor` is identity checking, not plan validation. Any admin-triggered run still executes an unreviewed plan.",
+   "`needs:` only enforces ordering. Sequential jobs with no approval gate still run straight through from plan to action."
+  ]
+ },
+ "4": {
+  "domain": "d1",
+  "objective": "1.3.1",
+  "unit": "m6-define-risk-based-autonomy",
+  "correct": [
+   2
+  ],
+  "why": [
+   "Blanket approval on every PR is the 'governance fatigue' failure mode: reviewers rubber-stamp low-risk changes and stop reading the high-risk ones.",
+   "Time-of-day restrictions do not correlate with risk. A destructive change at 2am is as damaging as one at 2pm.",
+   "Correct. Risk-based autonomy — classify by operational, security, and compliance risk, then require approval only where risk is material — is the published guidance in the Governance module.",
+   "Isolating agents in a scratch repository removes the risk by removing the value. It does not let agents contribute to real work safely."
+  ]
+ },
+ "5": {
+  "domain": "d1",
+  "objective": "1.3.2",
+  "unit": "m2-agent-operations-controls",
+  "correct": [
+   1
+  ],
+  "why": [
+   "Console output scrolls away and is bound to a single run's retention. The modules explicitly recommend uploading artifacts precisely because logs are not durable enough.",
+   "Correct. A plan uploaded with `actions/upload-artifact` and linked from an 'Evidence' section in the PR is the canonical GitHub-native inspectable artifact: durable, traceable to a run and commit, reviewable in place.",
+   "External systems break the 'GitHub as system of record' model — the evidence is no longer attached to the change it justifies.",
+   "A source comment is not produced per run, so it cannot record what this particular execution intended or did."
+  ]
+ },
+ "6": {
+  "domain": "d1",
+  "objective": "1.1.3",
+  "unit": "m2-inputs-outputs-success-criteria",
+  "correct": [
+   0
+  ],
+  "why": [
+   "Correct. Success criteria should be objective and enforceable: required checks pass, no new scanning alerts, and the PR template's required fields are complete. These map directly to status checks the platform can gate on.",
+   "A self-reported 'success' is the agent grading its own homework. The modules are explicit that evaluation must be grounded in system signals, not agent confidence.",
+   "Elapsed time measures speed, not whether the upgrade actually resolved the vulnerability.",
+   "Approving the description validates the narrative, not the change. 'CI passed' plus a good story is still not proof the intent was met."
+  ]
+ },
+ "7": {
+  "domain": "d1",
+  "objective": "1.2.3",
+  "unit": "m2-plan-reason-execution",
+  "correct": [
+   1
+  ],
+  "why": [
+   "A larger memory window may help the agent remember the plan, but nothing stops it acting when it diverges anyway. This is a hope, not a control.",
+   "Correct. Treat the plan as a contract: re-read it at the start of the action phase and abort when steps diverge. Validating plans (and gating action on that validation) is the published Domain 1 skill.",
+   "A more capable model reduces the frequency of divergence but does not detect or block it when it happens.",
+   "Retries are about transient failure recovery and are unrelated to plan/action divergence."
+  ]
+ },
+ "8": {
+  "domain": "d2",
+  "objective": "2.2.1",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "correct": [
+   1
+  ],
+  "why": [
+   "Memory is a separate concern (issues, PRs, instructions files). MCP is a tool-exposure protocol, not a memory store.",
+   "Correct. An MCP server exposes tools, APIs, or data sources to an AI client through one standardized protocol, so you do not build a bespoke integration per tool.",
+   "Execution still happens on GitHub Actions runners. MCP supplies tools to the agent; it does not host the run.",
+   "MCP describes tools and their invocation, not prompt templates."
+  ]
+ },
+ "9": {
+  "domain": "d2",
+  "objective": "2.2.4",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "correct": [
+   0
+  ],
+  "why": [
+   "Correct. When other agents in the same org work fine, the difference is org-level policy. Check whether 'Restrict MCP access to registry servers' is set to 'Registry only' and whether the server is in the registry.",
+   "Restarting the runner addresses transient infrastructure faults, not a policy block that would fail identically every time.",
+   "A timeout produces a cancelled run, not a refusal to invoke the server at all.",
+   "`GITHUB_TOKEN` governs GitHub API access for the workflow, not which MCP servers Copilot policy permits."
+  ]
+ },
+ "10": {
+  "domain": "d2",
+  "objective": "2.2.2",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "correct": [
+   1
+  ],
+  "why": [
+   "'Remote' describes where the server is hosted, not a universal replacement for every vendor's local server. Local MCP servers remain valid and are required for local-resource access.",
+   "Correct. The GitHub MCP server (hosted at https://api.githubcopilot.com/mcp/) exposes GitHub's own capabilities — repositories, issues, pull requests, code search — to MCP-capable clients. Remote is the recommended setup for most users in supported IDEs.",
+   "Outbound network control is the job of firewall/egress allow-listing in the agent's execution environment, not of the MCP server.",
+   "MCP has nothing to do with syncing Copilot subscription state."
+  ]
+ },
+ "11": {
+  "domain": "d2",
+  "objective": "2.2.4",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "correct": [
+   0,
+   2
+  ],
+  "type": "multi",
+  "stemOverride": "Which of the following statements about MCP allow lists are true? (Select all that apply.)",
+  "why": [
+   "True. That is precisely their purpose: an org or enterprise policy restricting which MCP servers agents may connect to.",
+   "False. An allow list decides *whether* a server may be used. Read/write capability comes from the tool configuration and the credentials the server is given — not from the allow list.",
+   "True. Enforcement is at the policy layer. With 'Registry only' selected, a server absent from the registry is blocked even if an agent config names it explicitly — and local servers must be listed with exactly matching IDs.",
+   "False. Allow lists and per-tool permissions are complementary layers. Being allowed to reach a server does not grant every tool on it."
+  ]
+ },
+ "12": {
+  "domain": "d2",
+  "objective": "2.3.3",
+  "unit": "m3-execution-context-boundaries",
+  "correct": [
+   0
+  ],
+  "why": [
+   "Correct. Create a workflow file that triggers on the event (`on: pull_request`), set its `permissions:` block, and run the agent as a step — for example `npx @github/copilot-cli --agent <name> -p \"...\"`. The workflow becomes the execution boundary.",
+   "A webhook to an external endpoint moves execution off-platform, losing the workflow's permission scoping, logs, and artifacts.",
+   "CODEOWNERS routes review requests. It cannot execute anything.",
+   "`dependabot.yml` configures dependency update PRs only; it does not invoke arbitrary agents."
+  ]
+ },
+ "13": {
+  "domain": "d2",
+  "objective": "2.3.5",
+  "unit": "m3-execution-context-boundaries",
+  "correct": [
+   1
+  ],
+  "why": [
+   "Read-only cannot push a branch or open a PR. The workflow would fail at the first write.",
+   "Correct. `contents: write` allows creating the branch and commits; `pull-requests: write` allows opening and updating the PR. That is the minimum for this task — nothing broader.",
+   "`write-all` grants far more than the task needs (packages, deployments, security events, and more) and violates least privilege.",
+   "`actions: write` manages workflow runs. It grants neither commit nor PR capability."
+  ]
+ },
+ "14": {
+  "domain": "d2",
+  "objective": "2.3.6",
+  "unit": "m3-execution-context-boundaries",
+  "correct": [
+   1
+  ],
+  "why": [
+   "CODEOWNERS controls who reviews changed paths. It has no effect on outbound network calls.",
+   "Correct. Network isolation with an allow list of permitted outbound hosts is the environment-specific constraint control. GitHub Agentic Workflows apply the same defense-in-depth idea: network isolation plus allowlisted outbound access.",
+   "Secret scoping controls which credentials a job can read, not which hosts it may reach.",
+   "Branch protection governs merges into `main`; it says nothing about egress during a run."
+  ]
+ },
+ "15": {
+  "domain": "d2",
+  "objective": "2.4.2",
+  "unit": "m3-agent-execution-limits-protections",
+  "correct": [
+   1
+  ],
+  "why": [
+   "Ten immediate retries on any error hammers a struggling service and will happily repeat a logic error ten times, compounding damage.",
+   "Correct. Bounded count, exponential backoff, idempotency on the underlying operation, and retrying only transient classes (network, rate limit) — that is the safe-retry shape the modules describe.",
+   "One retry then escalate is safe but wasteful: it pages a human for an ordinary transient blip that a second attempt would have cleared.",
+   "Disabling retries turns every transient network hiccup into a failed run and a human interruption."
+  ]
+ },
+ "16": {
+  "domain": "d2",
+  "objective": "2.3.2",
+  "unit": "m3-execution-context-boundaries",
+  "correct": [
+   1
+  ],
+  "why": [
+   "A classic PAT with `repo` scope carries the user's access to *every* repository they can reach — the opposite of repository scoping.",
+   "Correct. The workflow's `GITHUB_TOKEN` is minted per run and automatically scoped to the repository the workflow lives in, with capability further narrowed by the `permissions:` block.",
+   "An installation token granted org-wide reaches every repository in the installation, which is broader than the task requires.",
+   "An admin user's OAuth token is the widest option available and would let a mistake propagate across the whole organization."
+  ]
+ },
+ "17": {
+  "domain": "d2",
+  "objective": "2.4.5",
+  "unit": "m3-agent-execution-limits-protections",
+  "correct": [
+   0
+  ],
+  "why": [
+   "Correct. Traceability needs three things together: what happened (run logs), who did it (commit attribution to the agent identity), and why (decisions recorded in the PR). All three live in GitHub and survive the run.",
+   "An email is a one-time notification, not a durable record attached to the change. You cannot reconstruct a decision trail from an inbox.",
+   "Disabling logs removes the primary forensic surface. Missing evidence is treated as a failure in the Governance module.",
+   "Private chat is off-platform, unattributed to the commit, and typically outside retention and audit policy."
+  ]
+ },
+ "18": {
+  "domain": "d3",
+  "objective": "3.1.1",
+  "unit": "m4-agent-memory-strategies",
+  "correct": [
+   1
+  ],
+  "why": [
+   "Re-injecting stable facts into every prompt is short-term memory doing long-term memory's job: costly, easy to forget, and invisible to reviewers.",
+   "Correct. Stable, project-wide guidance belongs in a durable repository artifact such as `.github/copilot-instructions.md` or `AGENTS.md`, where it is versioned, reviewable, and picked up on every invocation.",
+   "Secrets are for credentials. Instructions are not sensitive and secrets are not designed to be read as context.",
+   "Hard-coding instructions into a binary makes them unreviewable and unchangeable without a release."
+  ]
+ },
+ "19": {
+  "domain": "d3",
+  "objective": "3.1.2",
+  "unit": "m4-agent-memory-strategies",
+  "correct": [
+   1
+  ],
+  "why": [
+   "A bigger context window lets you load more irrelevant text. It raises cost and does not fix dilution.",
+   "Correct. 'Scope memory to task-relevant information' is the published skill: load only what affects this task's outcome — requirements, constraints, decisions, validation approach — and leave the rest out.",
+   "Retries re-run the same over-loaded context and produce the same diluted answer.",
+   "Disabling memory removes the requirements and prior decisions the agent needs. The fix is selectivity, not amnesia."
+  ]
+ },
+ "20": {
+  "domain": "d3",
+  "objective": "3.2.2",
+  "unit": "m4-agent-state-context-drift",
+  "correct": [
+   1
+  ],
+  "why": [
+   "A longer timeout reduces how often the run is cut short but does nothing to make the next run resume rather than restart.",
+   "Correct. Durable state — PR description checkboxes, commits already pushed, workflow run results in the Checks tab — lets the agent open the existing PR, see what is done, and continue from the latest state.",
+   "Concurrency settings control whether runs overlap or cancel each other. They do not carry progress between runs.",
+   "Runner size affects speed, not the ability to resume from persisted state."
+  ]
+ },
+ "21": {
+  "domain": "d3",
+  "objective": "3.2.3",
+  "unit": "m4-agent-state-context-drift",
+  "correct": [
+   1
+  ],
+  "why": [
+   "Slower responses are a performance symptom. Drift is about correctness of alignment, not latency.",
+   "Correct. Context drift is when the agent's actions no longer align with the original goal or prior decisions — typically because it is working from stale or cached context rather than current repository state.",
+   "A long prompt template is a cost and context-budget problem, not drift.",
+   "Actions minutes consumption is a billing concern, unrelated to alignment."
+  ]
+ },
+ "22": {
+  "domain": "d3",
+  "objective": "3.3.2",
+  "unit": "m4-memory-state-continuity",
+  "correct": [
+   1
+  ],
+  "why": [
+   "Priority rules pick a winner without making the two views consistent. The losing agent still holds a wrong picture of the world.",
+   "Correct. Define a single source of truth per information type and serialize writes to it. In GitHub that means the issue holds requirements and the PR holds decisions and progress — every tool reads and updates the same artifact rather than keeping private copies.",
+   "Separate repositories eliminate the collision by eliminating the collaboration. The agents still need shared state.",
+   "Shrinking memory does not stop two agents from independently forming conflicting private views."
+  ]
+ },
+ "23": {
+  "domain": "d4",
+  "objective": "4.1.4",
+  "unit": "m4-evaluation-signals-quality-gates",
+  "correct": [
+   0,
+   1,
+   2
+  ],
+  "why": [
+   "Automated. Code scanning (CodeQL) produces alerts and check runs without human involvement.",
+   "Automated. Secret scanning — and push protection — generate signals mechanically.",
+   "Automated. Dependency review runs as a check on the PR and blocks known-vulnerable dependencies.",
+   "Not automated. Reviewer commentary is a qualitative human signal. It matters for evaluation, but the question asks specifically about automated scanning signals."
+  ]
+ },
+ "24": {
+  "domain": "d4",
+  "objective": "4.1.1",
+  "unit": "m4-evaluation-signals-quality-gates",
+  "correct": [
+   1
+  ],
+  "why": [
+   "Asking humans to read more carefully is a process wish, not an enforceable control. It fails exactly when the team is busy.",
+   "Correct. Turn the operational constraint into a machine-checkable signal: run the benchmark in CI, fail the job past a threshold, and make it a required status check so a regressing PR cannot merge.",
+   "Blocking the agent from critical-path files removes capability instead of adding a gate, and humans regress performance too.",
+   "Raising test timeouts hides the regression by making the slow code pass."
+  ]
+ },
+ "25": {
+  "domain": "d4",
+  "objective": "4.2.2",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "correct": [
+   1
+  ],
+  "why": [
+   "A reasoning error is a wrong plan or wrong inference — misreading requirements, choosing invalid logic. Here the plan may have been fine; the execution reached for the wrong instrument.",
+   "Correct. Tool misuse covers calling the wrong tool, or calling the right tool incorrectly — misconfigured workflows, wrong commands, failing to trigger a workflow properly.",
+   "Context issues are missing, stale, or conflicting information. Nothing in the trace points to bad inputs.",
+   "A network failure is an environment fault, not a decision the agent made."
+  ]
+ },
+ "26": {
+  "domain": "d4",
+  "objective": "4.3.3",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "correct": [
+   0
+  ],
+  "why": [
+   "Correct. When the root cause is an ambiguous tool description, the fix is to refine tool usage and access: clarify the description, add usage examples, and rename anything ambiguous.",
+   "A larger token budget does not disambiguate a description the model is reading correctly and interpreting reasonably.",
+   "Removing the tool discards capability the agent legitimately needs. Tune before you amputate.",
+   "Changing model provider is an expensive shot in the dark for a problem you have already localized to your own configuration."
+  ]
+ },
+ "27": {
+  "domain": "d4",
+  "objective": "4.1.3",
+  "unit": "m4-evaluation-signals-quality-gates",
+  "correct": [
+   0
+  ],
+  "why": [
+   "Correct. Aligning evaluation with development intent means judging agent work by the same signals a human contributor is judged on — tests, lint, security scans, review feedback — so agents stay accountable to the team's real quality bar.",
+   "Agent-only metrics such as tool calls per task measure mechanism, not outcome. Optimizing them can actively diverge from what the team wants.",
+   "Removing review from agent PRs breaks the contributor model and deletes the qualitative signal.",
+   "Self-reported confidence is the one signal the modules explicitly warn against: evaluation must be grounded in system signals, not the agent's confidence."
+  ]
+ },
+ "28": {
+  "domain": "d4",
+  "objective": "4.2.1",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "correct": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "why": [
+   "Yes. Workflow run logs show what executed and where it errored.",
+   "Yes. The structured plan captures intent, so you can compare what was supposed to happen with what did.",
+   "Yes. The execution trace shows the ordered tool calls, which is how you spot tool misuse.",
+   "Yes. Uploaded artifacts hold intermediate state and evaluation output, and remain available after logs scroll away. All four are named diagnostic surfaces."
+  ]
+ },
+ "29": {
+  "domain": "d4",
+  "objective": "4.3.1",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "correct": [
+   0
+  ],
+  "why": [
+   "Correct. Team conventions are stable, project-wide knowledge, so they belong in repository instructions. Revising instructions is the first tuning lever for reasoning errors.",
+   "Raising autonomy lets the agent apply the wrong style faster and with less oversight.",
+   "A retry loop re-runs the same misunderstanding; it treats a knowledge gap as a transient fault.",
+   "Reducing memory removes context. The problem is that the correct convention was never recorded anywhere durable."
+  ]
+ },
+ "30": {
+  "domain": "d5",
+  "objective": "5.1.1",
+  "unit": "m5-agent-orchestration-github-workflows",
+  "correct": [
+   1
+  ],
+  "why": [
+   "Simultaneous execution with a merge at the end is fan-out/fan-in — in GitHub Actions, parallel jobs plus a `needs:` job that fans in.",
+   "Correct. In the supervisor pattern one agent dispatches sub-tasks to workers and reviews their outputs, holding responsibility for allocation and acceptance.",
+   "Two agents arguing with a third arbitrating is the debate/critic pattern, used to resolve contradictory outputs.",
+   "A fixed ordered chain is the sequential pipeline pattern (planner → coder → reviewer)."
+  ]
+ },
+ "31": {
+  "domain": "d5",
+  "objective": "5.1.2",
+  "unit": "m5-execution-isolation-permissions-concurrency",
+  "correct": [
+   1
+  ],
+  "why": [
+   "Three agents writing to `main` share one execution context — interleaved commits, ambiguous ownership, and no PR boundary to review at.",
+   "Correct. Isolation is the precondition for safe parallelism: a dedicated branch per agent (`agent/dependency/<ticket>`), non-overlapping path scopes, and conflict detection at the PR layer.",
+   "Serializing works but throws away the throughput you wanted. Isolation lets you keep the parallelism.",
+   "Runner size is a performance dial and has no bearing on whether two agents collide on the same file."
+  ]
+ },
+ "32": {
+  "domain": "d5",
+  "objective": "5.1.3",
+  "unit": "m5-conflict-resolution-github-arbitration",
+  "correct": [
+   1
+  ],
+  "why": [
+   "Auto-merging both guarantees the semantic conflict lands in `main`, where it is most expensive to unpick.",
+   "Correct. Resolve conflicts intentionally: a reconciler with a defined arbitration rule, or human-in-the-loop review once disagreement passes a threshold. Without arbitration, whichever PR merges first simply wins by timing.",
+   "Rejecting both discards work and does not decide which approach was right.",
+   "A force-push destroys one agent's history and its audit trail, and still leaves the conflict undecided."
+  ]
+ },
+ "33": {
+  "domain": "d5",
+  "objective": "5.2.3",
+  "unit": "m5-system-observability-evidence-workflows",
+  "correct": [
+   0
+  ],
+  "why": [
+   "Correct. Post-hoc analysis needs a linked record: a top-level orchestration artifact tying every sub-agent run together with decisions logged at each handoff, so you can replay who did what and why.",
+   "A single exit summary tells you the ending, not the sequence of decisions that produced it.",
+   "Debug output kept on the runner is discarded with the runner. Nothing durable survives.",
+   "A Slack thread is off-platform, unattributed to runs and commits, and outside retention policy."
+  ]
+ },
+ "34": {
+  "domain": "d5",
+  "objective": "5.3.1",
+  "unit": "m5-scale-failure-recovery",
+  "correct": [
+   1
+  ],
+  "why": [
+   "Letting a stalled agent run indefinitely burns budget and blocks downstream fan-in jobs forever.",
+   "Correct. Detect the stall with `timeout-minutes`, mark it failed, and route to a fallback: rerun the sub-agent in isolation, use an alternative, or escalate to a human with a concise summary.",
+   "More CPU does not help an agent that is stuck rather than slow.",
+   "Cancelling all three throws away the two runs that are working fine."
+  ]
+ },
+ "35": {
+  "domain": "d5",
+  "objective": "5.4.1",
+  "unit": "m5-scale-failure-recovery",
+  "correct": [
+   1
+  ],
+  "why": [
+   "An immediate swap changes behavior for in-flight work with no evidence that the replacement is equivalent.",
+   "Correct. Shadow mode — run the new agent alongside the incumbent, compare outputs, grant no merge authority until parity is confirmed — adds the agent without disrupting active workflows.",
+   "Weekend-only scheduling limits exposure by clock time, not by risk, and gives you a thin, unrepresentative sample.",
+   "Disabling the incumbent for a week removes the baseline you need to compare against, and leaves no fallback if the new agent misbehaves."
+  ]
+ },
+ "36": {
+  "domain": "d5",
+  "objective": "5.4.3",
+  "unit": "m6-maintain-governance-operational-reliability",
+  "correct": [
+   1
+  ],
+  "why": [
+   "Deleting configuration and runs destroys exactly the evidence compliance review depends on. Note that deleted workflow artifacts cannot be restored.",
+   "Correct. Retire while preserving auditability: the config stays in git history, runs and artifacts are retained under the retention policy, and the retirement decision is documented in a governance record.",
+   "Moving runs to unlinked external storage severs evidence from the changes it explains and usually falls outside the audit log.",
+   "Disabling logging protects nothing about the past and destroys the trail going forward."
+  ]
+ },
+ "37": {
+  "domain": "d6",
+  "objective": "6.1.1",
+  "unit": "m6-define-risk-based-autonomy",
+  "correct": [
+   2
+  ],
+  "why": [
+   "Formatting a markdown file is the low-risk, fully reversible tier — a candidate for full automation.",
+   "Renaming a private variable in test code is contained and reversible; PR plus required checks is proportionate.",
+   "Correct. Changes under `.github/workflows/` that deploy to production are the classic 'small diff, big consequence' area — treat as high or critical risk and require explicit human authorization.",
+   "Commenting on an issue changes no code and no system state."
+  ]
+ },
+ "38": {
+  "domain": "d6",
+  "objective": "6.2.3",
+  "unit": "m6-control-agent-capabilities",
+  "correct": [
+   0
+  ],
+  "why": [
+   "Correct. The `permissions:` block is the platform primitive for least privilege at execution time. Default to `contents: read` at workflow level and elevate only on the job that must write.",
+   "A Slack announcement is documentation of intent, not a technical control. The Governance module is blunt: if the platform cannot enforce it, it will be bypassed.",
+   "A pinned issue describes expected behavior. It cannot constrain a token.",
+   "A README note is 'controls in docs only' — the named anti-pattern."
+  ]
+ },
+ "39": {
+  "domain": "d6",
+  "objective": "6.2.4",
+  "unit": "m6-design-human-workflows",
+  "correct": [
+   1
+  ],
+  "why": [
+   "Branch protection on `main` gates merges. It does not gate what happens at deploy time, and it would add friction to every routine PR.",
+   "Correct. An environment with required reviewers pauses the deploy job until a human approves, and can restrict production secrets to that environment — targeted oversight exactly at the high-impact decision point.",
+   "CODEOWNERS on all of `src/` taxes every ordinary change while still not gating the deployment itself.",
+   "There is no such repository setting."
+  ]
+ },
+ "40": {
+  "domain": "d6",
+  "objective": "6.2.5",
+  "unit": "m6-design-human-workflows",
+  "correct": [
+   0,
+   1,
+   3
+  ],
+  "why": [
+   "Yes. Requiring approval only where changes are irreversible or compliance-sensitive concentrates human attention where it buys real safety.",
+   "Yes. Path-scoped CODEOWNERS routes review to people with context instead of taxing everyone on everything.",
+   "No. Two reviewers on a documentation typo is approval theater: it adds friction and trains reviewers to stop reading.",
+   "Yes. Environment protection rules gate production while dev and staging flow freely — velocity preserved, risk still gated."
+  ]
+ },
+ "41": {
+  "domain": "d6",
+  "objective": "6.2.4",
+  "unit": "m6-enforce-governance-github-controls",
+  "correct": [
+   0
+  ],
+  "why": [
+   "Correct. Defense in depth for an irreversible change: CODEOWNERS review of the migration itself, an environment gate with required reviewers at the deploy, and a plan artifact reviewed before the action job runs. Layered controls, each catching what the others miss.",
+   "A retry loop makes an irreversible destructive operation happen repeatedly. This is the worst possible answer here.",
+   "A longer timeout gives the destructive operation more time to complete. It adds no oversight.",
+   "'Revert later' does not apply to irreversible changes — a dropped column takes the data with it."
+  ]
+ }
+}

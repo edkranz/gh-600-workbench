@@ -1,0 +1,395 @@
+{
+  "title": "Copilot Quiz",
+  "questions": [
+    {
+      "question": "What primary capability distinguishes an AI agent from an AI assistant within a GitHub repository context?",
+      "answerOptions": [
+        {
+          "text": "The ability to generate code snippets and explain error messages in a chat interface.",
+          "isCorrect": false,
+          "rationale": "Generating suggestions and explanations is characteristic of assistant-based behavior, which requires manual application by a user."
+        },
+        {
+          "text": "The ability to independently create durable artifacts like branches, commits, and pull requests.",
+          "isCorrect": true,
+          "rationale": "An agent is goal-driven and uses tools to move work forward independently within the software development lifecycle."
+        },
+        {
+          "text": "The capacity to summarize long documentation files for quicker reading.",
+          "isCorrect": false,
+          "rationale": "Summarization is a passive task typical of assistants and does not involve taking repository actions."
+        },
+        {
+          "text": "Providing checklists of risks associated with a specific code change.",
+          "isCorrect": false,
+          "rationale": "While helpful, providing guidance or checklists is a reactive assistant behavior that leaves execution to the human."
+        }
+      ],
+      "hint": "Consider which behavior involves a transition from providing suggestions to executing repository actions."
+    },
+    {
+      "question": "In a well-designed agent architecture, how are agent responsibilities typically mapped to the Implementation and Validation stages of the SDLC?",
+      "answerOptions": [
+        {
+          "text": "The agent directly merges changes to the default branch to increase development speed.",
+          "isCorrect": false,
+          "rationale": "Direct-to-default pushes are considered an architectural anti-pattern that bypasses critical governance and safety mechanisms."
+        },
+        {
+          "text": "The agent operates as a CODEOWNER for all sensitive infrastructure directories.",
+          "isCorrect": false,
+          "rationale": "Agents should be participants in the workflow, while CODEOWNERS is a mechanism for human experts to supervise high-impact changes."
+        },
+        {
+          "text": "Work is routed through branches, commits, and pull requests, using workflow runs as evidence.",
+          "isCorrect": true,
+          "rationale": "Mapping agent work to these GitHub artifacts provides natural control surfaces where human policy can be enforced."
+        },
+        {
+          "text": "The agent replaces the deployment environment approvals with automated LLM reasoning.",
+          "isCorrect": false,
+          "rationale": "Deployment for sensitive actions should remain restricted, often requiring explicit human approval through environments."
+        }
+      ],
+      "hint": "Think about the standard GitHub control surfaces that facilitate peer review and automated testing."
+    },
+    {
+      "question": "What is the primary architectural benefit of choosing a 'Plan-first' pull request workflow over a combined 'Plan + execution' workflow?",
+      "answerOptions": [
+        {
+          "text": "It eliminates the need for any human review before the final code is merged.",
+          "isCorrect": false,
+          "rationale": "All agent workflows require review; the difference lies in the timing of the validation relative to code generation."
+        },
+        {
+          "text": "It allows for human alignment and validation of intent before any code is generated or risk is introduced.",
+          "isCorrect": true,
+          "rationale": "Reviewing a plan before execution reduces the blast radius and prevents the agent from making unnecessary or incorrect changes."
+        },
+        {
+          "text": "It speeds up the development lifecycle by allowing the agent to skip CI checks.",
+          "isCorrect": false,
+          "rationale": "Plan-first workflows are often preferred for high-risk environments where safety and intent alignment are more critical than speed."
+        },
+        {
+          "text": "It combines planning and execution into a single step to minimize the number of commits.",
+          "isCorrect": false,
+          "rationale": "Combining these steps is the definition of a 'Plan + execution' workflow, not a 'Plan-first' one."
+        }
+      ],
+      "hint": "Reflect on how validating the 'why' and 'how' before the 'what' impacts overall system safety."
+    },
+    {
+      "question": "When defining a custom agent profile in YAML, which property is the only one strictly required for the file to be valid?",
+      "answerOptions": [
+        {
+          "text": "name",
+          "isCorrect": false,
+          "rationale": "The name property is optional; if it is omitted, the agent's filename is used as the default display identifier."
+        },
+        {
+          "text": "tools",
+          "isCorrect": false,
+          "rationale": "If tools are not specified, the agent is granted access to all available tools by default."
+        },
+        {
+          "text": "description",
+          "isCorrect": true,
+          "rationale": "The description is required to explain the agent's purpose and capabilities, and it helps the system match the agent to specific tasks."
+        },
+        {
+          "text": "target",
+          "isCorrect": false,
+          "rationale": "The target property is optional and defaults to both 'vscode' and 'github-copilot' if left unset."
+        }
+      ],
+      "hint": "Identify the field used by both humans and the system to understand the agent's specialized expertise."
+    },
+    {
+      "question": "Where must organization-level custom agent profiles be stored to be available across multiple repositories?",
+      "answerOptions": [
+        {
+          "text": "In a directory named $/.github/agents/$ within the organization's public README repository.",
+          "isCorrect": false,
+          "rationale": "The agents must be stored in a specifically named private repository for organizational governance."
+        },
+        {
+          "text": "In a repository named $.github-private$ within a directory named $/agents/$.",
+          "isCorrect": true,
+          "rationale": "Organizational custom agents are centralizing in the $.github-private$ repo to ensure broader availability while maintaining access control."
+        },
+        {
+          "text": "Directly inside the $.github/workflows/$ directory of every repository in the organization.",
+          "isCorrect": false,
+          "rationale": "Workflows and agent profiles are distinct artifacts; agent profiles are defined in the $/agents/$ path."
+        },
+        {
+          "text": "In a global enterprise registry that does not use a backing Git repository.",
+          "isCorrect": false,
+          "rationale": "Custom agents are defined using Markdown and YAML files stored within the GitHub platform's repository structure."
+        }
+      ],
+      "hint": "The repository name includes a suffix indicating its restricted visibility within the organization."
+    },
+    {
+      "question": "How long do 'memories' (repository-level facts or user-level preferences) persist in Copilot Memory if they go unused?",
+      "answerOptions": [
+        {
+          "text": "$14$ days",
+          "isCorrect": false,
+          "rationale": "The persistence window is longer to ensure that relevant facts can bridge between less frequent development tasks."
+        },
+        {
+          "text": "$28$ days",
+          "isCorrect": true,
+          "rationale": "Any stored fact or preference that is not used within a $28$-day period is automatically deleted to prevent stale information."
+        },
+        {
+          "text": "$90$ days",
+          "isCorrect": false,
+          "rationale": "A $90$-day window would likely result in too much stale context being retained, potentially leading to context drift."
+        },
+        {
+          "text": "Indefinitely, until manually deleted by a repository owner.",
+          "isCorrect": false,
+          "rationale": "While manual deletion is possible, the system includes an automatic expiration to manage context quality."
+        }
+      ],
+      "hint": "This period is roughly equivalent to four standard work weeks."
+    },
+    {
+      "question": "The Copilot cloud agent firewall is a key security guardrail, but what is a notable limitation regarding its coverage?",
+      "answerOptions": [
+        {
+          "text": "It does not apply to MCP servers or processes started in $/copilot-setup-steps.yml$ files.",
+          "isCorrect": true,
+          "rationale": "The firewall only restricts processes started via the agent's Bash tool within the GitHub Actions appliance environment."
+        },
+        {
+          "text": "It only blocks traffic to unknown domains but allows all direct IP address connections.",
+          "isCorrect": false,
+          "rationale": "The firewall can use both domains and URLs for allow-listing, effectively controlling outbound access."
+        },
+        {
+          "text": "It is disabled automatically whenever a custom agent uses the 'edit' tool.",
+          "isCorrect": false,
+          "rationale": "The firewall settings are persistent and configured at the organization or repository level regardless of specific tool usage."
+        },
+        {
+          "text": "It only applies to public repositories and cannot be enabled for private repositories.",
+          "isCorrect": false,
+          "rationale": "Firewall controls are a core security feature available for repositories to prevent data exfiltration, especially in private settings."
+        }
+      ],
+      "hint": "Consider which components might have their own separate egress paths or initialization sequences."
+    },
+    {
+      "question": "What is the operational 'cost' associated with steering an in-flight Copilot agent session by providing a new prompt?",
+      "answerOptions": [
+        {
+          "text": "It consumes $5$ premium requests per message.",
+          "isCorrect": false,
+          "rationale": "The cost of steering is designed to be manageable to allow for interactive iteration."
+        },
+        {
+          "text": "It is free for the first three steering messages per session.",
+          "isCorrect": false,
+          "rationale": "Every message sent to an agent session involves LLM processing and is counted toward usage limits."
+        },
+        {
+          "text": "It consumes $1$ premium request per message.",
+          "isCorrect": true,
+          "rationale": "Each follow-up instruction sent to a working agent session is billed as a single premium request."
+        },
+        {
+          "text": "It requires the creation of a new, separate pull request.",
+          "isCorrect": false,
+          "rationale": "Steering allows the agent to adjust its current work within the same session and branch."
+        }
+      ],
+      "hint": "Each interaction in a session typically counts as a single standard unit of AI usage."
+    },
+    {
+      "question": "When configuring Model Context Protocol (MCP) governance, what is the functional relationship between an MCP registry and an allow list?",
+      "answerOptions": [
+        {
+          "text": "The allow list is checked after discovery in the registry but before any tool call is executed.",
+          "isCorrect": true,
+          "rationale": "A server can be listed in a discovery registry but still be blocked by an organization-level allow list policy."
+        },
+        {
+          "text": "The registry automatically allow-lists any server that is successfully added to it.",
+          "isCorrect": false,
+          "rationale": "Registries are catalogs for discovery; allow lists are enforcement mechanisms for governance and security."
+        },
+        {
+          "text": "The registry only contains local MCP servers, while the allow list only applies to remote servers.",
+          "isCorrect": false,
+          "rationale": "Both local and remote servers can be categorized in registries and governed by allow lists."
+        },
+        {
+          "text": "Setting a registry URL is required before an allow list can be created.",
+          "isCorrect": false,
+          "rationale": "Allow lists can be set to 'Allow all' or 'Registry only', but they represent independent policy decisions."
+        }
+      ],
+      "hint": "Consider how discovery (finding tools) and enforcement (permitting tools) operate sequentially."
+    },
+    {
+      "question": "According to the risk-based autonomy model, how should a high-risk task affecting $/infra/$ or $.github/workflows/$ be governed?",
+      "answerOptions": [
+        {
+          "text": "Merge can be automated using GitHub automerge after a single successful check.",
+          "isCorrect": false,
+          "rationale": "Automated merging is only recommended for low-risk changes like documentation or formatting."
+        },
+        {
+          "text": "It requires CODEOWNERS approval, multiple reviews, and potentially stricter rulesets.",
+          "isCorrect": true,
+          "rationale": "High-risk changes necessitate greater human oversight and expert review to ensure security and operational stability."
+        },
+        {
+          "text": "The agent should be allowed to deploy directly to production to minimize downtime.",
+          "isCorrect": false,
+          "rationale": "Production deployments are critical-risk and usually require environment approvals where the agent prepares but cannot execute."
+        },
+        {
+          "text": "The agent's tools should be restricted to 'read-only' regardless of the task intent.",
+          "isCorrect": false,
+          "rationale": "Autonomy design is about scaling oversight, not necessarily disabling the agent's ability to act."
+        }
+      ],
+      "hint": "Think about how GitHub's routing mechanisms ensure that path-specific experts review sensitive changes."
+    },
+    {
+      "question": "How do GitHub 'Agentic Workflows' differ from traditional GitHub Actions workflows in their execution model?",
+      "answerOptions": [
+        {
+          "text": "Agentic workflows use YAML to define deterministic steps, while traditional workflows use natural language.",
+          "isCorrect": false,
+          "rationale": "Traditional workflows are deterministic and YAML-defined, while agentic workflows describe intent in natural language."
+        },
+        {
+          "text": "Agentic workflows describe outcomes in Markdown and allow an agent to determine the necessary steps within frontmatter guardrails.",
+          "isCorrect": true,
+          "rationale": "This model shifts from step-by-step instruction to outcome-based execution governed by security boundaries."
+        },
+        {
+          "text": "Traditional workflows run in sandboxed containers, while agentic workflows run directly on the GitHub web server.",
+          "isCorrect": false,
+          "rationale": "Both run in isolated environments; agentic workflows are simply compiled into lock files for execution in GitHub Actions."
+        },
+        {
+          "text": "Agentic workflows replace the need for GITHUB_TOKEN permissions entirely.",
+          "isCorrect": false,
+          "rationale": "Permissions and least-privilege principles remain critical for both workflow types to control repository access."
+        }
+      ],
+      "hint": "Consider the difference between explicitly defining every command versus defining a desired final state."
+    },
+    {
+      "question": "If an agent requires specific tokens or credentials to function, where should these be stored to differentiate them from standard repository automation secrets?",
+      "answerOptions": [
+        {
+          "text": "In the $/.github/agents/secrets.md$ file in the default branch.",
+          "isCorrect": false,
+          "rationale": "Storing secrets in plain text in the repository is a major security anti-pattern."
+        },
+        {
+          "text": "As standard GitHub Actions secrets at the repository level.",
+          "isCorrect": false,
+          "rationale": "Copilot cloud agent cannot access standard GitHub Actions secrets or variables in its environment."
+        },
+        {
+          "text": "In the 'Agents secrets and variables' store at the organization or repository level.",
+          "isCorrect": true,
+          "rationale": "GitHub provides a dedicated store for agent provisioning that is separate from the standard Actions secret boundary."
+        },
+        {
+          "text": "Embedded directly within the 'prompt' section of the agent profile.",
+          "isCorrect": false,
+          "rationale": "Secrets should never be placed in instruction files; they should be injected at runtime through protected boundaries."
+        }
+      ],
+      "hint": "The system maintains two distinct stores to ensure specialized agents can access the credentials they specifically need."
+    },
+    {
+      "question": "When Copilot Memory retrieves a repository-level fact, what critical step does it perform to ensure the information is not stale?",
+      "answerOptions": [
+        {
+          "text": "It ignores any fact that was created by a user with only read access.",
+          "isCorrect": false,
+          "rationale": "Repository facts are only created by users with write access to begin with, so this is not a validation step."
+        },
+        {
+          "text": "It prompts the user to manually confirm the fact's accuracy every time it is retrieved.",
+          "isCorrect": false,
+          "rationale": "Manual confirmation would create a significant burden; instead, the system uses automated code-based validation."
+        },
+        {
+          "text": "It checks stored citations against the code in the current branch to confirm the information is still substantiated.",
+          "isCorrect": true,
+          "rationale": "Validating facts against current code ensures that the agent's reasoning is based on the actual state of the repository."
+        },
+        {
+          "text": "It automatically updates the repository's documentation to match the stored fact.",
+          "isCorrect": false,
+          "rationale": "Memory is used to inform the agent's work, not to independently push unreviewed documentation changes."
+        }
+      ],
+      "hint": "The system looks back at the specific source material used to generate the fact in the first place."
+    },
+    {
+      "question": "Which security policy regarding pull request triggers is enabled by default to prevent unreviewed code from executing in a privileged environment?",
+      "answerOptions": [
+        {
+          "text": "The agent is prohibited from creating any branch that starts with the prefix 'agent/'.",
+          "isCorrect": false,
+          "rationale": "Branch naming is a naming convention, not a security trigger policy."
+        },
+        {
+          "text": "Workflows are blocked from running until a user with write access approves them via the 'Approve and run workflows' button.",
+          "isCorrect": true,
+          "rationale": "This human-in-the-loop gate reduces the risk of malicious code running privileged automation automatically."
+        },
+        {
+          "text": "Only users with 'Admin' permissions can view the session logs of an active agent.",
+          "isCorrect": false,
+          "rationale": "Session logs are part of traceability and are typically available to those supervising the work, not just admins."
+        },
+        {
+          "text": "The agent is restricted to only reading files that have been modified in the last $7$ days.",
+          "isCorrect": false,
+          "rationale": "An agent needs access to the full codebase for context, but its actions are bounded by branch and review policies."
+        }
+      ],
+      "hint": "Consider the button a developer must click on a PR created by an external or automated contributor."
+    },
+    {
+      "question": "How are commits authored by the Copilot cloud agent attributed to ensure traceability while acknowledging human oversight?",
+      "answerOptions": [
+        {
+          "text": "The commits are attributed solely to the human user who triggered the session.",
+          "isCorrect": false,
+          "rationale": "Commits are authored by 'GitHub Copilot' to clearly distinguish automated changes from human-written ones."
+        },
+        {
+          "text": "The commits are authored by 'GitHub Copilot', with the initiating developer marked as a co-author.",
+          "isCorrect": true,
+          "rationale": "This attribution model provides clear evidence of who started the task and which system executed the work."
+        },
+        {
+          "text": "The commits are anonymous and only appear in the organization's audit log.",
+          "isCorrect": false,
+          "rationale": "Anonymous commits would degrade the audit trail; agent commits are signed and appear as 'Verified' on GitHub."
+        },
+        {
+          "text": "The author is set to 'GitHub Bot' and requires a manual GPG signature by an administrator.",
+          "isCorrect": false,
+          "rationale": "Copilot signs its own commits, providing systemic confidence that the changes have not been altered."
+        }
+      ],
+      "hint": "Think about how co-authorship is used in pair programming to give credit (or responsibility) to two parties."
+    }
+  ]
+}

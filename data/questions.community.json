@@ -1,0 +1,1437 @@
+[
+ {
+  "id": "mock-1",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d1",
+  "objective": "1.2.2",
+  "module": "m2",
+  "unit": "m2-plan-reason-execution",
+  "type": "single",
+  "text": "Your team is integrating a Copilot custom agent that produces draft refactors. Reviewers complain that they can't tell what the agent intended before code changes appear in a PR. Which configuration most directly addresses the complaint?",
+  "options": [
+   {
+    "text": "Increase the agent's autonomy level so it produces more diff context per PR.",
+    "correct": false,
+    "why": "More diff context is more output, not earlier insight. The complaint is that reviewers cannot see intent before the code exists, and a bigger diff arrives at the same time as the small one."
+   },
+   {
+    "text": "Configure the agent to output a structured plan as a workflow artifact before any code changes are written.",
+    "correct": true,
+    "why": "Correct. A structured plan published as a workflow artifact (or PR description) before any code is written is exactly the 'separate planning from execution' pattern. Reviewers validate intent first."
+   },
+   {
+    "text": "Require two CODEOWNER approvals on every agent-authored PR.",
+    "correct": false,
+    "why": "CODEOWNERS approvals gate the merge, which happens after the code already exists. It does not surface the agent's intent any earlier."
+   },
+   {
+    "text": "Reduce the agent's tool list to read-only operations.",
+    "correct": false,
+    "why": "Making the agent read-only removes the capability entirely instead of making its reasoning visible. That solves the symptom by deleting the feature."
+   }
+  ],
+  "takeaway": "Reviewers' complaint is about *visibility before code*. A structured plan artifact published before any change addresses that exactly. CODEOWNER counts (C) gate merge but don't show intent earlier; (A) is opposite of the issue; (D) discards capability."
+ },
+ {
+  "id": "mock-2",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d1",
+  "objective": "1.1.2",
+  "module": "m1",
+  "unit": "m1-identify-risks-traceability",
+  "type": "multi",
+  "text": "Which of the following is an anti-pattern when integrating an agent into the SDLC? (Select all that apply.)",
+  "options": [
+   {
+    "text": "The agent acts immediately without producing an inspectable plan.",
+    "correct": true,
+    "why": "Correct. 'Planless execution' is the canonical anti-pattern in the Foundations module: the agent starts changing code without an inspectable approach, so reviewers only ever see the diff."
+   },
+   {
+    "text": "The agent runs in a workflow with `permissions: { contents: read }`.",
+    "correct": false,
+    "why": "A read-only permissions block is least privilege done right, not an anti-pattern."
+   },
+   {
+    "text": "The agent's commit author is the human who triggered the workflow.",
+    "correct": false,
+    "why": "Attribution to the human who triggered the run is acceptable; the anti-pattern is having no attribution or audit trail at all."
+   },
+   {
+    "text": "The agent operates on a feature branch protected by branch protection rules.",
+    "correct": false,
+    "why": "Working on a protected feature branch is exactly the bounded, PR-based pattern the modules recommend."
+   }
+  ],
+  "takeaway": "Acting without an inspectable plan is the canonical anti-pattern. (B) is fine (read-only is safe), (C) is acceptable when the human triggers it, (D) is good practice."
+ },
+ {
+  "id": "mock-3",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d1",
+  "objective": "1.2.1",
+  "module": "m2",
+  "unit": "m2-plan-reason-execution",
+  "type": "single",
+  "text": "You are designing a \"research \u2192 propose \u2192 apply\" agent flow. Which separation produces the most inspectable workflow?",
+  "options": [
+   {
+    "text": "One job that does all three phases sequentially with grouped logs.",
+    "correct": false,
+    "why": "Grouped logs improve readability but nothing gates the transition from planning to action, so an unreviewed plan still becomes code."
+   },
+   {
+    "text": "A planning job that uploads a plan artifact, a reviewer-approved `workflow_dispatch` to begin the action job, then an evaluation job.",
+    "correct": true,
+    "why": "Correct. Plan artifact \u2192 human approval \u2192 action job \u2192 evaluation is the inspectable separation: each phase leaves durable evidence and execution cannot start until the plan is accepted."
+   },
+   {
+    "text": "A single job with `if: github.actor == 'admin'` gating the action step.",
+    "correct": false,
+    "why": "Gating on `github.actor` is identity checking, not plan validation. Any admin-triggered run still executes an unreviewed plan."
+   },
+   {
+    "text": "Three sequential jobs in the same workflow with `needs:` dependencies.",
+    "correct": false,
+    "why": "`needs:` only enforces ordering. Sequential jobs with no approval gate still run straight through from plan to action."
+   }
+  ],
+  "takeaway": "Separation of plan/approve/act/evaluate into discrete artifact-producing steps is the inspectability pattern. (A) groups logs but doesn't gate; (C) is identity gating only; (D) sequential jobs alone don't add approval gates."
+ },
+ {
+  "id": "mock-4",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d1",
+  "objective": "1.3.1",
+  "module": "m6",
+  "unit": "m6-define-risk-based-autonomy",
+  "type": "single",
+  "text": "A regulated team is concerned about agent autonomy. Which design preserves velocity while controlling risk?",
+  "options": [
+   {
+    "text": "Require human approval on every agent-authored PR regardless of change category.",
+    "correct": false,
+    "why": "Blanket approval on every PR is the 'governance fatigue' failure mode: reviewers rubber-stamp low-risk changes and stop reading the high-risk ones."
+   },
+   {
+    "text": "Disable agent access during business hours.",
+    "correct": false,
+    "why": "Time-of-day restrictions do not correlate with risk. A destructive change at 2am is as damaging as one at 2pm."
+   },
+   {
+    "text": "Categorize actions by operational/security/compliance risk and require approval only for high-risk categories.",
+    "correct": true,
+    "why": "Correct. Risk-based autonomy \u2014 classify by operational, security, and compliance risk, then require approval only where risk is material \u2014 is the published guidance in the Governance module."
+   },
+   {
+    "text": "Run agents only in a dedicated repository disconnected from production.",
+    "correct": false,
+    "why": "Isolating agents in a scratch repository removes the risk by removing the value. It does not let agents contribute to real work safely."
+   }
+  ],
+  "takeaway": "Risk-tiered autonomy is the published guidance. (A) is approval theater; (B)(D) reduce velocity without proportionate safety gain."
+ },
+ {
+  "id": "mock-5",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d1",
+  "objective": "1.3.2",
+  "module": "m2",
+  "unit": "m2-agent-operations-controls",
+  "type": "single",
+  "text": "Which artifact is the most appropriate \"inspectable artifact\" for an agent's plan in a standard GitHub workflow?",
+  "options": [
+   {
+    "text": "A console log line in the workflow run.",
+    "correct": false,
+    "why": "Console output scrolls away and is bound to a single run's retention. The modules explicitly recommend uploading artifacts precisely because logs are not durable enough."
+   },
+   {
+    "text": "An `actions/upload-artifact`-uploaded JSON or markdown plan document referenced from the PR description.",
+    "correct": true,
+    "why": "Correct. A plan uploaded with `actions/upload-artifact` and linked from an 'Evidence' section in the PR is the canonical GitHub-native inspectable artifact: durable, traceable to a run and commit, reviewable in place."
+   },
+   {
+    "text": "An entry in an external Notion database.",
+    "correct": false,
+    "why": "External systems break the 'GitHub as system of record' model \u2014 the evidence is no longer attached to the change it justifies."
+   },
+   {
+    "text": "A comment in the agent's source code.",
+    "correct": false,
+    "why": "A source comment is not produced per run, so it cannot record what this particular execution intended or did."
+   }
+  ],
+  "takeaway": "A workflow artifact referenced from the PR is the canonical inspectable artifact. (A) is ephemeral, (C) is off-platform, (D) isn't an artifact."
+ },
+ {
+  "id": "mock-6",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d1",
+  "objective": "1.1.3",
+  "module": "m2",
+  "unit": "m2-inputs-outputs-success-criteria",
+  "type": "single",
+  "text": "You want to define success criteria for an agent task that performs a dependency upgrade. Which combination is most robust?",
+  "options": [
+   {
+    "text": "Tests pass; no new code scanning alerts; PR template required fields completed.",
+    "correct": true,
+    "why": "Correct. Success criteria should be objective and enforceable: required checks pass, no new scanning alerts, and the PR template's required fields are complete. These map directly to status checks the platform can gate on."
+   },
+   {
+    "text": "The agent reports \"success\" in its trace log.",
+    "correct": false,
+    "why": "A self-reported 'success' is the agent grading its own homework. The modules are explicit that evaluation must be grounded in system signals, not agent confidence."
+   },
+   {
+    "text": "The PR is opened within 5 minutes of triggering.",
+    "correct": false,
+    "why": "Elapsed time measures speed, not whether the upgrade actually resolved the vulnerability."
+   },
+   {
+    "text": "A human approves the PR description.",
+    "correct": false,
+    "why": "Approving the description validates the narrative, not the change. 'CI passed' plus a good story is still not proof the intent was met."
+   }
+  ],
+  "takeaway": "Multiple objective criteria mirroring human-contributor judgment. (B) is self-reported, (C) measures speed not quality, (D) is subjective."
+ },
+ {
+  "id": "mock-7",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d1",
+  "objective": "1.2.3",
+  "module": "m2",
+  "unit": "m2-plan-reason-execution",
+  "type": "single",
+  "text": "Your agent occasionally takes actions that contradict its earlier plan. What is the most direct architectural fix?",
+  "options": [
+   {
+    "text": "Increase the agent's memory window.",
+    "correct": false,
+    "why": "A larger memory window may help the agent remember the plan, but nothing stops it acting when it diverges anyway. This is a hope, not a control."
+   },
+   {
+    "text": "Require the agent to re-read and acknowledge its plan artifact at the start of the action phase, and abort if action steps diverge from the plan.",
+    "correct": true,
+    "why": "Correct. Treat the plan as a contract: re-read it at the start of the action phase and abort when steps diverge. Validating plans (and gating action on that validation) is the published Domain 1 skill."
+   },
+   {
+    "text": "Switch to a more capable model.",
+    "correct": false,
+    "why": "A more capable model reduces the frequency of divergence but does not detect or block it when it happens."
+   },
+   {
+    "text": "Disable retries.",
+    "correct": false,
+    "why": "Retries are about transient failure recovery and are unrelated to plan/action divergence."
+   }
+  ],
+  "takeaway": "Plan/action divergence is fixed by making the plan a hard contract, not by upgrading the model or memory."
+ },
+ {
+  "id": "mock-8",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d2",
+  "objective": "2.2.1",
+  "module": "m3",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "What does an MCP server primarily provide to a Copilot custom agent?",
+  "options": [
+   {
+    "text": "A vector database for long-term memory.",
+    "correct": false,
+    "why": "Memory is a separate concern (issues, PRs, instructions files). MCP is a tool-exposure protocol, not a memory store."
+   },
+   {
+    "text": "A standardized protocol for exposing external tools, APIs, or data sources the agent can invoke.",
+    "correct": true,
+    "why": "Correct. An MCP server exposes tools, APIs, or data sources to an AI client through one standardized protocol, so you do not build a bespoke integration per tool."
+   },
+   {
+    "text": "A replacement for GitHub Actions runners.",
+    "correct": false,
+    "why": "Execution still happens on GitHub Actions runners. MCP supplies tools to the agent; it does not host the run."
+   },
+   {
+    "text": "A static prompt-template registry.",
+    "correct": false,
+    "why": "MCP describes tools and their invocation, not prompt templates."
+   }
+  ],
+  "takeaway": "MCP is the standardized tool-exposure protocol. (A) is wrong (memory is separate), (C) is wrong (MCP doesn't replace runners), (D) is wrong."
+ },
+ {
+  "id": "mock-9",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d2",
+  "objective": "2.2.4",
+  "module": "m3",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "You configured an MCP server but the agent will not invoke it in your organization. Other agents in the org work fine. Which check should you perform first?",
+  "options": [
+   {
+    "text": "Confirm the server appears on the organization's MCP allow list.",
+    "correct": true,
+    "why": "Correct. When other agents in the same org work fine, the difference is org-level policy. Check whether 'Restrict MCP access to registry servers' is set to 'Registry only' and whether the server is in the registry."
+   },
+   {
+    "text": "Restart the runner.",
+    "correct": false,
+    "why": "Restarting the runner addresses transient infrastructure faults, not a policy block that would fail identically every time."
+   },
+   {
+    "text": "Increase the workflow timeout.",
+    "correct": false,
+    "why": "A timeout produces a cancelled run, not a refusal to invoke the server at all."
+   },
+   {
+    "text": "Rotate the workflow's `GITHUB_TOKEN`.",
+    "correct": false,
+    "why": "`GITHUB_TOKEN` governs GitHub API access for the workflow, not which MCP servers Copilot policy permits."
+   }
+  ],
+  "takeaway": "Allow-list misses are the most common cause when other agents work. Always check the allow list before deeper debugging."
+ },
+ {
+  "id": "mock-10",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d2",
+  "objective": "2.2.2",
+  "module": "m3",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "What is the purpose of the GitHub remote MCP server?",
+  "options": [
+   {
+    "text": "To replace local MCP servers with cloud-hosted ones for any vendor.",
+    "correct": false,
+    "why": "'Remote' describes where the server is hosted, not a universal replacement for every vendor's local server. Local MCP servers remain valid and are required for local-resource access."
+   },
+   {
+    "text": "To expose GitHub's own APIs (issues, PRs, code search) to agents through MCP.",
+    "correct": true,
+    "why": "Correct. The GitHub MCP server (hosted at https://api.githubcopilot.com/mcp/) exposes GitHub's own capabilities \u2014 repositories, issues, pull requests, code search \u2014 to MCP-capable clients. Remote is the recommended setup for most users in supported IDEs."
+   },
+   {
+    "text": "To proxy outbound network calls from the Copilot cloud agent firewall.",
+    "correct": false,
+    "why": "Outbound network control is the job of firewall/egress allow-listing in the agent's execution environment, not of the MCP server."
+   },
+   {
+    "text": "To synchronize state between multiple Copilot subscriptions.",
+    "correct": false,
+    "why": "MCP has nothing to do with syncing Copilot subscription state."
+   }
+  ],
+  "takeaway": "The GitHub remote MCP server exposes GitHub's APIs as MCP tools."
+ },
+ {
+  "id": "mock-11",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d2",
+  "objective": "2.2.4",
+  "module": "m3",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "multi",
+  "text": "Which of the following statements about MCP allow lists are true? (Select all that apply.)",
+  "options": [
+   {
+    "text": "MCP allow lists restrict which MCP servers an organization's agents may connect to.",
+    "correct": true,
+    "why": "True. That is precisely their purpose: an org or enterprise policy restricting which MCP servers agents may connect to."
+   },
+   {
+    "text": "MCP allow lists set permission levels (read/write) for each MCP tool.",
+    "correct": false,
+    "why": "False. An allow list decides *whether* a server may be used. Read/write capability comes from the tool configuration and the credentials the server is given \u2014 not from the allow list."
+   },
+   {
+    "text": "Servers not on the allow list are blocked even if explicitly referenced in an agent's config.",
+    "correct": true,
+    "why": "True. Enforcement is at the policy layer. With 'Registry only' selected, a server absent from the registry is blocked even if an agent config names it explicitly \u2014 and local servers must be listed with exactly matching IDs."
+   },
+   {
+    "text": "MCP allow lists eliminate the need for per-tool permissions in the agent's manifest.",
+    "correct": false,
+    "why": "False. Allow lists and per-tool permissions are complementary layers. Being allowed to reach a server does not grant every tool on it."
+   }
+  ],
+  "takeaway": "(a) Yes \u2014 that's its purpose. (b) No \u2014 permissions live in agent/tool config, not allow lists. (c) Yes \u2014 allow lists are enforced regardless of agent intent. (d) No \u2014 per-tool permissions still apply within an allowed server."
+ },
+ {
+  "id": "mock-12",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d2",
+  "objective": "2.3.3",
+  "module": "m3",
+  "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "You want a Copilot custom agent to be invoked from a CI workflow when a PR is opened. Which is the most direct configuration?",
+  "options": [
+   {
+    "text": "Trigger a GitHub Actions workflow on `pull_request: [opened]` with a step that runs the agent.",
+    "correct": true,
+    "why": "Correct. Create a workflow file that triggers on the event (`on: pull_request`), set its `permissions:` block, and run the agent as a step \u2014 for example `npx @github/copilot-cli --agent <name> -p \"...\"`. The workflow becomes the execution boundary."
+   },
+   {
+    "text": "Configure a webhook in repository settings to call the agent's HTTP endpoint.",
+    "correct": false,
+    "why": "A webhook to an external endpoint moves execution off-platform, losing the workflow's permission scoping, logs, and artifacts."
+   },
+   {
+    "text": "Add the agent to the repository's CODEOWNERS file.",
+    "correct": false,
+    "why": "CODEOWNERS routes review requests. It cannot execute anything."
+   },
+   {
+    "text": "Define the agent in `.github/dependabot.yml`.",
+    "correct": false,
+    "why": "`dependabot.yml` configures dependency update PRs only; it does not invoke arbitrary agents."
+   }
+  ],
+  "takeaway": "Standard GitHub Actions trigger pattern. (B) is custom plumbing, (C) doesn't run code, (D) is for dependency updates only."
+ },
+ {
+  "id": "mock-13",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d2",
+  "objective": "2.3.5",
+  "module": "m3",
+  "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "Your agent must create branches and pull requests autonomously. Which minimum `permissions:` block in the workflow file is appropriate?",
+  "options": [
+   {
+    "text": "`permissions: { contents: read, pull-requests: read }`",
+    "correct": false,
+    "why": "Read-only cannot push a branch or open a PR. The workflow would fail at the first write."
+   },
+   {
+    "text": "`permissions: { contents: write, pull-requests: write }`",
+    "correct": true,
+    "why": "Correct. `contents: write` allows creating the branch and commits; `pull-requests: write` allows opening and updating the PR. That is the minimum for this task \u2014 nothing broader."
+   },
+   {
+    "text": "`permissions: write-all`",
+    "correct": false,
+    "why": "`write-all` grants far more than the task needs (packages, deployments, security events, and more) and violates least privilege."
+   },
+   {
+    "text": "`permissions: { actions: write }`",
+    "correct": false,
+    "why": "`actions: write` manages workflow runs. It grants neither commit nor PR capability."
+   }
+  ],
+  "takeaway": "Minimum needed to create branches and PRs. (A) is read-only, (C) is broader than needed, (D) is for managing workflows."
+ },
+ {
+  "id": "mock-14",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d2",
+  "objective": "2.3.6",
+  "module": "m3",
+  "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "A team wants to allow the Copilot cloud agent to call exactly two external APIs and nothing else. Which control should they configure?",
+  "options": [
+   {
+    "text": "CODEOWNERS for the agent's branch.",
+    "correct": false,
+    "why": "CODEOWNERS controls who reviews changed paths. It has no effect on outbound network calls."
+   },
+   {
+    "text": "The Copilot cloud agent firewall, with an allow list of the two API hosts.",
+    "correct": true,
+    "why": "Correct. Network isolation with an allow list of permitted outbound hosts is the environment-specific constraint control. GitHub Agentic Workflows apply the same defense-in-depth idea: network isolation plus allowlisted outbound access."
+   },
+   {
+    "text": "Repository secret scoping.",
+    "correct": false,
+    "why": "Secret scoping controls which credentials a job can read, not which hosts it may reach."
+   },
+   {
+    "text": "Branch protection rules on `main`.",
+    "correct": false,
+    "why": "Branch protection governs merges into `main`; it says nothing about egress during a run."
+   }
+  ],
+  "takeaway": "The Copilot cloud agent firewall is the named control for egress allow-listing."
+ },
+ {
+  "id": "mock-15",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d2",
+  "objective": "2.4.2",
+  "module": "m3",
+  "unit": "m3-agent-execution-limits-protections",
+  "type": "single",
+  "text": "An agent's tool call to a flaky external service occasionally fails. Which retry strategy is most appropriate?",
+  "options": [
+   {
+    "text": "Retry up to 10 times immediately on any error.",
+    "correct": false,
+    "why": "Ten immediate retries on any error hammers a struggling service and will happily repeat a logic error ten times, compounding damage."
+   },
+   {
+    "text": "Bounded retries with exponential backoff, scoped to transient errors (network, rate-limit), with idempotency keys on the underlying operation.",
+    "correct": true,
+    "why": "Correct. Bounded count, exponential backoff, idempotency on the underlying operation, and retrying only transient classes (network, rate limit) \u2014 that is the safe-retry shape the modules describe."
+   },
+   {
+    "text": "Retry once, then escalate to a human regardless of error type.",
+    "correct": false,
+    "why": "One retry then escalate is safe but wasteful: it pages a human for an ordinary transient blip that a second attempt would have cleared."
+   },
+   {
+    "text": "Disable retries and let the workflow fail.",
+    "correct": false,
+    "why": "Disabling retries turns every transient network hiccup into a failed run and a human interruption."
+   }
+  ],
+  "takeaway": "Standard safe-retry pattern: bounded, backoff, idempotency, scoped to transient errors."
+ },
+ {
+  "id": "mock-16",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d2",
+  "objective": "2.3.2",
+  "module": "m3",
+  "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "You need to scope an agent so that it can only modify a single repository, not the entire organization. Which token approach is most aligned with least-privilege?",
+  "options": [
+   {
+    "text": "A classic personal access token with `repo` scope from the team lead.",
+    "correct": false,
+    "why": "A classic PAT with `repo` scope carries the user's access to *every* repository they can reach \u2014 the opposite of repository scoping."
+   },
+   {
+    "text": "The workflow's `GITHUB_TOKEN`, which is automatically scoped to that repository.",
+    "correct": true,
+    "why": "Correct. The workflow's `GITHUB_TOKEN` is minted per run and automatically scoped to the repository the workflow lives in, with capability further narrowed by the `permissions:` block."
+   },
+   {
+    "text": "A GitHub App installation token granted at the organization level on all repositories.",
+    "correct": false,
+    "why": "An installation token granted org-wide reaches every repository in the installation, which is broader than the task requires."
+   },
+   {
+    "text": "An OAuth token from a user with admin rights on all repos.",
+    "correct": false,
+    "why": "An admin user's OAuth token is the widest option available and would let a mistake propagate across the whole organization."
+   }
+  ],
+  "takeaway": "`GITHUB_TOKEN` is the textbook least-privilege option for in-repo work. (A) over-scopes by user, (C) over-scopes by org, (D) is far too broad."
+ },
+ {
+  "id": "mock-17",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d2",
+  "objective": "2.4.5",
+  "module": "m3",
+  "unit": "m3-agent-execution-limits-protections",
+  "type": "single",
+  "text": "Which combination provides traceability and accountability for autonomous agent actions in a GitHub workflow?",
+  "options": [
+   {
+    "text": "Workflow run logs + signed commits attributed to the bot identity + PR comments documenting key decisions.",
+    "correct": true,
+    "why": "Correct. Traceability needs three things together: what happened (run logs), who did it (commit attribution to the agent identity), and why (decisions recorded in the PR). All three live in GitHub and survive the run."
+   },
+   {
+    "text": "A single end-of-run summary email to the team.",
+    "correct": false,
+    "why": "An email is a one-time notification, not a durable record attached to the change. You cannot reconstruct a decision trail from an inbox."
+   },
+   {
+    "text": "Disabling actions logs to reduce noise.",
+    "correct": false,
+    "why": "Disabling logs removes the primary forensic surface. Missing evidence is treated as a failure in the Governance module."
+   },
+   {
+    "text": "Storing the agent's reasoning in a private Slack channel.",
+    "correct": false,
+    "why": "Private chat is off-platform, unattributed to the commit, and typically outside retention and audit policy."
+   }
+  ],
+  "takeaway": "The three-pillar pattern: logs, attribution, and decisional comments."
+ },
+ {
+  "id": "mock-18",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d3",
+  "objective": "3.1.1",
+  "module": "m4",
+  "unit": "m4-agent-memory-strategies",
+  "type": "single",
+  "text": "Where do long-term, project-stable agent instructions belong?",
+  "options": [
+   {
+    "text": "Injected into the user prompt each invocation.",
+    "correct": false,
+    "why": "Re-injecting stable facts into every prompt is short-term memory doing long-term memory's job: costly, easy to forget, and invisible to reviewers."
+   },
+   {
+    "text": "In `.github/copilot-instructions.md` (or `AGENTS.md`) in the repository.",
+    "correct": true,
+    "why": "Correct. Stable, project-wide guidance belongs in a durable repository artifact such as `.github/copilot-instructions.md` or `AGENTS.md`, where it is versioned, reviewable, and picked up on every invocation."
+   },
+   {
+    "text": "In an environment secret.",
+    "correct": false,
+    "why": "Secrets are for credentials. Instructions are not sensitive and secrets are not designed to be read as context."
+   },
+   {
+    "text": "Hard-coded into the agent's source binary.",
+    "correct": false,
+    "why": "Hard-coding instructions into a binary makes them unreviewable and unchangeable without a release."
+   }
+  ],
+  "takeaway": "Repo-level instructions file is the canonical home for stable long-term agent guidance."
+ },
+ {
+  "id": "mock-19",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d3",
+  "objective": "3.1.2",
+  "module": "m4",
+  "unit": "m4-agent-memory-strategies",
+  "type": "single",
+  "text": "An agent is configured to load the entire repository's documentation into its working context every invocation. Performance is poor and answers are diluted. Which adjustment best applies?",
+  "options": [
+   {
+    "text": "Switch to a larger context window model.",
+    "correct": false,
+    "why": "A bigger context window lets you load more irrelevant text. It raises cost and does not fix dilution."
+   },
+   {
+    "text": "Scope memory to task-relevant information only; load only the docs referenced by the current task.",
+    "correct": true,
+    "why": "Correct. 'Scope memory to task-relevant information' is the published skill: load only what affects this task's outcome \u2014 requirements, constraints, decisions, validation approach \u2014 and leave the rest out."
+   },
+   {
+    "text": "Increase retries.",
+    "correct": false,
+    "why": "Retries re-run the same over-loaded context and produce the same diluted answer."
+   },
+   {
+    "text": "Disable memory entirely.",
+    "correct": false,
+    "why": "Disabling memory removes the requirements and prior decisions the agent needs. The fix is selectivity, not amnesia."
+   }
+  ],
+  "takeaway": "Scope memory to task-relevant \u2014 published Domain 3 bullet. Bigger windows and more retries don't fix dilution."
+ },
+ {
+  "id": "mock-20",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d3",
+  "objective": "3.2.2",
+  "module": "m4",
+  "unit": "m4-agent-state-context-drift",
+  "type": "single",
+  "text": "An agent is mid-task when its workflow run is canceled. On the next invocation, you need it to resume without repeating completed steps. What pattern enables this?",
+  "options": [
+   {
+    "text": "Increase the workflow `timeout-minutes`.",
+    "correct": false,
+    "why": "A longer timeout reduces how often the run is cut short but does nothing to make the next run resume rather than restart."
+   },
+   {
+    "text": "Persist task progress as a durable artifact (PR checklist, state file, or issue comments), and have the agent read it at the start of each run to skip completed steps.",
+    "correct": true,
+    "why": "Correct. Durable state \u2014 PR description checkboxes, commits already pushed, workflow run results in the Checks tab \u2014 lets the agent open the existing PR, see what is done, and continue from the latest state."
+   },
+   {
+    "text": "Set `concurrency: { group: agent-task, cancel-in-progress: false }`.",
+    "correct": false,
+    "why": "Concurrency settings control whether runs overlap or cancel each other. They do not carry progress between runs."
+   },
+   {
+    "text": "Use a larger runner.",
+    "correct": false,
+    "why": "Runner size affects speed, not the ability to resume from persisted state."
+   }
+  ],
+  "takeaway": "Durable progress artifact pattern is the published resumption mechanism."
+ },
+ {
+  "id": "mock-21",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d3",
+  "objective": "3.2.3",
+  "module": "m4",
+  "unit": "m4-agent-state-context-drift",
+  "type": "single",
+  "text": "Which of the following describes context drift in an extended agent execution?",
+  "options": [
+   {
+    "text": "The agent's responses become slower over time as memory grows.",
+    "correct": false,
+    "why": "Slower responses are a performance symptom. Drift is about correctness of alignment, not latency."
+   },
+   {
+    "text": "The agent acts on cached or stale context that no longer matches the actual repo state.",
+    "correct": true,
+    "why": "Correct. Context drift is when the agent's actions no longer align with the original goal or prior decisions \u2014 typically because it is working from stale or cached context rather than current repository state."
+   },
+   {
+    "text": "The agent's prompt template becomes too long.",
+    "correct": false,
+    "why": "A long prompt template is a cost and context-budget problem, not drift."
+   },
+   {
+    "text": "The workflow run consumes too much GitHub Actions quota.",
+    "correct": false,
+    "why": "Actions minutes consumption is a billing concern, unrelated to alignment."
+   }
+  ],
+  "takeaway": "Context drift specifically = action-state divergence; the others are unrelated performance/scale issues."
+ },
+ {
+  "id": "mock-22",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d3",
+  "objective": "3.3.2",
+  "module": "m4",
+  "unit": "m4-memory-state-continuity",
+  "type": "single",
+  "text": "Two agents in a workflow each maintain their own local state and reach conflicting conclusions about the current branch state. What's the fix?",
+  "options": [
+   {
+    "text": "Give one agent priority over the other.",
+    "correct": false,
+    "why": "Priority rules pick a winner without making the two views consistent. The losing agent still holds a wrong picture of the world."
+   },
+   {
+    "text": "Use a single canonical state artifact that both agents read and update through serialized writes.",
+    "correct": true,
+    "why": "Correct. Define a single source of truth per information type and serialize writes to it. In GitHub that means the issue holds requirements and the PR holds decisions and progress \u2014 every tool reads and updates the same artifact rather than keeping private copies."
+   },
+   {
+    "text": "Run the agents in different repositories.",
+    "correct": false,
+    "why": "Separate repositories eliminate the collision by eliminating the collaboration. The agents still need shared state."
+   },
+   {
+    "text": "Reduce both agents' memory to short-term only.",
+    "correct": false,
+    "why": "Shrinking memory does not stop two agents from independently forming conflicting private views."
+   }
+  ],
+  "takeaway": "Single source of truth + serialized writes is the canonical fix."
+ },
+ {
+  "id": "mock-23",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d4",
+  "objective": "4.1.4",
+  "module": "m4",
+  "unit": "m4-evaluation-signals-quality-gates",
+  "type": "multi",
+  "text": "Which of the following are automated evaluation signals you should configure for an agent's output? (Select all that apply.)",
+  "options": [
+   {
+    "text": "Code scanning (CodeQL) alerts.",
+    "correct": true,
+    "why": "Automated. Code scanning (CodeQL) produces alerts and check runs without human involvement."
+   },
+   {
+    "text": "Secret scanning results.",
+    "correct": true,
+    "why": "Automated. Secret scanning \u2014 and push protection \u2014 generate signals mechanically."
+   },
+   {
+    "text": "Dependabot dependency review.",
+    "correct": true,
+    "why": "Automated. Dependency review runs as a check on the PR and blocks known-vulnerable dependencies."
+   },
+   {
+    "text": "Reviewer commentary in PR threads.",
+    "correct": false,
+    "why": "Not automated. Reviewer commentary is a qualitative human signal. It matters for evaluation, but the question asks specifically about automated scanning signals."
+   }
+  ],
+  "takeaway": "All three are automated scanners. (D) is human input, not automated."
+ },
+ {
+  "id": "mock-24",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d4",
+  "objective": "4.1.1",
+  "module": "m4",
+  "unit": "m4-evaluation-signals-quality-gates",
+  "type": "single",
+  "text": "An agent's PRs frequently pass tests but introduce performance regressions on a critical path. The team wants this caught automatically before merge. Which approach is most appropriate?",
+  "options": [
+   {
+    "text": "Ask reviewers to read every diff carefully.",
+    "correct": false,
+    "why": "Asking humans to read more carefully is a process wish, not an enforceable control. It fails exactly when the team is busy."
+   },
+   {
+    "text": "Add a performance benchmark step that produces a required status check; fail the check if regression exceeds threshold.",
+    "correct": true,
+    "why": "Correct. Turn the operational constraint into a machine-checkable signal: run the benchmark in CI, fail the job past a threshold, and make it a required status check so a regressing PR cannot merge."
+   },
+   {
+    "text": "Disable the agent for critical-path files.",
+    "correct": false,
+    "why": "Blocking the agent from critical-path files removes capability instead of adding a gate, and humans regress performance too."
+   },
+   {
+    "text": "Increase test timeout values.",
+    "correct": false,
+    "why": "Raising test timeouts hides the regression by making the slow code pass."
+   }
+  ],
+  "takeaway": "Required status check on a benchmark is the standard gate. (A) doesn't scale, (C) over-restricts, (D) hides the regression."
+ },
+ {
+  "id": "mock-25",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d4",
+  "objective": "4.2.2",
+  "module": "m4",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "type": "single",
+  "text": "An agent's failure trace shows that it called the wrong tool for a task. Which root-cause category does this most closely match?",
+  "options": [
+   {
+    "text": "Reasoning error.",
+    "correct": false,
+    "why": "A reasoning error is a wrong plan or wrong inference \u2014 misreading requirements, choosing invalid logic. Here the plan may have been fine; the execution reached for the wrong instrument."
+   },
+   {
+    "text": "Tool misuse.",
+    "correct": true,
+    "why": "Correct. Tool misuse covers calling the wrong tool, or calling the right tool incorrectly \u2014 misconfigured workflows, wrong commands, failing to trigger a workflow properly."
+   },
+   {
+    "text": "Context or environment issue.",
+    "correct": false,
+    "why": "Context issues are missing, stale, or conflicting information. Nothing in the trace points to bad inputs."
+   },
+   {
+    "text": "Network failure.",
+    "correct": false,
+    "why": "A network failure is an environment fault, not a decision the agent made."
+   }
+  ],
+  "takeaway": "Wrong tool call = tool misuse by definition."
+ },
+ {
+  "id": "mock-26",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d4",
+  "objective": "4.3.3",
+  "module": "m4",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "type": "single",
+  "text": "After analyzing failures, you find that the agent consistently misinterprets a custom internal API because its description in the agent's config is ambiguous. What is the most appropriate tuning step?",
+  "options": [
+   {
+    "text": "Revise the agent's tool descriptions and add usage examples in its config.",
+    "correct": true,
+    "why": "Correct. When the root cause is an ambiguous tool description, the fix is to refine tool usage and access: clarify the description, add usage examples, and rename anything ambiguous."
+   },
+   {
+    "text": "Increase the agent's max-token budget.",
+    "correct": false,
+    "why": "A larger token budget does not disambiguate a description the model is reading correctly and interpreting reasonably."
+   },
+   {
+    "text": "Remove the tool from the agent's available list.",
+    "correct": false,
+    "why": "Removing the tool discards capability the agent legitimately needs. Tune before you amputate."
+   },
+   {
+    "text": "Switch to a different LLM provider.",
+    "correct": false,
+    "why": "Changing model provider is an expensive shot in the dark for a problem you have already localized to your own configuration."
+   }
+  ],
+  "takeaway": "Tune by revising tool descriptions/examples. (B)(D) are unrelated; (C) discards capability."
+ },
+ {
+  "id": "mock-27",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d4",
+  "objective": "4.1.3",
+  "module": "m4",
+  "unit": "m4-evaluation-signals-quality-gates",
+  "type": "single",
+  "text": "Which of the following best aligns evaluation criteria with development intent?",
+  "options": [
+   {
+    "text": "Use eval signals that mirror the criteria a human contributor would be judged on (tests, scans, review feedback).",
+    "correct": true,
+    "why": "Correct. Aligning evaluation with development intent means judging agent work by the same signals a human contributor is judged on \u2014 tests, lint, security scans, review feedback \u2014 so agents stay accountable to the team's real quality bar."
+   },
+   {
+    "text": "Define agent-only metrics like \"tool calls per task\" as the primary success measure.",
+    "correct": false,
+    "why": "Agent-only metrics such as tool calls per task measure mechanism, not outcome. Optimizing them can actively diverge from what the team wants."
+   },
+   {
+    "text": "Disable code review for agent-authored PRs to measure raw agent capability.",
+    "correct": false,
+    "why": "Removing review from agent PRs breaks the contributor model and deletes the qualitative signal."
+   },
+   {
+    "text": "Use only the LLM's self-reported confidence score.",
+    "correct": false,
+    "why": "Self-reported confidence is the one signal the modules explicitly warn against: evaluation must be grounded in system signals, not the agent's confidence."
+   }
+  ],
+  "takeaway": "Alignment with contributor judgment criteria is the published principle."
+ },
+ {
+  "id": "mock-28",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d4",
+  "objective": "4.2.1",
+  "module": "m4",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "type": "multi",
+  "text": "Which artifacts are most useful when diagnosing a failed agent run? (Select all that apply.)",
+  "options": [
+   {
+    "text": "Workflow run logs.",
+    "correct": true,
+    "why": "Yes. Workflow run logs show what executed and where it errored."
+   },
+   {
+    "text": "The agent's structured plan output.",
+    "correct": true,
+    "why": "Yes. The structured plan captures intent, so you can compare what was supposed to happen with what did."
+   },
+   {
+    "text": "The execution trace (tool calls in order).",
+    "correct": true,
+    "why": "Yes. The execution trace shows the ordered tool calls, which is how you spot tool misuse."
+   },
+   {
+    "text": "The uploaded artifacts (intermediate state, evaluations).",
+    "correct": true,
+    "why": "Yes. Uploaded artifacts hold intermediate state and evaluation output, and remain available after logs scroll away. All four are named diagnostic surfaces."
+   }
+  ],
+  "takeaway": "All four are the listed diagnostic surfaces."
+ },
+ {
+  "id": "mock-29",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d4",
+  "objective": "4.3.1",
+  "module": "m4",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "type": "single",
+  "text": "An agent's reasoning is consistently wrong about the team's preferred coding style. Which tuning is most direct?",
+  "options": [
+   {
+    "text": "Update the agent's custom instructions in `.github/copilot-instructions.md` with the team's style conventions.",
+    "correct": true,
+    "why": "Correct. Team conventions are stable, project-wide knowledge, so they belong in repository instructions. Revising instructions is the first tuning lever for reasoning errors."
+   },
+   {
+    "text": "Increase the agent's autonomy level.",
+    "correct": false,
+    "why": "Raising autonomy lets the agent apply the wrong style faster and with less oversight."
+   },
+   {
+    "text": "Add a `style-check` retry loop.",
+    "correct": false,
+    "why": "A retry loop re-runs the same misunderstanding; it treats a knowledge gap as a transient fault."
+   },
+   {
+    "text": "Reduce the agent's memory.",
+    "correct": false,
+    "why": "Reducing memory removes context. The problem is that the correct convention was never recorded anywhere durable."
+   }
+  ],
+  "takeaway": "Custom instructions are the canonical home for team conventions."
+ },
+ {
+  "id": "mock-30",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d5",
+  "objective": "5.1.1",
+  "module": "m5",
+  "unit": "m5-agent-orchestration-github-workflows",
+  "type": "single",
+  "text": "Which pattern best describes a \"supervisor\" multi-agent orchestration?",
+  "options": [
+   {
+    "text": "All agents act simultaneously and outputs are merged at the end.",
+    "correct": false,
+    "why": "Simultaneous execution with a merge at the end is fan-out/fan-in \u2014 in GitHub Actions, parallel jobs plus a `needs:` job that fans in."
+   },
+   {
+    "text": "One agent dispatches sub-tasks to worker agents and reviews their outputs.",
+    "correct": true,
+    "why": "Correct. In the supervisor pattern one agent dispatches sub-tasks to workers and reviews their outputs, holding responsibility for allocation and acceptance."
+   },
+   {
+    "text": "Two agents debate and a third arbitrates.",
+    "correct": false,
+    "why": "Two agents arguing with a third arbitrating is the debate/critic pattern, used to resolve contradictory outputs."
+   },
+   {
+    "text": "Agents are arranged in a fixed sequential pipeline.",
+    "correct": false,
+    "why": "A fixed ordered chain is the sequential pipeline pattern (planner \u2192 coder \u2192 reviewer)."
+   }
+  ],
+  "takeaway": "Supervisor = dispatch + review. (A) is fan-out/fan-in, (C) is debate/critic, (D) is sequential pipeline."
+ },
+ {
+  "id": "mock-31",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d5",
+  "objective": "5.1.2",
+  "module": "m5",
+  "unit": "m5-execution-isolation-permissions-concurrency",
+  "type": "single",
+  "text": "You run three agents in parallel on the same repository. To prevent conflicting code changes, which approach is best?",
+  "options": [
+   {
+    "text": "Run all three agents against the `main` branch directly.",
+    "correct": false,
+    "why": "Three agents writing to `main` share one execution context \u2014 interleaved commits, ambiguous ownership, and no PR boundary to review at."
+   },
+   {
+    "text": "Run each agent on its own feature branch with non-overlapping file scopes, and detect conflicts at PR-merge time.",
+    "correct": true,
+    "why": "Correct. Isolation is the precondition for safe parallelism: a dedicated branch per agent (`agent/dependency/<ticket>`), non-overlapping path scopes, and conflict detection at the PR layer."
+   },
+   {
+    "text": "Disable two of the agents and run them sequentially.",
+    "correct": false,
+    "why": "Serializing works but throws away the throughput you wanted. Isolation lets you keep the parallelism."
+   },
+   {
+    "text": "Increase the runner size to handle merges.",
+    "correct": false,
+    "why": "Runner size is a performance dial and has no bearing on whether two agents collide on the same file."
+   }
+  ],
+  "takeaway": "Branch isolation + file-scope separation + PR-time conflict detection is the parallel-agent pattern."
+ },
+ {
+  "id": "mock-32",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d5",
+  "objective": "5.1.3",
+  "module": "m5",
+  "unit": "m5-conflict-resolution-github-arbitration",
+  "type": "single",
+  "text": "Two parallel agents produce contradictory PRs that modify the same file. Which recovery pattern is most appropriate?",
+  "options": [
+   {
+    "text": "Auto-merge both PRs.",
+    "correct": false,
+    "why": "Auto-merging both guarantees the semantic conflict lands in `main`, where it is most expensive to unpick."
+   },
+   {
+    "text": "A reconciler (judge agent) with a defined arbitration rule, or human-in-the-loop review if disagreement exceeds threshold.",
+    "correct": true,
+    "why": "Correct. Resolve conflicts intentionally: a reconciler with a defined arbitration rule, or human-in-the-loop review once disagreement passes a threshold. Without arbitration, whichever PR merges first simply wins by timing."
+   },
+   {
+    "text": "Reject both PRs without review.",
+    "correct": false,
+    "why": "Rejecting both discards work and does not decide which approach was right."
+   },
+   {
+    "text": "Force-push to overwrite one of the branches.",
+    "correct": false,
+    "why": "A force-push destroys one agent's history and its audit trail, and still leaves the conflict undecided."
+   }
+  ],
+  "takeaway": "Reconciler agent or human-in-the-loop is the published recovery pattern."
+ },
+ {
+  "id": "mock-33",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d5",
+  "objective": "5.2.3",
+  "module": "m5",
+  "unit": "m5-system-observability-evidence-workflows",
+  "type": "single",
+  "text": "Which artifact best supports post-hoc analysis of a multi-agent workflow?",
+  "options": [
+   {
+    "text": "A top-level orchestration record (issue or workflow run) linking every sub-agent's run, with decision logs at handoffs.",
+    "correct": true,
+    "why": "Correct. Post-hoc analysis needs a linked record: a top-level orchestration artifact tying every sub-agent run together with decisions logged at each handoff, so you can replay who did what and why."
+   },
+   {
+    "text": "A summary log message on the orchestrator's exit.",
+    "correct": false,
+    "why": "A single exit summary tells you the ending, not the sequence of decisions that produced it."
+   },
+   {
+    "text": "Each agent's local debug output, kept only on its runner.",
+    "correct": false,
+    "why": "Debug output kept on the runner is discarded with the runner. Nothing durable survives."
+   },
+   {
+    "text": "A Slack thread between the team's engineers.",
+    "correct": false,
+    "why": "A Slack thread is off-platform, unattributed to runs and commits, and outside retention policy."
+   }
+  ],
+  "takeaway": "Linked orchestration record with handoff logs is the auditable structure."
+ },
+ {
+  "id": "mock-34",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d5",
+  "objective": "5.3.1",
+  "module": "m5",
+  "unit": "m5-scale-failure-recovery",
+  "type": "single",
+  "text": "Your orchestrator detects that one of three parallel agents has produced no progress for 30 minutes. What's the most appropriate first response?",
+  "options": [
+   {
+    "text": "Allow the agent to continue indefinitely.",
+    "correct": false,
+    "why": "Letting a stalled agent run indefinitely burns budget and blocks downstream fan-in jobs forever."
+   },
+   {
+    "text": "Apply a workflow timeout, mark the run failed, and route the sub-task to a fallback path (rerun, alternative agent, or human).",
+    "correct": true,
+    "why": "Correct. Detect the stall with `timeout-minutes`, mark it failed, and route to a fallback: rerun the sub-agent in isolation, use an alternative, or escalate to a human with a concise summary."
+   },
+   {
+    "text": "Increase the runner's CPU allocation.",
+    "correct": false,
+    "why": "More CPU does not help an agent that is stuck rather than slow."
+   },
+   {
+    "text": "Cancel all three agents' runs.",
+    "correct": false,
+    "why": "Cancelling all three throws away the two runs that are working fine."
+   }
+  ],
+  "takeaway": "Timeout + fallback path is the standard stalled-execution response."
+ },
+ {
+  "id": "mock-35",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d5",
+  "objective": "5.4.1",
+  "module": "m5",
+  "unit": "m5-scale-failure-recovery",
+  "type": "single",
+  "text": "You want to introduce a new agent into an existing multi-agent workflow without disrupting current runs. Which deployment is safest?",
+  "options": [
+   {
+    "text": "Replace the existing agent immediately and roll forward.",
+    "correct": false,
+    "why": "An immediate swap changes behavior for in-flight work with no evidence that the replacement is equivalent."
+   },
+   {
+    "text": "Deploy the new agent in shadow mode, run it alongside the existing one, compare outputs, then promote once parity is confirmed.",
+    "correct": true,
+    "why": "Correct. Shadow mode \u2014 run the new agent alongside the incumbent, compare outputs, grant no merge authority until parity is confirmed \u2014 adds the agent without disrupting active workflows."
+   },
+   {
+    "text": "Run the new agent only on weekends.",
+    "correct": false,
+    "why": "Weekend-only scheduling limits exposure by clock time, not by risk, and gives you a thin, unrepresentative sample."
+   },
+   {
+    "text": "Disable the existing agent for one week to validate the new one.",
+    "correct": false,
+    "why": "Disabling the incumbent for a week removes the baseline you need to compare against, and leaves no fallback if the new agent misbehaves."
+   }
+  ],
+  "takeaway": "Shadow-mode parity check is the safe rollout."
+ },
+ {
+  "id": "mock-36",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d5",
+  "objective": "5.4.3",
+  "module": "m6",
+  "unit": "m6-maintain-governance-operational-reliability",
+  "type": "single",
+  "text": "A retired agent's audit trail must remain accessible for compliance review. Which approach preserves auditability?",
+  "options": [
+   {
+    "text": "Delete the agent's config and all associated workflow runs.",
+    "correct": false,
+    "why": "Deleting configuration and runs destroys exactly the evidence compliance review depends on. Note that deleted workflow artifacts cannot be restored."
+   },
+   {
+    "text": "Archive the config in git history, retain workflow runs/artifacts per retention policy, and document the retirement in a governance record.",
+    "correct": true,
+    "why": "Correct. Retire while preserving auditability: the config stays in git history, runs and artifacts are retained under the retention policy, and the retirement decision is documented in a governance record."
+   },
+   {
+    "text": "Move the workflow runs to a private external storage system not linked to the repository.",
+    "correct": false,
+    "why": "Moving runs to unlinked external storage severs evidence from the changes it explains and usually falls outside the audit log."
+   },
+   {
+    "text": "Disable workflow logging going forward.",
+    "correct": false,
+    "why": "Disabling logging protects nothing about the past and destroys the trail going forward."
+   }
+  ],
+  "takeaway": "Archive in git + retain runs + document = audit-trail preservation."
+ },
+ {
+  "id": "mock-37",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d6",
+  "objective": "6.1.1",
+  "module": "m6",
+  "unit": "m6-define-risk-based-autonomy",
+  "type": "single",
+  "text": "Which action category most clearly requires explicit human authorization?",
+  "options": [
+   {
+    "text": "Auto-formatting a markdown file.",
+    "correct": false,
+    "why": "Formatting a markdown file is the low-risk, fully reversible tier \u2014 a candidate for full automation."
+   },
+   {
+    "text": "Renaming a private variable in test code.",
+    "correct": false,
+    "why": "Renaming a private variable in test code is contained and reversible; PR plus required checks is proportionate."
+   },
+   {
+    "text": "Modifying a CI/CD pipeline that deploys to production.",
+    "correct": true,
+    "why": "Correct. Changes under `.github/workflows/` that deploy to production are the classic 'small diff, big consequence' area \u2014 treat as high or critical risk and require explicit human authorization."
+   },
+   {
+    "text": "Adding a comment to an existing issue.",
+    "correct": false,
+    "why": "Commenting on an issue changes no code and no system state."
+   }
+  ],
+  "takeaway": "Production CI/CD changes are explicitly the high-risk category."
+ },
+ {
+  "id": "mock-38",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d6",
+  "objective": "6.2.3",
+  "module": "m6",
+  "unit": "m6-control-agent-capabilities",
+  "type": "single",
+  "text": "Which mechanism most directly enforces least-privilege execution context for an agent in a workflow?",
+  "options": [
+   {
+    "text": "A workflow `permissions:` block scoped to the minimum needed for the task.",
+    "correct": true,
+    "why": "Correct. The `permissions:` block is the platform primitive for least privilege at execution time. Default to `contents: read` at workflow level and elevate only on the job that must write."
+   },
+   {
+    "text": "A team-wide announcement in Slack.",
+    "correct": false,
+    "why": "A Slack announcement is documentation of intent, not a technical control. The Governance module is blunt: if the platform cannot enforce it, it will be bypassed."
+   },
+   {
+    "text": "A pinned issue describing expected behavior.",
+    "correct": false,
+    "why": "A pinned issue describes expected behavior. It cannot constrain a token."
+   },
+   {
+    "text": "A README note in the repository root.",
+    "correct": false,
+    "why": "A README note is 'controls in docs only' \u2014 the named anti-pattern."
+   }
+  ],
+  "takeaway": "Workflow `permissions:` block is the GitHub primitive for least privilege at execution time."
+ },
+ {
+  "id": "mock-39",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d6",
+  "objective": "6.2.4",
+  "module": "m6",
+  "unit": "m6-design-human-workflows",
+  "type": "single",
+  "text": "You want to require approval before an agent can deploy to production but not for routine PRs. Which GitHub feature is most appropriate?",
+  "options": [
+   {
+    "text": "Branch protection rules on `main`.",
+    "correct": false,
+    "why": "Branch protection on `main` gates merges. It does not gate what happens at deploy time, and it would add friction to every routine PR."
+   },
+   {
+    "text": "An environment with required reviewers attached to the production deploy job.",
+    "correct": true,
+    "why": "Correct. An environment with required reviewers pauses the deploy job until a human approves, and can restrict production secrets to that environment \u2014 targeted oversight exactly at the high-impact decision point."
+   },
+   {
+    "text": "CODEOWNERS for the entire `src/` directory.",
+    "correct": false,
+    "why": "CODEOWNERS on all of `src/` taxes every ordinary change while still not gating the deployment itself."
+   },
+   {
+    "text": "A `WORKING-HOURS` setting on the repository.",
+    "correct": false,
+    "why": "There is no such repository setting."
+   }
+  ],
+  "takeaway": "Environment protection rules with required reviewers are the named gate for deploys."
+ },
+ {
+  "id": "mock-40",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d6",
+  "objective": "6.2.5",
+  "module": "m6",
+  "unit": "m6-design-human-workflows",
+  "type": "multi",
+  "text": "Which of the following minimize approval friction without reducing safety? (Select all that apply.)",
+  "options": [
+   {
+    "text": "Require approval only for irreversible or compliance-sensitive changes.",
+    "correct": true,
+    "why": "Yes. Requiring approval only where changes are irreversible or compliance-sensitive concentrates human attention where it buys real safety."
+   },
+   {
+    "text": "Use CODEOWNERS on sensitive paths so reviews are targeted, not global.",
+    "correct": true,
+    "why": "Yes. Path-scoped CODEOWNERS routes review to people with context instead of taxing everyone on everything."
+   },
+   {
+    "text": "Require two reviewers on every PR including doc typos.",
+    "correct": false,
+    "why": "No. Two reviewers on a documentation typo is approval theater: it adds friction and trains reviewers to stop reading."
+   },
+   {
+    "text": "Use environment protection rules so prod deploys are gated but dev flows freely.",
+    "correct": true,
+    "why": "Yes. Environment protection rules gate production while dev and staging flow freely \u2014 velocity preserved, risk still gated."
+   }
+  ],
+  "takeaway": "All target risk-proportionate approval; (C) is approval theater that adds friction without proportionate safety."
+ },
+ {
+  "id": "mock-41",
+  "source": "community-mock",
+  "sourceLabel": "Community mock exam (gh-600-study-guide)",
+  "sourceUrl": "https://github.com/jtur671/gh-600-study-guide/blob/main/mock-exam.md",
+  "domain": "d6",
+  "objective": "6.2.4",
+  "module": "m6",
+  "unit": "m6-enforce-governance-github-controls",
+  "type": "single",
+  "text": "An agent is about to perform an irreversible production change (e.g., dropping a database column). Which set of controls is the best combination?",
+  "options": [
+   {
+    "text": "CODEOWNERS approval on the migration file + environment protection rule with required reviewers on the prod environment + a structured plan artifact reviewed before the action job runs.",
+    "correct": true,
+    "why": "Correct. Defense in depth for an irreversible change: CODEOWNERS review of the migration itself, an environment gate with required reviewers at the deploy, and a plan artifact reviewed before the action job runs. Layered controls, each catching what the others miss."
+   },
+   {
+    "text": "A retry loop with exponential backoff.",
+    "correct": false,
+    "why": "A retry loop makes an irreversible destructive operation happen repeatedly. This is the worst possible answer here."
+   },
+   {
+    "text": "A larger workflow `timeout-minutes` value.",
+    "correct": false,
+    "why": "A longer timeout gives the destructive operation more time to complete. It adds no oversight."
+   },
+   {
+    "text": "Allow the agent to proceed and revert later if needed.",
+    "correct": false,
+    "why": "'Revert later' does not apply to irreversible changes \u2014 a dropped column takes the data with it."
+   }
+  ],
+  "takeaway": "Defense-in-depth: code-level review (CODEOWNERS) + deploy-gate (environment) + intent review (plan artifact)."
+ }
+]

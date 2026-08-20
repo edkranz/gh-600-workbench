@@ -1,0 +1,386 @@
+[
+ {
+  "id": "auth-d2-01",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.1.1", "module": "m2",
+  "unit": "m2-agent-operations-controls",
+  "type": "single",
+  "text": "You are deciding which tools to give a code-review agent that must read source, search the repository, and leave review comments - but must never modify files. Which toolset selection follows the module's guidance?",
+  "options": [
+   {"text": "Grant the full default toolset; the agent's instructions tell it not to write.", "correct": false, "why": "Instructions are guidance. A capability the agent holds is a capability it can use, and tool allowlists are the enforcement layer."},
+   {"text": "Grant a read-only toolset plus the specific comment capability, and nothing else.", "correct": true, "why": "The capability boundary should match the job: read-only toolsets for planning and review agents, implementation tools reserved for execution agents. Prefer allowlists over broad wildcards, and treat changes to the allowlist as a governance-sensitive change."},
+   {"text": "Grant read plus write, since review agents occasionally need to fix trivial typos.", "correct": false, "why": "\"Occasionally needs\" is how scope creep starts. If typo fixing is in scope, that is a different agent with a different, deliberately granted capability."},
+   {"text": "Grant no tools and paste the diff into the prompt manually.", "correct": false, "why": "This removes the agent's ability to gather its own context and does not scale. Least privilege means the minimum needed, not zero."}
+  ],
+  "takeaway": "Identify tools from the task's actual verbs, then allowlist exactly those. Read-only for planning and review; write tools for execution agents only."
+ },
+ {
+  "id": "auth-d2-02",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.1.1", "module": "m2",
+  "unit": "m2-agent-operations-controls",
+  "type": "single",
+  "text": "Agent profile configuration provides three kinds of control. Which pairing is correct?",
+  "options": [
+   {"text": "Capability boundary = which tools are allowed; visibility boundary = whether the agent is user-selectable; delegation boundary = which subagents can be invoked.", "correct": true, "why": "These are the three controls the operations unit names. Capability governs tools, visibility governs whether a human can pick the agent in interactive UI, and delegation governs which subagents it may hand off to."},
+   {"text": "Capability boundary = the model used; visibility boundary = log verbosity; delegation boundary = runner size.", "correct": false, "why": "None of these are governance boundaries. Model, logging, and runner sizing are operational settings."},
+   {"text": "Capability boundary = branch protection; visibility boundary = repository visibility; delegation boundary = CODEOWNERS.", "correct": false, "why": "These are repository controls, not agent-profile controls. They act on the change after it exists, not on what the agent may do."},
+   {"text": "Capability boundary = token scope; visibility boundary = artifact retention; delegation boundary = concurrency group.", "correct": false, "why": "Token scope is related but is a workflow permission concern; retention and concurrency are unrelated to agent-profile boundaries."}
+  ],
+  "takeaway": "Agent profiles set three boundaries: capability (tools), visibility (user-selectable or not), and delegation (which subagents can be invoked)."
+ },
+ {
+  "id": "auth-d2-03",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.1.2", "module": "m3",
+  "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "You want a custom agent that only looks at JavaScript files and the src/auth/ tree, and can only read and search. Where and how do you express that?",
+  "options": [
+   {"text": "In a .agent.md file under .github/agents/, using applyTo for the file scope and tools for the allowed actions.", "correct": true, "why": "Custom agents live in .github/agents/ with the .agent.md extension. applyTo narrows which files or directories the agent focuses on and tools defines what actions it can perform - for example read_file and search_files."},
+   {"text": "In .github/workflows/agent.yml, using a paths filter on the trigger.", "correct": false, "why": "A paths filter decides whether a workflow runs at all. It does not scope what an agent may touch once it is running."},
+   {"text": "In CODEOWNERS, by assigning the agent as owner of those paths.", "correct": false, "why": "CODEOWNERS routes review requests to owners; it grants and restricts nothing at execution time."},
+   {"text": "In the repository's Copilot settings, by listing allowed directories.", "correct": false, "why": "Repository settings enable the cloud agent for the repository. Within-repository focus is refined in the agent file."}
+  ],
+  "takeaway": "Repository scope defines where an agent operates; the custom agent file (applyTo, tools) defines what it may access and do inside that boundary."
+ },
+ {
+  "id": "auth-d2-04",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.1.3", "module": "m6",
+  "unit": "m6-control-agent-capabilities",
+  "type": "single",
+  "text": "A workflow's analysis job only reads code, but a later job must open a pull request. Which permissions layout is correct?",
+  "options": [
+   {"text": "Set permissions: write-all at workflow level so neither job can fail on a permission error.", "correct": false, "why": "This grants every job far more than it needs and is the \"excess permissions\" anti-pattern: a small mistake in the read-only job becomes a repository-wide incident."},
+   {"text": "Set contents: read at workflow level, then grant contents: write and pull-requests: write on the job that writes.", "correct": true, "why": "Read-only defaults at workflow level with job-level elevation is the published least-privilege pattern. Only the job that must write gets write capability, so the blast radius of the analysis job stays minimal."},
+   {"text": "Omit the permissions block entirely and rely on repository defaults.", "correct": false, "why": "Defaults vary by repository and organization settings. The guidance is to define permissions explicitly and minimize them."},
+   {"text": "Store a personal access token as a secret and use it in both jobs.", "correct": false, "why": "A PAT carries the user's broad access and bypasses the per-run scoping that GITHUB_TOKEN provides. It is a wider blast radius, not a narrower one."}
+  ],
+  "takeaway": "Default to read at workflow level; elevate write only on the specific job that needs it. pull-requests: write is an elevated capability."
+ },
+ {
+  "id": "auth-d2-05",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.2.1", "module": "m3",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "In VS Code, you are adding the GitHub remote MCP server to an agent. Which sequence matches the documented flow?",
+  "options": [
+   {"text": "Edit .github/workflows/mcp.yml and add the server URL under tools.", "correct": false, "why": "That is workflow configuration, not the IDE flow. MCP servers are added through the Copilot Chat interface and become tools the agent can use."},
+   {"text": "Open Copilot Chat in Agent mode, choose Configure tools, Add MCP server, select HTTP, enter https://api.githubcopilot.com/mcp/, pick a scope, then authenticate and save.", "correct": true, "why": "This is the documented VS Code flow: the Tools icon, Configure tools, Add MCP server, HTTP server type, the server URL, a workspace or all-workspaces scope, then Authenticate and Save. The server then appears as a tool the agent can call."},
+   {"text": "Install the server as a GitHub App from the Marketplace and grant it repository access.", "correct": false, "why": "GitHub Apps are a different integration model. MCP servers are registered as tools for the client, not installed as apps on the repository."},
+   {"text": "Add the server to CODEOWNERS so the agent is authorized to call it.", "correct": false, "why": "CODEOWNERS has no relationship to tool authorization."}
+  ],
+  "takeaway": "MCP servers are added through the client (Copilot Chat, Agent mode, Configure tools) and become callable tools; remote is the recommended setup for most users."
+ },
+ {
+  "id": "auth-d2-06",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.2.2", "module": "m3",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "A developer needs an MCP server that can reach files on their own machine and a bespoke internal script. Which configuration fits, and what changes?",
+  "options": [
+   {"text": "A remote server, because remote is always recommended.", "correct": false, "why": "Remote is recommended for most users of the GitHub MCP server, but it cannot reach local resources. The recommendation is a default, not a rule."},
+   {"text": "A local server pointed at something like http://localhost:3000; setup in VS Code is otherwise identical and it typically needs no external authentication.", "correct": true, "why": "Local MCP servers run on the developer's machine, can access local resources and custom workflows, and typically require no external authentication. The VS Code setup steps are the same - only the endpoint differs."},
+   {"text": "A remote server with a firewall exception for the developer's machine.", "correct": false, "why": "Inverting the direction does not help. A hosted server still does not have the local filesystem."},
+   {"text": "Neither - MCP cannot expose local resources.", "correct": false, "why": "Bridging to local resources is one of the documented capabilities of a local MCP server."}
+  ],
+  "takeaway": "Local MCP servers reach local resources and usually skip external auth; remote servers reduce setup and travel across environments."
+ },
+ {
+  "id": "auth-d2-07",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.2.2", "module": "m3",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "Which statement about MCP server hosting options across GitHub deployments is accurate?",
+  "options": [
+   {"text": "GitHub Enterprise Server supports local MCP server configuration, while GitHub Enterprise Cloud with data residency supports both local and remote.", "correct": true, "why": "This is the documented split. Deployment model constrains which hosting options are available, so it is worth checking before you standardize on remote."},
+   {"text": "Remote MCP servers are the only supported option on every GitHub deployment.", "correct": false, "why": "Local configuration is supported, and on GitHub Enterprise Server it is the supported path."},
+   {"text": "Local MCP servers are only supported in GitHub Enterprise Cloud.", "correct": false, "why": "This reverses the actual situation for GitHub Enterprise Server."},
+   {"text": "MCP server hosting is identical across all GitHub deployments.", "correct": false, "why": "Support differs by deployment, which is exactly why the modules call it out."}
+  ],
+  "takeaway": "Check the deployment: Enterprise Server supports local configuration; Enterprise Cloud with data residency supports both local and remote."
+ },
+ {
+  "id": "auth-d2-08",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.2.3", "module": "m3",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "multi",
+  "text": "Your enterprise is hosting a custom MCP registry for Copilot. Which requirements must it satisfy? (Select all that apply.)",
+  "options": [
+   {"text": "Follow the MCP registry v0.1 specification", "correct": true, "why": "Yes. The registry must conform to the specification for Copilot to consume it."},
+   {"text": "Expose HTTPS endpoints including GET /v0.1/servers and the per-server version endpoints", "correct": true, "why": "Yes - GET /v0.1/servers, GET /v0.1/servers/{serverName}/versions/latest, and GET /v0.1/servers/{serverName}/versions/{version}."},
+   {"text": "Include CORS headers such as Access-Control-Allow-Origin, Access-Control-Allow-Methods, and Access-Control-Allow-Headers", "correct": true, "why": "Yes. Without the required CORS headers Copilot cannot access the registry from the client."},
+   {"text": "Be hosted inside the same repository as the agent that consumes it", "correct": false, "why": "No. A registry is an org- or enterprise-level service. You can fork and self-host the open-source registry, run it locally with Docker, build your own, or use Azure API Center as a managed registry."}
+  ],
+  "takeaway": "A custom registry needs the v0.1 spec, the three HTTPS endpoints, and CORS headers - then the registry URL goes into Copilot policy settings."
+ },
+ {
+  "id": "auth-d2-09",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.2.3", "module": "m3",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "An enterprise sets Restrict MCP access to registry servers to \"Registry only\". A developer's local MCP server stops working. Why, and what fixes it?",
+  "options": [
+   {"text": "Local servers are always exempt from the policy; the failure must be a network issue.", "correct": false, "why": "Local servers are not exempt. Under Registry only, they must be listed in the registry too."},
+   {"text": "Under Registry only, local servers must also be listed in the registry, with server IDs matching exactly.", "correct": true, "why": "That is the documented behavior. Registry only limits developers to servers defined in the configured registry, and local MCP servers must be included with exactly matching server IDs."},
+   {"text": "The developer must switch to Allow all in their personal Copilot settings.", "correct": false, "why": "The policy is set at organization or enterprise level and applies immediately to all developers. Individuals cannot override it."},
+   {"text": "Local servers require a paid Copilot seat upgrade under Registry only.", "correct": false, "why": "Allowlist enforcement is tied to the Copilot seat that governs the user, but the fix here is registry listing, not a seat change."}
+  ],
+  "takeaway": "\"Allow all\" means any server; \"Registry only\" means registry-listed servers only - including local ones, with exactly matching IDs."
+ },
+ {
+  "id": "auth-d2-10",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.2.4", "module": "m3",
+  "unit": "m3-mcp-servers-registry-allowlists",
+  "type": "single",
+  "text": "MCP servers, registries, and allow lists each solve a different part of the same problem. Which mapping is correct?",
+  "options": [
+   {"text": "Server exposes tools; registry makes servers discoverable and trustable; allow list decides which servers are permitted.", "correct": true, "why": "This is the three-part model the module summarizes. Together they let teams discover useful servers while the organization keeps governance over what is actually allowed."},
+   {"text": "Server decides what is permitted; registry exposes tools; allow list makes servers discoverable.", "correct": false, "why": "The roles are shuffled. Permission is policy (allow list), discovery is catalog (registry), and exposure is the server."},
+   {"text": "Registry enforces read/write permissions; allow list exposes tools; server catalogs available clients.", "correct": false, "why": "None of these are the documented responsibilities. A registry is a catalog, not a permission engine."},
+   {"text": "All three are alternative names for the same organization policy setting.", "correct": false, "why": "They are three distinct components, configured in different places."}
+  ],
+  "takeaway": "Server = exposes tools. Registry = discovery and distribution. Allow list = the policy gate."
+ },
+ {
+  "id": "auth-d2-11",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.3.1", "module": "m3",
+  "unit": "m3-execution-context-boundaries",
+  "type": "multi",
+  "text": "Which elements make up an agent's execution context in GitHub? (Select all that apply.)",
+  "options": [
+   {"text": "The repository the agent is working in", "correct": true, "why": "Yes. Repository scope is the first boundary; agents cannot reach other repositories unless explicitly granted."},
+   {"text": "The branch the agent is targeting", "correct": true, "why": "Yes. Branch-based isolation keeps changes off the default branch until review."},
+   {"text": "The workflow executing the tasks and the permissions granted to it", "correct": true, "why": "Yes. The workflow is the controlled execution container and its permissions determine capability."},
+   {"text": "The number of contributors with write access to the repository", "correct": false, "why": "No. Contributor count has no bearing on what an agent may do; capability comes from permissions, not from headcount."}
+  ],
+  "takeaway": "Execution context = repository + branch + workflow + permissions. Together they determine both visibility and capability."
+ },
+ {
+  "id": "auth-d2-12",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.3.2", "module": "m3",
+  "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "Where do you enable and scope the Copilot cloud agent for a single repository?",
+  "options": [
+   {"text": "Organization settings, Copilot, Policies - then list the repository.", "correct": false, "why": "Organization Copilot policies govern features such as MCP usage across the org. Enabling the cloud agent for a specific repository is a repository-level action."},
+   {"text": "Repository Settings, under Code & automation, Copilot, Cloud agent - enable and configure it there.", "correct": true, "why": "That is the documented path. Once configured, the agent is scoped to that repository and cannot operate outside it."},
+   {"text": "By adding a .github/agents/ directory - creating the directory is what enables the agent.", "correct": false, "why": "Custom agent files refine scope and capability within a repository, but they do not enable the cloud agent for it."},
+   {"text": "By adding the agent to the repository's CODEOWNERS file.", "correct": false, "why": "CODEOWNERS routes reviews. It does not enable or scope an agent."}
+  ],
+  "takeaway": "Repository scope is configured at the repository level; the agent then cannot operate outside that repository."
+ },
+ {
+  "id": "auth-d2-13",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.3.3", "module": "m3",
+  "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "You are writing .github/workflows/agent-task.yml to run an agent nightly and on demand. Which combination of workflow elements is required for it to be a controlled execution path?",
+  "options": [
+   {"text": "A trigger and a runner only - permissions are inherited automatically.", "correct": false, "why": "Inherited defaults are exactly what the guidance says to replace. Permissions should always be explicitly defined and minimized."},
+   {"text": "A trigger (for example workflow_dispatch plus schedule), an explicit permissions block, a job and runner, checkout, and authentication passed via env from secrets.", "correct": true, "why": "The workflow becomes the execution boundary: a defined trigger, a defined runner, a defined repository context, and only the permissions granted to that workflow. Authentication is supplied at runtime from secrets rather than embedded in the file."},
+   {"text": "A schedule trigger and a hard-coded personal access token in the run step.", "correct": false, "why": "Secrets must never appear in workflow YAML in plain text. They are injected at runtime through protected secret boundaries."},
+   {"text": "A pull_request trigger only, since agents should never run on a schedule.", "correct": false, "why": "Scheduled agent work - reporting, dependency checks, triage - is a normal and supported pattern."}
+  ],
+  "takeaway": "Invoking an agent in CI means wrapping it in a workflow with an explicit trigger, explicit minimal permissions, and runtime-injected credentials."
+ },
+ {
+  "id": "auth-d2-14",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.3.3", "module": "m3",
+  "unit": "m3-interact-github-apis-workflows",
+  "type": "single",
+  "text": "How does a GitHub Agentic Workflow differ structurally from a traditional GitHub Actions workflow?",
+  "options": [
+   {"text": "It replaces GitHub Actions with a separate agent runtime.", "correct": false, "why": "Agentic workflows compile to a lock file that GitHub Actions executes. They augment CI/CD rather than replacing it."},
+   {"text": "It pairs frontmatter (triggers, permissions, tools, safe outputs) with Markdown that describes the intended outcome, and the agent works out the steps within those guardrails.", "correct": true, "why": "The Markdown expresses intent; the frontmatter defines the boundaries. That is the whole difference: traditional workflows specify every step deterministically, while agentic workflows describe outcomes and let the agent determine how, inside declared constraints."},
+   {"text": "It removes the need for permissions because the agent decides its own access.", "correct": false, "why": "The opposite - permissions are declared in frontmatter, and the model defaults to read-only tokens."},
+   {"text": "It runs only on self-hosted runners.", "correct": false, "why": "Runner choice is unrelated to the distinction."}
+  ],
+  "takeaway": "Agentic workflows: Markdown states the outcome, frontmatter states the guardrails, and it compiles to a lock file that Actions runs."
+ },
+ {
+  "id": "auth-d2-15",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.3.4", "module": "m3",
+  "unit": "m3-execution-context-boundaries",
+  "type": "single",
+  "text": "A team believes they can control which branch an agent works on by setting a field in the custom agent file. Are they right?",
+  "options": [
+   {"text": "Yes - the branch field in the .agent.md file sets the working branch.", "correct": false, "why": "No such control exists in the agent file. Custom agents define applyTo, tools, and instructions."},
+   {"text": "No - branch-based scope is enforced by the execution context, not the custom agent. With a cloud agent you select a base branch and the system creates the working branch; in CI the workflow determines the branch.", "correct": true, "why": "Custom agents define what files they focus on, what actions they can perform, and how they behave - but not branch creation, pull request behavior, or execution isolation. Those come from the system executing the agent."},
+   {"text": "Yes - applyTo accepts branch patterns as well as file globs.", "correct": false, "why": "applyTo limits which files or directories the agent focuses on. It is a path filter, not a ref filter."},
+   {"text": "No - agents always work directly on the default branch.", "correct": false, "why": "The opposite is true: agents create a branch, change files there, and open a pull request against a base branch."}
+  ],
+  "takeaway": "Custom agents control focus and capability. Branch creation, PR behavior, and execution isolation belong to the execution context."
+ },
+ {
+  "id": "auth-d2-16",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.3.5", "module": "m3",
+  "unit": "m3-agent-execution-limits-protections",
+  "type": "single",
+  "text": "Which statement best describes how far the Copilot cloud agent goes on its own once it has finished working?",
+  "options": [
+   {"text": "It creates a pull request and merges it once required checks pass.", "correct": false, "why": "Merging is never automatic here. Even where a PR exists, merge remains gated by policy and human decision."},
+   {"text": "It prepares changes on a separate branch for review; you decide whether to create a pull request, request updates, or discard the work.", "correct": true, "why": "The limits unit is explicit: the agent works on a separate branch and prepares changes for review, but does not finalize them. The final decision stays in human control."},
+   {"text": "It pushes directly to the default branch and opens an issue describing what it did.", "correct": false, "why": "Agents do not work directly on the default branch - branch-based isolation is a core safety mechanism."},
+   {"text": "It waits for a human to create the branch before it can make any change.", "correct": false, "why": "The agent creates its own working branch from the base branch you selected."}
+  ],
+  "takeaway": "The agent prepares; you dispose. Branch isolation plus a human decision point on the pull request is the safety model."
+ },
+ {
+  "id": "auth-d2-17",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.3.6", "module": "m3",
+  "unit": "m3-execution-context-boundaries",
+  "type": "multi",
+  "text": "Which guardrails are part of the defense-in-depth model in GitHub Agentic Workflows? (Select all that apply.)",
+  "options": [
+   {"text": "Read-only tokens by default, so the agent inspects state without directly changing it", "correct": true, "why": "Yes. The default posture is read-only; writes go through a separate controlled path."},
+   {"text": "Safe outputs - the agent proposes actions and a separate gated step decides what is allowed", "correct": true, "why": "Yes. This creates an explicit boundary between reasoning and writing."},
+   {"text": "Zero secrets in the agent process, plus sandboxed containerized execution and network isolation with allowlisted egress", "correct": true, "why": "Yes. Keeping credentials out of the agent runtime and constraining the sandbox and network limits what a compromised or misled agent can reach."},
+   {"text": "Automatic merge of agent pull requests once threat detection passes", "correct": false, "why": "No. Threat detection scans proposed outputs before a write action is applied; it does not authorize a merge. Merge stays under policy and human control."}
+  ],
+  "takeaway": "Agentic workflow guardrails: read-only defaults, safe outputs, no secrets in the agent process, sandboxing, network allowlists, and output threat detection."
+ },
+ {
+  "id": "auth-d2-18",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.3.6", "module": "m2",
+  "unit": "m2-agent-operations-controls",
+  "type": "single",
+  "text": "A workflow's CI secrets work fine, but the agent's runtime cannot see them. What principle explains this?",
+  "options": [
+   {"text": "Secrets are only available on self-hosted runners.", "correct": false, "why": "Secret availability is about boundaries and scoping, not runner type."},
+   {"text": "The agent's runtime environment has its own secret boundary and does not automatically inherit repository CI secrets.", "correct": true, "why": "This is stated directly in the operations unit. Secrets should be injected at runtime into the components that need them, and scoped - for example by environment - to reduce exposure."},
+   {"text": "Secrets expire after 90 days, matching artifact retention.", "correct": false, "why": "Ninety days is the default retention for workflow logs and artifacts, not a secret lifetime."},
+   {"text": "Secrets can only be read by jobs with contents: write.", "correct": false, "why": "Secret access is not derived from the contents permission."}
+  ],
+  "takeaway": "Do not assume the agent runtime inherits CI secrets. Inject at runtime, pass only to the component that needs it, and scope by environment."
+ },
+ {
+  "id": "auth-d2-19",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.4.1", "module": "m3",
+  "unit": "m3-agent-execution-limits-protections",
+  "type": "single",
+  "text": "An agent step fails midway, but the workflow keeps going and later steps commit half-finished work. Which change addresses the root problem?",
+  "options": [
+   {"text": "Keep continue-on-error: false so a failing step stops the run instead of silently continuing, and log a meaningful error.", "correct": true, "why": "The error-handling guidance is to fail fast, log meaningfully, and prevent partial or inconsistent changes. Letting execution continue past a failure is what produced the half-finished commit."},
+   {"text": "Set continue-on-error: true so the workflow always reaches the cleanup step.", "correct": false, "why": "That is the opposite: it explicitly allows execution to continue after an error, which is how partial changes get committed."},
+   {"text": "Increase timeout-minutes so the step has more time to recover.", "correct": false, "why": "The step failed, it did not run out of time. More time changes nothing."},
+   {"text": "Move the agent step to a separate workflow triggered by workflow_run.", "correct": false, "why": "Splitting workflows changes sequencing, not whether a failure halts execution."}
+  ],
+  "takeaway": "Fail fast, log meaningfully, and never let a failed step leave partial state behind."
+ },
+ {
+  "id": "auth-d2-20",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.4.2", "module": "m2",
+  "unit": "m2-agent-operations-controls",
+  "type": "single",
+  "text": "Your safe-iteration policy needs a rule for what happens when the same required check keeps failing on an agent's pull request. Which policy matches the module's guidance?",
+  "options": [
+   {"text": "Let the agent keep revising until the check passes - convergence is the goal.", "correct": false, "why": "Unbounded iteration is how workflows flap. The published policy exists precisely to prevent infinite loops."},
+   {"text": "The agent may revise and re-run, but if the same required check fails twice, escalate to a human with what failed, what was attempted, what evidence exists, and a suggested next step.", "correct": true, "why": "This is the safe-iteration policy: bounded retries plus a defined escalation threshold, and an escalation payload that makes the handoff actionable rather than just a notification."},
+   {"text": "Escalate on the first failure so a human always sees it.", "correct": false, "why": "That trades one problem for another - a human interrupted by every transient failure will stop reading escalations."},
+   {"text": "Disable the failing check so the pull request can proceed.", "correct": false, "why": "Removing a required check is a governance-drift move. Treat renaming or removing required checks as high risk."}
+  ],
+  "takeaway": "Bounded retries plus a clear escalation threshold - and escalate with failure, attempts, evidence, and a suggested next step."
+ },
+ {
+  "id": "auth-d2-21",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.4.3", "module": "m3",
+  "unit": "m3-agent-execution-limits-protections",
+  "type": "single",
+  "text": "Which pair correctly separates rollback that GitHub gives you for free from rollback you have to perform deliberately?",
+  "options": [
+   {"text": "Free: branch isolation and pull request review before merge. Deliberate: closing or discarding the PR, or reverting commits after a merge.", "correct": true, "why": "Branch isolation plus pre-merge review means unmerged agent work never touched the main codebase - rollback is the default state. Once merged, you must act: revert the commits. Before merge, discarding the PR is the cheap path."},
+   {"text": "Free: reverting merged commits. Deliberate: creating a branch.", "correct": false, "why": "Reverting a merge is a deliberate corrective action, and branch creation is part of the normal agent flow."},
+   {"text": "Free: environment approvals. Deliberate: required status checks.", "correct": false, "why": "Neither is a rollback mechanism; both are gates that prevent the change rather than undo it."},
+   {"text": "Free: workflow re-runs. Deliberate: artifact deletion.", "correct": false, "why": "Re-running a workflow does not undo a change, and deleting artifacts destroys evidence rather than reversing code."}
+  ],
+  "takeaway": "Branch isolation plus pre-merge review is rollback by default. Post-merge, rollback means an explicit revert - which is why small, scoped PRs matter."
+ },
+ {
+  "id": "auth-d2-22",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.4.4", "module": "m3",
+  "unit": "m3-agent-execution-limits-protections",
+  "type": "multi",
+  "text": "Which mechanisms implement an escalation path for an agent that cannot complete its task? (Select all that apply.)",
+  "options": [
+   {"text": "Requiring pull request review before the change can proceed", "correct": true, "why": "Yes. Review is the built-in handoff point where a human takes over a decision the agent could not make."},
+   {"text": "Automatically assigning reviewers - for example via CODEOWNERS on the affected paths", "correct": true, "why": "Yes. Automatic assignment routes the escalation to people with the right context instead of leaving it unowned."},
+   {"text": "A workflow step that notifies maintainers when the agent reports it is blocked", "correct": true, "why": "Yes. Notification steps make escalation active rather than relying on someone noticing a stalled PR."},
+   {"text": "Increasing the retry count until the agent eventually succeeds", "correct": false, "why": "No. Unbounded retries are the alternative to escalation, not a form of it - and for security failures the guidance is explicitly to investigate rather than retry."}
+  ],
+  "takeaway": "Escalation is a designed route to a human: required review, automatic reviewer assignment, and active notification - not more retries."
+ },
+ {
+  "id": "auth-d2-23",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.4.5", "module": "m3",
+  "unit": "m3-agent-execution-limits-protections",
+  "type": "single",
+  "text": "A team notices that agent actions performed with GITHUB_TOKEN do not kick off further workflow runs, but the same actions using a GitHub App token do. What is the practical implication?",
+  "options": [
+   {"text": "GITHUB_TOKEN is broken and should be replaced with an App token.", "correct": false, "why": "This is documented behavior, not a defect. Most actions taken with GITHUB_TOKEN do not trigger additional workflow runs."},
+   {"text": "The GITHUB_TOKEN restriction helps prevent unintended loops; App tokens and PATs enable richer chaining but require deliberate design to avoid recursive execution.", "correct": true, "why": "The restriction is a loop guard. Other authentication methods can trigger further runs depending on configuration, which enables more flexible automation patterns but demands careful design to avoid recursion and runaway automation."},
+   {"text": "App tokens should never be used with agents.", "correct": false, "why": "They are legitimate when you actually need downstream workflows to fire; you just have to design for it."},
+   {"text": "Workflow chaining is impossible on GitHub.", "correct": false, "why": "workflow_run triggers and other patterns support chaining explicitly."}
+  ],
+  "takeaway": "GITHUB_TOKEN's non-triggering behavior is a deliberate loop guard. If you switch to App tokens or PATs, design against recursive execution."
+ },
+ {
+  "id": "auth-d2-24",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d2", "objective": "2.3.5", "module": "m3",
+  "unit": "m3-exercise",
+  "type": "single",
+  "text": "In the Agentic Workflows exercise, the workflow gathers information from Mona's notes, the GitHub Blog, and the Changelog and then proposes website updates. How does it deliver those updates?",
+  "options": [
+   {"text": "It commits directly to the default branch so the site stays current.", "correct": false, "why": "Direct-to-default is the pattern the whole exercise is designed to avoid. Proposed changes must be reviewable before they land."},
+   {"text": "It opens a pull request containing the proposed changes and a summary of the sources used, so a human can review before merging.", "correct": true, "why": "The exercise's expected outcome is a pull request with proposed website updates and a clear summary of sources and reasoning - proposals reviewed by a human, not applied automatically."},
+   {"text": "It emails maintainers a diff for manual application.", "correct": false, "why": "That takes the work off-platform and loses the review surface, the checks, and the audit trail."},
+   {"text": "It writes the updates into a workflow artifact only, with no repository change proposed.", "correct": false, "why": "An artifact alone would not propose the change. The exercise explicitly produces a PR."}
+  ],
+  "takeaway": "Agentic workflows land their work as reviewable pull requests with a summary of sources - proposal first, human decision second."
+ }
+]

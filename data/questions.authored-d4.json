@@ -1,0 +1,242 @@
+[
+ {
+  "id": "auth-d4-01",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d4", "objective": "4.1.1", "module": "m4",
+  "unit": "m4-evaluation-signals-quality-gates",
+  "type": "single",
+  "text": "Where should the success criteria for an agent task be written so that both the agent and the reviewer can verify completion?",
+  "options": [
+   {"text": "In the workflow file, as comments above each job.", "correct": false, "why": "Workflow comments are invisible in the pull request review surface and are not tied to the specific task."},
+   {"text": "As acceptance criteria in the issue, referenced from the pull request and used as the basis for validation.", "correct": true, "why": "Success criteria belong in the issue or pull request, where they describe what must be true for the task to be complete. Writing them in the issue and referencing them from the PR gives both the agent and the reviewer the same yardstick."},
+   {"text": "In the agent's system prompt only, so it always has them in context.", "correct": false, "why": "Criteria held only in a prompt are not durable and not reviewable, so a human cannot check the work against them."},
+   {"text": "In a spreadsheet the team maintains outside GitHub.", "correct": false, "why": "Off-platform criteria break the system-of-record model and cannot be enforced as checks."}
+  ],
+  "takeaway": "Write acceptance criteria in the issue, reference them from the PR, then enforce the checkable ones as required status checks."
+ },
+ {
+  "id": "auth-d4-02",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d4", "objective": "4.1.1", "module": "m4",
+  "unit": "m4-evaluation-signals-quality-gates",
+  "type": "single",
+  "text": "Put the end-to-end evaluation flow in the right order.",
+  "options": [
+   {"text": "Agent opens PR, reviewer approves, workflows run, required checks pass, issue defines criteria, merge.", "correct": false, "why": "Criteria cannot be defined after the work is judged - the issue comes first."},
+   {"text": "Issue defines the task and success criteria, agent branches and opens a PR, workflows run automatically, status checks appear on the PR, required checks must pass, a reviewer approves, then merge.", "correct": true, "why": "This is the documented flow. Criteria are set before work starts, automation produces objective signals, required checks turn those signals into a gate, and human judgment closes the loop before merge."},
+   {"text": "Workflows run, issue defines criteria, agent branches, merge, reviewer approves.", "correct": false, "why": "Merging before review inverts the entire control model."},
+   {"text": "Agent branches, merges to main, workflows run post-merge, reviewer inspects afterwards.", "correct": false, "why": "Post-merge validation removes the gate. Validation must happen before changes are accepted."}
+  ],
+  "takeaway": "Criteria first, evidence second, enforcement third, judgment fourth - then merge."
+ },
+ {
+  "id": "auth-d4-03",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d4", "objective": "4.1.2", "module": "m4",
+  "unit": "m4-evaluation-signals-quality-gates",
+  "type": "multi",
+  "text": "Which of these are quantitative evaluation signals for agent output, as opposed to qualitative ones? (Select all that apply.)",
+  "options": [
+   {"text": "Test pass rate and coverage delta", "correct": true, "why": "Quantitative. These are numeric, comparable, and can be gated automatically."},
+   {"text": "Count of new code scanning alerts", "correct": true, "why": "Quantitative. An alert count is a number you can threshold in a required check."},
+   {"text": "Performance delta against a benchmark", "correct": true, "why": "Quantitative. A measured regression percentage is exactly the kind of signal you turn into a gate."},
+   {"text": "Reviewer commentary on whether the approach fits the architecture", "correct": false, "why": "Qualitative. It is a genuinely important signal - the modules pair it with automated ones - but it is human judgment, not a measurement."}
+  ],
+  "takeaway": "Use both: quantitative signals (tests, alerts, coverage, performance) gate mechanically; qualitative signals (review, convention adherence) catch what checks cannot."
+ },
+ {
+  "id": "auth-d4-04",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d4", "objective": "4.1.2", "module": "m4",
+  "unit": "m4-evaluation-signals-quality-gates",
+  "type": "single",
+  "text": "A team evaluates its agent solely on the number of pull requests merged per week. What is the flaw?",
+  "options": [
+   {"text": "The metric is qualitative and therefore unreliable.", "correct": false, "why": "It is a perfectly quantitative metric. The problem is what it measures, not how it is measured."},
+   {"text": "It measures throughput rather than whether the work met its intent, so the agent can score well by producing many low-value or unsafe changes.", "correct": true, "why": "Evaluation must align with development intent and be grounded in the signals a human contributor is judged on. Volume is neither an outcome nor a quality bar, and optimizing it actively rewards the wrong behavior."},
+   {"text": "Merged pull requests cannot be counted automatically.", "correct": false, "why": "They can be counted trivially. Measurability was never the issue."},
+   {"text": "The metric should be gathered monthly rather than weekly.", "correct": false, "why": "Changing the sampling period does not fix a metric that measures the wrong thing."}
+  ],
+  "takeaway": "Evaluate against intent and the team's real quality bar. Volume metrics reward output, not outcomes."
+ },
+ {
+  "id": "auth-d4-05",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d4", "objective": "4.1.3", "module": "m4",
+  "unit": "m4-evaluation-signals-quality-gates",
+  "type": "single",
+  "text": "Your organization wants agent work held to the same bar as human contributions. Which evaluation design achieves that most directly?",
+  "options": [
+   {"text": "Add an agent-specific quality scorecard maintained by the platform team.", "correct": false, "why": "A parallel bar for agents drifts from the team's real standards and creates two definitions of \"good\"."},
+   {"text": "Use the same required checks, security scans, and review process that any contributor's pull request goes through.", "correct": true, "why": "This is the contributor model applied to evaluation: judge the work by the standards of the workflow, not by the novelty of the author. It also avoids both failure modes - excessive suspicion and excessive trust."},
+   {"text": "Require agent PRs to pass a stricter threshold than human PRs.", "correct": false, "why": "Excessive suspicion is a named error. A double standard slows delivery without improving safety."},
+   {"text": "Exempt agent PRs from review so you can measure raw agent capability.", "correct": false, "why": "Excessive trust is the opposite named error, and it removes the qualitative signal entirely."}
+  ],
+  "takeaway": "Aligning evaluation with intent means using the signals a human contributor is judged on - no special lane in either direction."
+ },
+ {
+  "id": "auth-d4-06",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d4", "objective": "4.1.4", "module": "m4",
+  "unit": "m4-evaluation-signals-quality-gates",
+  "type": "multi",
+  "text": "Which automated scanning capabilities can generate evaluation signals on an agent's pull request? (Select all that apply.)",
+  "options": [
+   {"text": "Code scanning for vulnerabilities", "correct": true, "why": "Yes. Code scanning surfaces alerts and check runs, including via SARIF upload from third-party tools."},
+   {"text": "Dependency review checks", "correct": true, "why": "Yes. Dependency review runs as a check on the PR and flags known-vulnerable dependencies before merge."},
+   {"text": "Secret scanning and push protection", "correct": true, "why": "Yes. Secret scanning produces alerts, and push protection prevents supported secrets from being committed at all."},
+   {"text": "Branch protection rules", "correct": false, "why": "No. Branch protection enforces policy on merges - it consumes signals rather than producing them."}
+  ],
+  "takeaway": "Scanners produce the signals; rulesets and required checks turn those signals into a gate. Treat alerts and failed security checks as blockers."
+ },
+ {
+  "id": "auth-d4-07",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d4", "objective": "4.2.1", "module": "m4",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "type": "single",
+  "text": "An agent's change technically works but solves the wrong problem. Which comparison exposes that fastest?",
+  "options": [
+   {"text": "Compare the workflow run duration against previous runs.", "correct": false, "why": "Timing tells you nothing about whether the right problem was solved."},
+   {"text": "Compare intent - the issue's requirements and the PR's stated plan - against results: the actual commits, code changes, and workflow outputs.", "correct": true, "why": "Comparing intent with results is the documented diagnostic. It distinguishes three cases: the agent misinterpreted the task, implemented an incorrect solution, or failed during execution or validation."},
+   {"text": "Check whether the branch name follows the team's convention.", "correct": false, "why": "Naming conventions help attribution and scanning, not root-cause analysis."},
+   {"text": "Count how many files the change touched.", "correct": false, "why": "File count is a rough scope signal, not evidence about correctness of intent."}
+  ],
+  "takeaway": "Diagnose by comparing captured intent (issue, plan) with captured results (commits, outputs, logs). The gap is the diagnosis."
+ },
+ {
+  "id": "auth-d4-08",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d4", "objective": "4.2.2", "module": "m4",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "type": "single",
+  "text": "An agent updated a file based on a version it had read hours earlier, overwriting changes another contributor merged in the meantime. Which root-cause category is this?",
+  "options": [
+   {"text": "Reasoning error", "correct": false, "why": "Reasoning errors are incorrect assumptions or decisions - misinterpreting requirements, implementing wrong logic, ignoring acceptance criteria. The agent's logic here was fine; its inputs were out of date."},
+   {"text": "Tool misuse", "correct": false, "why": "Tool misuse is calling the wrong tool or using one incorrectly - misconfigured workflows, wrong commands. The tool worked as asked."},
+   {"text": "Context issue", "correct": true, "why": "Context issues cover missing, stale, or conflicting information: using outdated pull request state, missing prior decisions, or conflicting information across artifacts. Acting on a stale read is the textbook case."},
+   {"text": "Policy violation", "correct": false, "why": "Not one of the three root-cause categories the module defines."}
+  ],
+  "takeaway": "Three root causes: reasoning errors (wrong decisions), tool misuse (wrong or wrongly used tools), context issues (missing, stale, or conflicting information)."
+ },
+ {
+  "id": "auth-d4-09",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d4", "objective": "4.2.2", "module": "m4",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "type": "single",
+  "text": "An agent's workflow never ran because its trigger was set to push when the task required pull_request. Which root cause, and which tuning area?",
+  "options": [
+   {"text": "Reasoning error; tune the prompts and instructions.", "correct": false, "why": "The decision-making was not the failure. A misconfigured trigger is an execution-configuration fault."},
+   {"text": "Tool misuse; tune the tool configuration - fix the workflow trigger and verify permissions and required checks.", "correct": true, "why": "Failing to trigger or use workflows properly is explicitly listed under tool misuse, and the matching tuning area is tool configuration: update files in .github/workflows/, ensure the correct events, and verify permissions and required checks."},
+   {"text": "Context issue; tune memory and state.", "correct": false, "why": "No information was stale or conflicting - the wiring was simply wrong."},
+   {"text": "Reasoning error; tune memory and state.", "correct": false, "why": "Neither half matches. This is configuration, not cognition or context."}
+  ],
+  "takeaway": "Root cause selects the tuning lever: reasoning to instructions, context to memory and state, tool misuse to tool and workflow configuration."
+ },
+ {
+  "id": "auth-d4-10",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d4", "objective": "4.3.1", "module": "m4",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "type": "single",
+  "text": "Which sequence describes the improvement feedback loop for agent behavior?",
+  "options": [
+   {"text": "Run the agent, observe failures through logs and artifacts, identify the root cause, apply fixes to prompts, memory, or tools, then re-run the workflow.", "correct": true, "why": "This is the documented loop, and GitHub supports it directly by allowing workflows to be re-run and by preserving logs and artifacts for inspection. Improvements should themselves be visible and traceable - documented in PR updates with related commits and runs referenced."},
+   {"text": "Run the agent, re-run on failure, escalate if it fails twice, close the pull request.", "correct": false, "why": "That is an execution recovery policy, not a behavior-improvement loop. Nothing gets better next time."},
+   {"text": "Collect metrics for a quarter, then retrain the underlying model.", "correct": false, "why": "The tuning levers are instructions, memory, and tool configuration - the things you control - not model retraining."},
+   {"text": "Increase autonomy until failures stop appearing in review.", "correct": false, "why": "Fewer failures in review usually means less review, not better behavior."}
+  ],
+  "takeaway": "Observe, diagnose, tune (instructions / memory / tools), re-run - and document the change so the tuning itself is auditable."
+ },
+ {
+  "id": "auth-d4-11",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d4", "objective": "4.3.2", "module": "m4",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "type": "single",
+  "text": "Failure analysis shows the agent keeps applying an approach that was explicitly rejected three sessions ago. Which tuning area is the right lever?",
+  "options": [
+   {"text": "Tool configuration - restrict the tools that let it make that change.", "correct": false, "why": "That blocks the symptom by removing capability the agent legitimately needs, and it will not stop the same misunderstanding elsewhere."},
+   {"text": "Memory and state - record the rejected approach and the reason as a decision in the pull request, remove outdated or conflicting context, and keep a single source of truth.", "correct": true, "why": "The memory-and-state tuning lever is exactly this: update issues or pull requests with clearer decisions, remove outdated or conflicting context, and maintain one source of truth. A decision that was never written down durably cannot be honored later."},
+   {"text": "Prompts and instructions - add \"do not use approach X\" to every task prompt.", "correct": false, "why": "This scales badly, one prohibition per past mistake, and puts task-specific history into a general instruction file."},
+   {"text": "Increase retries so the agent has more chances to reach the right approach.", "correct": false, "why": "Retries repeat the same misunderstanding."}
+  ],
+  "takeaway": "Refine memory by writing decisions where they persist and stripping stale or conflicting copies - not by piling prohibitions into prompts."
+ },
+ {
+  "id": "auth-d4-12",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d4", "objective": "4.3.2", "module": "m4",
+  "unit": "m4-agent-memory-strategies",
+  "type": "single",
+  "text": "An agent's answers have become vague and it frequently cites requirements that were superseded weeks ago. Which memory refinement addresses both symptoms?",
+  "options": [
+   {"text": "Load more context so the agent has the full picture.", "correct": false, "why": "More context deepens the dilution and adds more superseded material."},
+   {"text": "Scope memory more tightly to task-relevant information, and prune or summarize outdated artifacts so stale requirements are not retrievable.", "correct": true, "why": "Vagueness comes from dilution, which tighter scoping fixes; citing superseded requirements comes from stale context, which pruning and summarization fix. The module ties both to limiting memory to information that affects the outcome."},
+   {"text": "Reset memory entirely at the start of every task.", "correct": false, "why": "A full reset also discards the requirements and decisions the agent legitimately needs. Reset rules are for when premises genuinely changed."},
+   {"text": "Move all memory into short-term context.", "correct": false, "why": "That trades staleness for amnesia - nothing survives the session."}
+  ],
+  "takeaway": "Scope tightly and prune regularly. Dilution and staleness are two symptoms of the same failure to curate memory."
+ },
+ {
+  "id": "auth-d4-13",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d4", "objective": "4.3.3", "module": "m2",
+  "unit": "m2-agent-operations-controls",
+  "type": "single",
+  "text": "After adding several MCP tools, an agent starts making unpredictable calls and its blast radius has grown. Which tuning follows the module's operational guidance?",
+  "options": [
+   {"text": "Enable broad wildcards so the agent has consistent access and behaves predictably.", "correct": false, "why": "The guidance is the reverse: prefer enabling a narrow tool subset rather than broad wildcards."},
+   {"text": "Narrow the enabled tool subset, and treat any expansion of MCP tools as a governance-sensitive, high-risk-dependency-style review.", "correct": true, "why": "Adding or expanding MCP tools increases blast radius and should be reviewed like a high-risk dependency. Namespace control - enabling a narrow subset - is the specific lever, and changes to tool allowlists are governance-sensitive changes."},
+   {"text": "Leave the tools enabled but add instructions telling the agent which to prefer.", "correct": false, "why": "Instructions are guidance. Tool access is the enforcement boundary."},
+   {"text": "Remove MCP entirely and rely on the built-in toolset.", "correct": false, "why": "Discarding the integration is not tuning. Narrow the namespace and review expansions instead."}
+  ],
+  "takeaway": "Refine tool access by narrowing the namespace, not by instructing around it - and review allowlist expansion like a high-risk dependency change."
+ },
+ {
+  "id": "auth-d4-14",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d4", "objective": "4.2.1", "module": "m4",
+  "unit": "m4-agent-failures-behavior-improvement",
+  "type": "single",
+  "text": "You are investigating a failed agent run. Where do you look first for the error itself?",
+  "options": [
+   {"text": "The repository's commit graph, to see how the branch diverged.", "correct": false, "why": "Useful for scope and drift questions, but it does not tell you what errored during execution."},
+   {"text": "The pull request's Checks tab, then the workflow logs in the Actions tab for the failing run.", "correct": true, "why": "The documented sequence is: open the PR and review recent changes, check the Checks tab for failed workflows, inspect the workflow logs to identify errors, then compare expected outcome with actual result."},
+   {"text": "The organization audit log.", "correct": false, "why": "The audit log answers governance questions - such as who deleted an artifact - rather than why a run failed."},
+   {"text": "Issue labels applied to the task.", "correct": false, "why": "Labels organize work. They carry no execution detail."}
+  ],
+  "takeaway": "Failure triage path: PR changes, then Checks tab, then workflow logs, then compare expected against actual."
+ },
+ {
+  "id": "auth-d4-15",
+  "source": "authored",
+  "sourceLabel": "Authored for coverage",
+  "domain": "d4", "objective": "4.1.4", "module": "m4",
+  "unit": "m4-evaluation-signals-quality-gates",
+  "type": "single",
+  "text": "A repository has code scanning enabled, but agent pull requests with new alerts still merge. What is missing?",
+  "options": [
+   {"text": "Nothing - alerts are advisory by design.", "correct": false, "why": "The guidance is to treat security alerts or failed checks as blockers, which requires configuring the block."},
+   {"text": "The scan result is not configured as a required status check under branch protection or a ruleset, so nothing prevents the merge.", "correct": true, "why": "Producing a signal and enforcing it are separate steps. Required status checks are what turn evaluation into an enforceable gate rather than an informal suggestion."},
+   {"text": "Code scanning cannot run on pull requests.", "correct": false, "why": "It runs on pull requests and surfaces results in the PR - that is its main use."},
+   {"text": "The agent needs security-events: write permission to see the alerts.", "correct": false, "why": "That permission lets a job upload analysis results. It has nothing to do with whether merging is blocked."}
+  ],
+  "takeaway": "Scanners generate signals; required status checks make them binding. Without the required-check configuration, an alert is just information."
+ }
+]

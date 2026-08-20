@@ -1,0 +1,453 @@
+{
+ "1": {
+  "stem": "Your team is integrating a Copilot custom agent that produces draft refactors. Reviewers complain that they can't tell *what the agent intended* before code changes appear in a PR. Which configuration most directly addresses the complaint?",
+  "options": [
+   "Increase the agent's autonomy level so it produces more diff context per PR.",
+   "Configure the agent to output a structured plan as a workflow artifact before any code changes are written.",
+   "Require two CODEOWNER approvals on every agent-authored PR.",
+   "Reduce the agent's tool list to read-only operations."
+  ],
+  "answer": "B",
+  "rationale": "Reviewers' complaint is about *visibility before code*. A structured plan artifact published before any change addresses that exactly. CODEOWNER counts (C) gate merge but don't show intent earlier; (A) is opposite of the issue; (D) discards capability."
+ },
+ "2": {
+  "stem": "Which of the following is an anti-pattern when integrating an agent into the SDLC? (Select **all** that apply.)",
+  "options": [
+   "The agent acts immediately without producing an inspectable plan.",
+   "The agent runs in a workflow with `permissions: { contents: read }`.",
+   "The agent's commit author is the human who triggered the workflow.",
+   "The agent operates on a feature branch protected by branch protection rules."
+  ],
+  "answer": "A",
+  "rationale": "Acting without an inspectable plan is the canonical anti-pattern. (B) is fine (read-only is safe), (C) is acceptable when the human triggers it, (D) is good practice."
+ },
+ "3": {
+  "stem": "You are designing a \"research \u2192 propose \u2192 apply\" agent flow. Which separation produces the most inspectable workflow?",
+  "options": [
+   "One job that does all three phases sequentially with grouped logs.",
+   "A planning job that uploads a plan artifact, a reviewer-approved `workflow_dispatch` to begin the action job, then an evaluation job.",
+   "A single job with `if: github.actor == 'admin'` gating the action step.",
+   "Three sequential jobs in the same workflow with `needs:` dependencies."
+  ],
+  "answer": "B",
+  "rationale": "Separation of plan/approve/act/evaluate into discrete artifact-producing steps is the inspectability pattern. (A) groups logs but doesn't gate; (C) is identity gating only; (D) sequential jobs alone don't add approval gates."
+ },
+ "4": {
+  "stem": "A regulated team is concerned about agent autonomy. Which design preserves velocity while controlling risk?",
+  "options": [
+   "Require human approval on every agent-authored PR regardless of change category.",
+   "Disable agent access during business hours.",
+   "Categorize actions by operational/security/compliance risk and require approval only for high-risk categories.",
+   "Run agents only in a dedicated repository disconnected from production."
+  ],
+  "answer": "C",
+  "rationale": "Risk-tiered autonomy is the published guidance. (A) is approval theater; (B)(D) reduce velocity without proportionate safety gain."
+ },
+ "5": {
+  "stem": "Which artifact is the most appropriate \"inspectable artifact\" for an agent's plan in a standard GitHub workflow?",
+  "options": [
+   "A console log line in the workflow run.",
+   "An `actions/upload-artifact`-uploaded JSON or markdown plan document referenced from the PR description.",
+   "An entry in an external Notion database.",
+   "A comment in the agent's source code."
+  ],
+  "answer": "B",
+  "rationale": "A workflow artifact referenced from the PR is the canonical inspectable artifact. (A) is ephemeral, (C) is off-platform, (D) isn't an artifact."
+ },
+ "6": {
+  "stem": "You want to define success criteria for an agent task that performs a dependency upgrade. Which combination is most robust?",
+  "options": [
+   "Tests pass; no new code scanning alerts; PR template required fields completed.",
+   "The agent reports \"success\" in its trace log.",
+   "The PR is opened within 5 minutes of triggering.",
+   "A human approves the PR description."
+  ],
+  "answer": "A",
+  "rationale": "Multiple objective criteria mirroring human-contributor judgment. (B) is self-reported, (C) measures speed not quality, (D) is subjective."
+ },
+ "7": {
+  "stem": "Your agent occasionally takes actions that contradict its earlier plan. What is the most direct architectural fix?",
+  "options": [
+   "Increase the agent's memory window.",
+   "Require the agent to re-read and acknowledge its plan artifact at the start of the action phase, and abort if action steps diverge from the plan.",
+   "Switch to a more capable model.",
+   "Disable retries."
+  ],
+  "answer": "B",
+  "rationale": "Plan/action divergence is fixed by making the plan a hard contract, not by upgrading the model or memory."
+ },
+ "8": {
+  "stem": "What does an MCP server primarily provide to a Copilot custom agent?",
+  "options": [
+   "A vector database for long-term memory.",
+   "A standardized protocol for exposing external tools, APIs, or data sources the agent can invoke.",
+   "A replacement for GitHub Actions runners.",
+   "A static prompt-template registry."
+  ],
+  "answer": "B",
+  "rationale": "MCP is the standardized tool-exposure protocol. (A) is wrong (memory is separate), (C) is wrong (MCP doesn't replace runners), (D) is wrong."
+ },
+ "9": {
+  "stem": "You configured an MCP server but the agent will not invoke it in your organization. Other agents in the org work fine. Which check should you perform **first**?",
+  "options": [
+   "Confirm the server appears on the organization's MCP allow list.",
+   "Restart the runner.",
+   "Increase the workflow timeout.",
+   "Rotate the workflow's `GITHUB_TOKEN`."
+  ],
+  "answer": "A",
+  "rationale": "Allow-list misses are the most common cause when other agents work. Always check the allow list before deeper debugging."
+ },
+ "10": {
+  "stem": "What is the purpose of the GitHub **remote MCP server**?",
+  "options": [
+   "To replace local MCP servers with cloud-hosted ones for any vendor.",
+   "To expose GitHub's own APIs (issues, PRs, code search) to agents through MCP.",
+   "To proxy outbound network calls from the Copilot cloud agent firewall.",
+   "To synchronize state between multiple Copilot subscriptions."
+  ],
+  "answer": "B",
+  "rationale": "The GitHub remote MCP server exposes GitHub's APIs as MCP tools."
+ },
+ "11": {
+  "stem": "Which of the following statements about MCP allow lists are true? (Select Y/N for each.)",
+  "options": [
+   "MCP allow lists restrict which MCP servers an organization's agents may connect to.",
+   "MCP allow lists set permission levels (read/write) for each MCP tool.",
+   "Servers not on the allow list are blocked even if explicitly referenced in an agent's config.",
+   "MCP allow lists eliminate the need for per-tool permissions in the agent's manifest."
+  ],
+  "answer": "Y, N, Y, N",
+  "rationale": "(a) Yes \u2014 that's its purpose. (b) No \u2014 permissions live in agent/tool config, not allow lists. (c) Yes \u2014 allow lists are enforced regardless of agent intent. (d) No \u2014 per-tool permissions still apply within an allowed server."
+ },
+ "12": {
+  "stem": "You want a Copilot custom agent to be invoked from a CI workflow when a PR is opened. Which is the most direct configuration?",
+  "options": [
+   "Trigger a GitHub Actions workflow on `pull_request: [opened]` with a step that runs the agent.",
+   "Configure a webhook in repository settings to call the agent's HTTP endpoint.",
+   "Add the agent to the repository's CODEOWNERS file.",
+   "Define the agent in `.github/dependabot.yml`."
+  ],
+  "answer": "A",
+  "rationale": "Standard GitHub Actions trigger pattern. (B) is custom plumbing, (C) doesn't run code, (D) is for dependency updates only."
+ },
+ "13": {
+  "stem": "Your agent must create branches and pull requests autonomously. Which **minimum** `permissions:` block in the workflow file is appropriate?",
+  "options": [
+   "`permissions: { contents: read, pull-requests: read }`",
+   "`permissions: { contents: write, pull-requests: write }`",
+   "`permissions: write-all`",
+   "`permissions: { actions: write }`"
+  ],
+  "answer": "B",
+  "rationale": "Minimum needed to create branches and PRs. (A) is read-only, (C) is broader than needed, (D) is for managing workflows."
+ },
+ "14": {
+  "stem": "A team wants to allow the Copilot cloud agent to call exactly two external APIs and nothing else. Which control should they configure?",
+  "options": [
+   "CODEOWNERS for the agent's branch.",
+   "The Copilot cloud agent firewall, with an allow list of the two API hosts.",
+   "Repository secret scoping.",
+   "Branch protection rules on `main`."
+  ],
+  "answer": "B",
+  "rationale": "The Copilot cloud agent firewall is the named control for egress allow-listing."
+ },
+ "15": {
+  "stem": "An agent's tool call to a flaky external service occasionally fails. Which retry strategy is most appropriate?",
+  "options": [
+   "Retry up to 10 times immediately on any error.",
+   "Bounded retries with exponential backoff, scoped to transient errors (network, rate-limit), with idempotency keys on the underlying operation.",
+   "Retry once, then escalate to a human regardless of error type.",
+   "Disable retries and let the workflow fail."
+  ],
+  "answer": "B",
+  "rationale": "Standard safe-retry pattern: bounded, backoff, idempotency, scoped to transient errors."
+ },
+ "16": {
+  "stem": "You need to scope an agent so that it can only modify a single repository, not the entire organization. Which token approach is most aligned with least-privilege?",
+  "options": [
+   "A classic personal access token with `repo` scope from the team lead.",
+   "The workflow's `GITHUB_TOKEN`, which is automatically scoped to that repository.",
+   "A GitHub App installation token granted at the organization level on all repositories.",
+   "An OAuth token from a user with admin rights on all repos."
+  ],
+  "answer": "B",
+  "rationale": "`GITHUB_TOKEN` is the textbook least-privilege option for in-repo work. (A) over-scopes by user, (C) over-scopes by org, (D) is far too broad."
+ },
+ "17": {
+  "stem": "Which combination provides traceability and accountability for autonomous agent actions in a GitHub workflow?",
+  "options": [
+   "Workflow run logs + signed commits attributed to the bot identity + PR comments documenting key decisions.",
+   "A single end-of-run summary email to the team.",
+   "Disabling actions logs to reduce noise.",
+   "Storing the agent's reasoning in a private Slack channel."
+  ],
+  "answer": "A",
+  "rationale": "The three-pillar pattern: logs, attribution, and decisional comments."
+ },
+ "18": {
+  "stem": "Where do **long-term**, project-stable agent instructions belong?",
+  "options": [
+   "Injected into the user prompt each invocation.",
+   "In `.github/copilot-instructions.md` (or `AGENTS.md`) in the repository.",
+   "In an environment secret.",
+   "Hard-coded into the agent's source binary."
+  ],
+  "answer": "B",
+  "rationale": "Repo-level instructions file is the canonical home for stable long-term agent guidance."
+ },
+ "19": {
+  "stem": "An agent is configured to load the entire repository's documentation into its working context every invocation. Performance is poor and answers are diluted. Which adjustment best applies?",
+  "options": [
+   "Switch to a larger context window model.",
+   "Scope memory to task-relevant information only; load only the docs referenced by the current task.",
+   "Increase retries.",
+   "Disable memory entirely."
+  ],
+  "answer": "B",
+  "rationale": "Scope memory to task-relevant \u2014 published Domain 3 bullet. Bigger windows and more retries don't fix dilution."
+ },
+ "20": {
+  "stem": "An agent is mid-task when its workflow run is canceled. On the next invocation, you need it to resume without repeating completed steps. What pattern enables this?",
+  "options": [
+   "Increase the workflow `timeout-minutes`.",
+   "Persist task progress as a durable artifact (PR checklist, state file, or issue comments), and have the agent read it at the start of each run to skip completed steps.",
+   "Set `concurrency: { group: agent-task, cancel-in-progress: false }`.",
+   "Use a larger runner."
+  ],
+  "answer": "B",
+  "rationale": "Durable progress artifact pattern is the published resumption mechanism."
+ },
+ "21": {
+  "stem": "Which of the following describes **context drift** in an extended agent execution?",
+  "options": [
+   "The agent's responses become slower over time as memory grows.",
+   "The agent acts on cached or stale context that no longer matches the actual repo state.",
+   "The agent's prompt template becomes too long.",
+   "The workflow run consumes too much GitHub Actions quota."
+  ],
+  "answer": "B",
+  "rationale": "Context drift specifically = action-state divergence; the others are unrelated performance/scale issues."
+ },
+ "22": {
+  "stem": "Two agents in a workflow each maintain their own local state and reach conflicting conclusions about the current branch state. What's the fix?",
+  "options": [
+   "Give one agent priority over the other.",
+   "Use a single canonical state artifact that both agents read and update through serialized writes.",
+   "Run the agents in different repositories.",
+   "Reduce both agents' memory to short-term only."
+  ],
+  "answer": "B",
+  "rationale": "Single source of truth + serialized writes is the canonical fix."
+ },
+ "23": {
+  "stem": "Which of the following are **automated** evaluation signals you should configure for an agent's output? (Select **all** that apply.)",
+  "options": [
+   "Code scanning (CodeQL) alerts.",
+   "Secret scanning results.",
+   "Dependabot dependency review.",
+   "Reviewer commentary in PR threads."
+  ],
+  "answer": "A, B, C",
+  "rationale": "All three are automated scanners. (D) is human input, not automated."
+ },
+ "24": {
+  "stem": "An agent's PRs frequently pass tests but introduce performance regressions on a critical path. The team wants this caught automatically before merge. Which approach is most appropriate?",
+  "options": [
+   "Ask reviewers to read every diff carefully.",
+   "Add a performance benchmark step that produces a required status check; fail the check if regression exceeds threshold.",
+   "Disable the agent for critical-path files.",
+   "Increase test timeout values."
+  ],
+  "answer": "B",
+  "rationale": "Required status check on a benchmark is the standard gate. (A) doesn't scale, (C) over-restricts, (D) hides the regression."
+ },
+ "25": {
+  "stem": "An agent's failure trace shows that it called the wrong tool for a task. Which root-cause category does this most closely match?",
+  "options": [
+   "Reasoning error.",
+   "Tool misuse.",
+   "Context or environment issue.",
+   "Network failure."
+  ],
+  "answer": "B",
+  "rationale": "Wrong tool call = tool misuse by definition."
+ },
+ "26": {
+  "stem": "After analyzing failures, you find that the agent consistently misinterprets a custom internal API because its description in the agent's config is ambiguous. What is the most appropriate tuning step?",
+  "options": [
+   "Revise the agent's tool descriptions and add usage examples in its config.",
+   "Increase the agent's max-token budget.",
+   "Remove the tool from the agent's available list.",
+   "Switch to a different LLM provider."
+  ],
+  "answer": "A",
+  "rationale": "Tune by revising tool descriptions/examples. (B)(D) are unrelated; (C) discards capability."
+ },
+ "27": {
+  "stem": "Which of the following best aligns evaluation criteria with development intent?",
+  "options": [
+   "Use eval signals that mirror the criteria a human contributor would be judged on (tests, scans, review feedback).",
+   "Define agent-only metrics like \"tool calls per task\" as the primary success measure.",
+   "Disable code review for agent-authored PRs to measure raw agent capability.",
+   "Use only the LLM's self-reported confidence score."
+  ],
+  "answer": "A",
+  "rationale": "Alignment with contributor judgment criteria is the published principle."
+ },
+ "28": {
+  "stem": "Which artifacts are most useful when diagnosing a failed agent run? (Select **all** that apply.)",
+  "options": [
+   "Workflow run logs.",
+   "The agent's structured plan output.",
+   "The execution trace (tool calls in order).",
+   "The uploaded artifacts (intermediate state, evaluations)."
+  ],
+  "answer": "A, B, C, D",
+  "rationale": "All four are the listed diagnostic surfaces."
+ },
+ "29": {
+  "stem": "An agent's reasoning is consistently wrong about the team's preferred coding style. Which tuning is most direct?",
+  "options": [
+   "Update the agent's custom instructions in `.github/copilot-instructions.md` with the team's style conventions.",
+   "Increase the agent's autonomy level.",
+   "Add a `style-check` retry loop.",
+   "Reduce the agent's memory."
+  ],
+  "answer": "A",
+  "rationale": "Custom instructions are the canonical home for team conventions."
+ },
+ "30": {
+  "stem": "Which pattern best describes a \"supervisor\" multi-agent orchestration?",
+  "options": [
+   "All agents act simultaneously and outputs are merged at the end.",
+   "One agent dispatches sub-tasks to worker agents and reviews their outputs.",
+   "Two agents debate and a third arbitrates.",
+   "Agents are arranged in a fixed sequential pipeline."
+  ],
+  "answer": "B",
+  "rationale": "Supervisor = dispatch + review. (A) is fan-out/fan-in, (C) is debate/critic, (D) is sequential pipeline."
+ },
+ "31": {
+  "stem": "You run three agents in parallel on the same repository. To prevent conflicting code changes, which approach is best?",
+  "options": [
+   "Run all three agents against the `main` branch directly.",
+   "Run each agent on its own feature branch with non-overlapping file scopes, and detect conflicts at PR-merge time.",
+   "Disable two of the agents and run them sequentially.",
+   "Increase the runner size to handle merges."
+  ],
+  "answer": "B",
+  "rationale": "Branch isolation + file-scope separation + PR-time conflict detection is the parallel-agent pattern."
+ },
+ "32": {
+  "stem": "Two parallel agents produce contradictory PRs that modify the same file. Which recovery pattern is most appropriate?",
+  "options": [
+   "Auto-merge both PRs.",
+   "A reconciler (judge agent) with a defined arbitration rule, or human-in-the-loop review if disagreement exceeds threshold.",
+   "Reject both PRs without review.",
+   "Force-push to overwrite one of the branches."
+  ],
+  "answer": "B",
+  "rationale": "Reconciler agent or human-in-the-loop is the published recovery pattern."
+ },
+ "33": {
+  "stem": "Which artifact best supports post-hoc analysis of a multi-agent workflow?",
+  "options": [
+   "A top-level orchestration record (issue or workflow run) linking every sub-agent's run, with decision logs at handoffs.",
+   "A summary log message on the orchestrator's exit.",
+   "Each agent's local debug output, kept only on its runner.",
+   "A Slack thread between the team's engineers."
+  ],
+  "answer": "A",
+  "rationale": "Linked orchestration record with handoff logs is the auditable structure."
+ },
+ "34": {
+  "stem": "Your orchestrator detects that one of three parallel agents has produced no progress for 30 minutes. What's the most appropriate first response?",
+  "options": [
+   "Allow the agent to continue indefinitely.",
+   "Apply a workflow timeout, mark the run failed, and route the sub-task to a fallback path (rerun, alternative agent, or human).",
+   "Increase the runner's CPU allocation.",
+   "Cancel all three agents' runs."
+  ],
+  "answer": "B",
+  "rationale": "Timeout + fallback path is the standard stalled-execution response."
+ },
+ "35": {
+  "stem": "You want to introduce a new agent into an existing multi-agent workflow without disrupting current runs. Which deployment is safest?",
+  "options": [
+   "Replace the existing agent immediately and roll forward.",
+   "Deploy the new agent in shadow mode, run it alongside the existing one, compare outputs, then promote once parity is confirmed.",
+   "Run the new agent only on weekends.",
+   "Disable the existing agent for one week to validate the new one."
+  ],
+  "answer": "B",
+  "rationale": "Shadow-mode parity check is the safe rollout."
+ },
+ "36": {
+  "stem": "A retired agent's audit trail must remain accessible for compliance review. Which approach preserves auditability?",
+  "options": [
+   "Delete the agent's config and all associated workflow runs.",
+   "Archive the config in git history, retain workflow runs/artifacts per retention policy, and document the retirement in a governance record.",
+   "Move the workflow runs to a private external storage system not linked to the repository.",
+   "Disable workflow logging going forward."
+  ],
+  "answer": "B",
+  "rationale": "Archive in git + retain runs + document = audit-trail preservation."
+ },
+ "37": {
+  "stem": "Which action category most clearly requires explicit human authorization?",
+  "options": [
+   "Auto-formatting a markdown file.",
+   "Renaming a private variable in test code.",
+   "Modifying a CI/CD pipeline that deploys to production.",
+   "Adding a comment to an existing issue."
+  ],
+  "answer": "C",
+  "rationale": "Production CI/CD changes are explicitly the high-risk category."
+ },
+ "38": {
+  "stem": "Which mechanism most directly enforces least-privilege execution context for an agent in a workflow?",
+  "options": [
+   "A workflow `permissions:` block scoped to the minimum needed for the task.",
+   "A team-wide announcement in Slack.",
+   "A pinned issue describing expected behavior.",
+   "A README note in the repository root."
+  ],
+  "answer": "A",
+  "rationale": "Workflow `permissions:` block is the GitHub primitive for least privilege at execution time."
+ },
+ "39": {
+  "stem": "You want to require approval before an agent can deploy to production but not for routine PRs. Which GitHub feature is most appropriate?",
+  "options": [
+   "Branch protection rules on `main`.",
+   "An environment with required reviewers attached to the production deploy job.",
+   "CODEOWNERS for the entire `src/` directory.",
+   "A `WORKING-HOURS` setting on the repository."
+  ],
+  "answer": "B",
+  "rationale": "Environment protection rules with required reviewers are the named gate for deploys."
+ },
+ "40": {
+  "stem": "Which of the following minimize approval friction *without* reducing safety? (Select **all** that apply.)",
+  "options": [
+   "Require approval only for irreversible or compliance-sensitive changes.",
+   "Use CODEOWNERS on sensitive paths so reviews are targeted, not global.",
+   "Require two reviewers on every PR including doc typos.",
+   "Use environment protection rules so prod deploys are gated but dev flows freely."
+  ],
+  "answer": "A, B, D",
+  "rationale": "All target risk-proportionate approval; (C) is approval theater that adds friction without proportionate safety."
+ },
+ "41": {
+  "stem": "An agent is about to perform an irreversible production change (e.g., dropping a database column). Which set of controls is the **best** combination?",
+  "options": [
+   "CODEOWNERS approval on the migration file + environment protection rule with required reviewers on the prod environment + a structured plan artifact reviewed before the action job runs.",
+   "A retry loop with exponential backoff.",
+   "A larger workflow `timeout-minutes` value.",
+   "Allow the agent to proceed and revert later if needed."
+  ],
+  "answer": "A",
+  "rationale": "Defense-in-depth: code-level review (CODEOWNERS) + deploy-gate (environment) + intent review (plan artifact)."
+ }
+}
