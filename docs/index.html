@@ -45,6 +45,7 @@
   --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --rail: 232px;
+  --tabbar-h: 56px;
   --r-sm: 4px;
   --r-md: 8px;
   --r-lg: 14px;
@@ -294,7 +295,7 @@ button, input, select { font: inherit; color: inherit; }
   grid-template-columns: 288px minmax(0, 1fr);
   grid-template-areas: "toc body";
 }
-.study > .toc { grid-area: toc; }
+.study > .toc, .study > .toc-wrap { grid-area: toc; }
 .study > .study-body { grid-area: body; min-width: 0; }
 .toc {
   position: sticky; top: 20px; max-height: calc(100vh - 60px); overflow-y: auto;
@@ -370,6 +371,37 @@ button, input, select { font: inherit; color: inherit; }
   padding-top: 10px; border-top: 1px solid var(--line);
 }
 
+.diagram-zoom {
+  display: none; align-self: flex-start; gap: 6px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+}
+
+/* full-screen diagram viewer, for when the drawing cannot fit the screen */
+.dlg {
+  position: fixed; inset: 0; z-index: 90;
+  display: flex; flex-direction: column;
+  background: var(--paper);
+}
+.dlg-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: calc(10px + env(safe-area-inset-top)) 14px 10px;
+  border-bottom: 1px solid var(--line); background: var(--surface);
+}
+.dlg-title {
+  font-size: 13.5px; line-height: 1.35; color: var(--muted); flex: 1; min-width: 0;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.dlg-body {
+  flex: 1; overflow: auto; -webkit-overflow-scrolling: touch;
+  padding: 16px calc(16px + env(safe-area-inset-right)) calc(16px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
+}
+.dlg-body svg { display: block; height: auto; }
+.dlg-hint {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--faint); padding: 0 14px 8px; background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
 /* let drawings step outside the reading column once there is room for them */
 @media (min-width: 1160px) {
   .wrap-narrow .md figure.diagram { margin-inline: -84px; }
@@ -422,6 +454,20 @@ button, input, select { font: inherit; color: inherit; }
 .qbar-meta { font-family: var(--mono); font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .timer { font-family: var(--mono); font-size: 15px; font-weight: 500; font-variant-numeric: tabular-nums; padding: 4px 10px; border-radius: var(--r-md); background: var(--sunken); }
 .timer.low { background: var(--bad-wash); color: var(--bad); }
+
+.disclose > summary {
+  list-style: none; cursor: pointer;
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 12px; margin-bottom: 4px;
+  border: 1px solid var(--line-2); border-radius: var(--r-md);
+  background: var(--surface); color: var(--ink-2);
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .05em; text-transform: uppercase;
+}
+.disclose > summary::-webkit-details-marker { display: none; }
+.disclose > summary::after { content: "▾"; margin-left: auto; font-size: 13px; color: var(--faint); }
+.disclose[open] > summary::after { content: "▴"; }
+.disclose[open] > summary { border-color: var(--accent); color: var(--accent-ink); }
+.disclose[data-always-open] > summary { display: none; }
 
 .palette { display: flex; flex-wrap: wrap; gap: 4px; margin: 14px 0 22px; }
 .palette button {
@@ -538,6 +584,8 @@ button, input, select { font: inherit; color: inherit; }
 .fc-tap { font-size: 13px; color: var(--faint); }
 
 /* ============================================================ search */
+.filter-select { max-width: 100%; min-width: 0; }
+
 .search-input {
   width: 100%; padding: 12px 16px; border-radius: var(--r-md);
   border: 1px solid var(--line-2); background: var(--surface); color: var(--ink); font-size: 15px;
@@ -555,12 +603,6 @@ button, input, select { font: inherit; color: inherit; }
   /* stack with the unit first: the contents list is 52 links long */
   .study { grid-template-columns: minmax(0, 1fr); grid-template-areas: "body" "toc"; }
   .toc { position: static; max-height: none; }
-  .toc::before {
-    content: "All units";
-    display: block; padding: 10px 10px 2px;
-    font-family: var(--mono); font-size: 10px; letter-spacing: .13em;
-    text-transform: uppercase; color: var(--faint);
-  }
   .g4, .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
@@ -572,7 +614,8 @@ button, input, select { font: inherit; color: inherit; }
   .topbar {
     display: flex; align-items: center; gap: 12px;
     position: sticky; top: 0; z-index: 20;
-    padding: 11px 18px; background: var(--surface); border-bottom: 1px solid var(--line);
+    padding: calc(11px + env(safe-area-inset-top)) 18px 11px;
+    background: var(--surface); border-bottom: 1px solid var(--line);
   }
   .topbar .brand-name { font-size: 17px; }
 
@@ -590,7 +633,8 @@ button, input, select { font: inherit; color: inherit; }
   .tabbar a[aria-current="page"] { color: var(--accent); }
   .tabbar .nav-ico { width: 19px; height: 19px; }
 
-  .g2, .g3, .g4, .stat-grid, .pick-grid { grid-template-columns: 1fr; }
+  .g2, .g3, .g4, .pick-grid { grid-template-columns: 1fr; }
+  .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .dom-row { grid-template-columns: 30px minmax(0,1fr); row-gap: 8px; }
   .dom-weight, .dom-score { grid-column: 2; }
   .score-hero { grid-template-columns: 1fr; gap: 20px; }
@@ -598,6 +642,55 @@ button, input, select { font: inherit; color: inherit; }
   .q-text { font-size: 17px; }
   .opt { padding: 11px 12px; grid-template-columns: 24px minmax(0,1fr); gap: 10px; }
   .miss-item { grid-template-columns: 1fr; }
+
+  .main { padding-bottom: calc(var(--tabbar-h) + 34px); }
+
+  /* keep the quiz controls reachable without scrolling past every option */
+  .qnav {
+    position: sticky; z-index: 12;
+    bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+    margin: 20px -16px -18px; padding: 11px 16px calc(11px);
+    background: var(--surface); border-top: 1px solid var(--line);
+  }
+  .qnav .btn { flex: 1; }
+  .qnav .btn-ghost { flex: 0 0 auto; }
+  .qnav .spacer { display: none; }
+
+  /* the drawing scales to fit; the expand button opens it at full size */
+  .md figure.diagram { padding: 12px; gap: 8px; }
+  .md figure.diagram .diagram-scroll { min-width: 0 !important; }
+  .md figure.diagram figcaption { font-size: 12.5px; }
+  .diagram-zoom { display: inline-flex; }
+}
+
+@media (max-width: 640px) {
+  .page-title { font-size: clamp(25px, 7vw, 32px); }
+  .sec-head { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .page-lede { font-size: 15px; }
+  .sec-head { margin: 28px 0 12px; }
+
+  .stat { padding: 12px 13px; }
+  .stat-value { font-size: 24px; }
+  .stat-label { font-size: 9.5px; letter-spacing: .08em; }
+  .stat-foot { font-size: 11.5px; line-height: 1.35; }
+
+  /* a native select is as wide as its longest option unless it is clamped */
+  .filter-select { width: 100%; }
+
+  .flashcard { padding: 22px 20px; min-height: 210px; gap: 12px; }
+  .fc-front { font-size: 20px; }
+  .fc-back { font-size: 15.5px; }
+
+  .obj-item { grid-template-columns: 42px minmax(0, 1fr); row-gap: 2px; }
+  .obj-score { grid-column: 2; }
+
+  .toc a { padding: 9px 10px; }
+  .palette button { width: 34px; height: 34px; font-size: 12px; }
+
+  /* fit one more column of a content table on screen before it has to scroll */
+  .md table { font-size: 13px; min-width: 420px; }
+  .md th, .md td { padding: 7px 9px; }
+  .md { font-size: 15.5px; }
 }
 
 </style>
@@ -663,6 +756,17 @@ function el(tag, props, ...kids) {
 const frag = (...kids) => { const f = document.createDocumentFragment(); kids.flat(3).forEach(c => c && f.appendChild(c)); return f; };
 const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+const isPhone = () => window.matchMedia("(max-width: 640px)").matches;
+const isNarrow = () => window.matchMedia("(max-width: 1040px)").matches;
+
+/** <details> that stays permanently open above a breakpoint. */
+function disclose(summaryText, openWhen, ...kids) {
+  const d = el("details", { class: "disclose", open: openWhen || null },
+    el("summary", { text: summaryText }), ...kids);
+  if (openWhen) d.setAttribute("data-always-open", "");
+  return d;
+}
 
 const ICON = {
   overview: "M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z",
@@ -762,6 +866,7 @@ function markdown(src) {
         const vb = body.match(/viewBox="0 0 ([\d.]+)/);
         const floor = vb ? ` style="min-width:${Math.round(+vb[1])}px"` : "";
         out += `<figure class="diagram"><div class="diagram-scroll"${floor}>${body}</div>` +
+               `<button type="button" class="btn btn-sm diagram-zoom" data-zoom>Expand diagram</button>` +
                (info ? `<figcaption>${inline(info)}</figcaption>` : "") + `</figure>`;
       } else if (lang === "mermaid") {
         out += `<pre class="mermaid">${esc(body)}</pre>`;
@@ -1162,7 +1267,13 @@ function viewStudy(unitId, fromQid) {
         el("span", { class: "spacer" }),
         next ? el("a", { class: "btn btn-sm", href: "#/study/" + next.id }, next.title + " →") : null)));
 
-  return el("div", { class: "study" }, body, unitToc(u.id));
+  const toc = unitToc(u.id);
+  if (isNarrow()) {
+    const wrap = disclose(`Browse all ${flat.length} units`, false, toc);
+    wrap.classList.add("toc-wrap");
+    return el("div", { class: "study" }, body, wrap);
+  }
+  return el("div", { class: "study" }, body, toc);
 }
 
 /* ==========================================================================
@@ -1282,7 +1393,7 @@ function viewRunner() {
   const isExam = session.mode === "exam";
   const multi = q.type === "multi";
 
-  const palette = el("div", { class: "palette" }, session.questions.map((qq, n) => {
+  const paletteGrid = el("div", { class: "palette" }, session.questions.map((qq, n) => {
     const cls = ["palette-btn"];
     if (n === i) cls.push("current");
     if (session.checked[n]) cls.push(isCorrect(session.questions[n], session.picked[n]) ? "correct" : "wrong");
@@ -1293,6 +1404,10 @@ function viewRunner() {
       onclick: () => { session.index = n; render(); }
     }, store.data.flagged[qq.id] ? "•" + (n + 1) : String(n + 1));
   }));
+  const answeredNow = session.picked.filter(p => p.length).length;
+  const palette = disclose(
+    `Jump to question — ${answeredNow}/${session.questions.length} answered`,
+    !isPhone(), paletteGrid);
 
   const opts = el("div", { class: "opts" }, q.options.map((o, n) => {
     const cls = ["opt"];
@@ -1544,7 +1659,7 @@ function viewCards() {
       `${flashcards.length} cards from the community study guide — one per skill bullet, plus a set of quick-recall definitions.`),
     el("div", { class: "row", style: "margin-bottom:16px" },
       el("select", {
-        class: "btn", onchange: e => { cardState.filter = e.target.value; cardState.i = 0; cardState.flipped = false; render(); }
+        class: "btn filter-select", onchange: e => { cardState.filter = e.target.value; cardState.i = 0; cardState.flipped = false; render(); }
       },
         el("option", { value: "all", selected: cardState.filter === "all" || null }, "All domains"),
         domains.map(d => el("option", { value: d.id, selected: cardState.filter === d.id || null },
@@ -1666,6 +1781,50 @@ function viewSearch(query) {
 }
 
 /* ==========================================================================
+   Full-screen diagram viewer
+   A drawing that has to shrink to a phone's width stops being readable, so the
+   page shows it fitted and offers this to inspect it at its real size.
+   ========================================================================== */
+let dlgOpen = null;
+
+function openDiagram(figure) {
+  closeDiagram();
+  const svg = figure.querySelector("svg");
+  const caption = figure.querySelector("figcaption");
+  const copy = svg.cloneNode(true);
+  const vb = (svg.getAttribute("viewBox") || "").split(" ");
+  const natural = Math.round(+vb[2] || 800);
+  copy.setAttribute("width", natural);
+  copy.removeAttribute("height");
+
+  const dlg = el("div", { class: "dlg", role: "dialog", "aria-modal": "true",
+                          "aria-label": svg.getAttribute("aria-label") || "Diagram" },
+    el("div", { class: "dlg-head" },
+      el("span", { class: "dlg-title", text: caption ? caption.textContent : "Diagram" }),
+      el("button", { class: "btn btn-sm", type: "button", onclick: closeDiagram }, "Close")),
+    el("div", { class: "dlg-hint", text: "drag or pinch to explore" }),
+    el("div", { class: "dlg-body" }, copy));
+
+  document.body.appendChild(dlg);
+  document.body.style.overflow = "hidden";
+  dlg.querySelector("button").focus();
+  dlgOpen = dlg;
+}
+
+function closeDiagram() {
+  if (!dlgOpen) return;
+  dlgOpen.remove();
+  dlgOpen = null;
+  document.body.style.overflow = "";
+}
+
+document.addEventListener("click", e => {
+  const zoom = e.target.closest && e.target.closest("[data-zoom]");
+  if (zoom) { openDiagram(zoom.closest("figure.diagram")); return; }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeDiagram(); });
+
+/* ==========================================================================
    Chrome + routing
    ========================================================================== */
 const NAV = [
@@ -1679,6 +1838,8 @@ const NAV = [
   { href: "#/search", icon: "search", label: "Search" }
 ];
 const TABS = ["#/", "#/study", "#/quiz", "#/exam", "#/cards", "#/search"];
+
+const THEME_LABEL = { system: "◐ Auto", dark: "☾ Dark", light: "☀ Light" };
 
 function buildChrome() {
   const rail = el("aside", { class: "rail" },
@@ -1705,10 +1866,11 @@ function buildChrome() {
       el("span", { class: "brand-code", text: exam.code }),
       el("span", { class: "brand-name", text: "Agentic AI Developer" })),
     el("span", { class: "spacer" }),
-    el("button", { class: "btn btn-sm", onclick: () => {
-      const cur = store.data.theme;
-      applyTheme(cur === "dark" ? "light" : cur === "light" ? "system" : "dark");
-    } }, "Theme"));
+    el("button", { class: "btn btn-sm", id: "theme-cycle", onclick: e => {
+      const next = { system: "dark", dark: "light", light: "system" }[store.data.theme] || "dark";
+      applyTheme(next);
+      e.currentTarget.textContent = THEME_LABEL[next];
+    } }, THEME_LABEL[store.data.theme] || THEME_LABEL.system));
 
   const tabbar = el("nav", { class: "tabbar", id: "tab-nav", "aria-label": "Sections" },
     TABS.map(h => {
@@ -1741,6 +1903,7 @@ function parseHash() {
 
 function render() {
   const { parts, params } = parseHash();
+  closeDiagram();
   const main = document.getElementById("main");
   main.textContent = "";
 
