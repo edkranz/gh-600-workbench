@@ -1,90 +1,67 @@
 #!/usr/bin/env python3
-"""Turn the scraped Microsoft Learn units into data/modules.json."""
-import json, os, re
+"""Turn scraped Microsoft Learn units into data/certs/<cert>/modules.json.
+
+Usage:  SCRAPE_ROOT=<dir> python3 scripts/build_modules.py <certId>
+The scrape dir must hold hierarchy.json and units_with_answers.json.
+"""
+import json, os, re, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = os.environ["SCRAPE_DIR"]
+CERT = sys.argv[1] if len(sys.argv) > 1 else "gh-600"
+CFG = json.load(open(os.path.join(ROOT, "scripts", "cert_config.json")))[CERT]
+SRC = os.path.join(os.environ["SCRAPE_ROOT"], CFG["scrapeDir"])
+KEEP_IMAGES = CFG["keepImages"]
 
-MODULE_ORDER = [
-    ("learn.github.foundations-agentic-ai",                 "m1", ["d1"]),
-    ("learn.github.design-agent-architecture-integration",  "m2", ["d1"]),
-    ("learn.github.agent-tooling-mcp-execution-environments","m3", ["d2"]),
-    ("learn.github.memory-state-evaluation",                "m4", ["d3", "d4"]),
-    ("learn.github.multi-agent-systems-orchestration",      "m5", ["d5"]),
-    ("learn.github.governance-guardrails-operations",       "m6", ["d6"]),
-]
 
-# banner images carry no teaching value -> drop; the two diagrams are inlined as local assets
-KEEP_IMAGES = {
-    "agent-lifecycle-diagram.png": "assets/agent-lifecycle-diagram.webp",
-    "assistant-vs-agent-comparison.png": "assets/assistant-vs-agent-comparison.webp",
-}
+def html_to_md(fragment):
+    p = subprocess.run(["pandoc", "-f", "html", "-t", "gfm-raw_html", "--wrap=none"],
+                       input=fragment.encode(), capture_output=True)
+    return p.stdout.decode()
+
+
+def clean(md):
+    def img_sub(m):
+        alt, path = m.group(1), m.group(2)
+        if path in KEEP_IMAGES.values():
+            return m.group(0)                       # already rewritten
+        base = path.split("/")[-1].split("#")[0]
+        return f"![{alt}]({KEEP_IMAGES[base]})" if base in KEEP_IMAGES else ""
+    md = re.sub(r"\[!\[([^\]]*)\]\(([^)]+)\)\]\([^)]+\)", img_sub, md)
+    md = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", img_sub, md)
+    md = re.sub(r"\]\(/en-us/", "](https://learn.microsoft.com/en-us/", md)
+    md = re.sub(r"``` lang-(\w+)", lambda m: "```" + m.group(1).lower(), md)
+    return re.sub(r"\n{3,}", "\n\n", md).strip()
+
 
 units = json.load(open(os.path.join(SRC, "units_with_answers.json")))
 hier = json.load(open(os.path.join(SRC, "hierarchy.json")))
 
-
-def clean(md):
-    # linked-image wrappers: [![alt](img)](img#lightbox)
-    def img_sub(m):
-        alt, path = m.group(1), m.group(2)
-        if path in KEEP_IMAGES.values():
-            return m.group(0)          # already rewritten by the wrapper pass
-        base = path.split("/")[-1].split("#")[0]
-        if base in KEEP_IMAGES:
-            return f"![{alt}]({KEEP_IMAGES[base]})"
-        return ""
-    md = re.sub(r"\[!\[([^\]]*)\]\(([^)]+)\)\]\([^)]+\)", img_sub, md)
-    md = re.sub(r"!\[([^\]]*)\]\(([^)]+)\)", img_sub, md)
-    # relative Learn links -> absolute
-    md = re.sub(r"\]\(/en-us/", "](https://learn.microsoft.com/en-us/", md)
-    # pandoc emits "lang-YAML" style fences; normalise to plain language names
-    md = re.sub(r"``` lang-(\w+)", lambda m: "```" + m.group(1).lower(), md)
-    md = re.sub(r"\n{3,}", "\n\n", md)
-    return md.strip()
-
-
-def slug(uid):
-    return uid.split(".")[-1]
-
-
 modules = []
-for muid, mid, domains in MODULE_ORDER:
-    meta = hier[muid]
-    title = {
-        "learn.github.foundations-agentic-ai": "Foundations of Agentic AI in GitHub",
-        "learn.github.design-agent-architecture-integration": "Designing Agent Architecture and SDLC Integration",
-        "learn.github.agent-tooling-mcp-execution-environments": "Tooling, MCP, and Agent Execution Environments",
-        "learn.github.memory-state-evaluation": "Memory, State, and Evaluation",
-        "learn.github.multi-agent-systems-orchestration": "Multi-Agent Systems and Orchestration",
-        "learn.github.governance-guardrails-operations": "Governance, Guardrails, and Operations",
-    }[muid]
+for muid, meta in CFG["moduleMeta"].items():
     mod_slug = muid.split(".")[-1]
-    m = {
-        "id": mid,
-        "uid": muid,
-        "slug": mod_slug,
-        "title": title,
-        "domains": domains,
-        "url": f"https://learn.microsoft.com/en-us/training/modules/{mod_slug}/",
-        "units": [],
-    }
-    for u in meta["units"]:
+    m = {"id": meta["id"], "uid": muid, "slug": mod_slug, "title": meta["title"],
+         "domains": meta["domains"],
+         "url": f"https://learn.microsoft.com/en-us/training/modules/{mod_slug}/",
+         "units": []}
+    for u in hier[muid]["units"]:
         rec = units[u["uid"]]
+        # unit ids are load-bearing: questions and stored read-progress key on them
+        slug = (u["uid"].split(".")[-1] if CFG.get("unitIdSource") == "uid"
+                else u["url"].strip("/").split("/")[-1])
         is_kc = bool(rec["quiz"])
         m["units"].append({
-            "id": f'{mid}-{slug(u["uid"])}',
+            "id": f'{meta["id"]}-{slug}',
             "uid": u["uid"],
             "title": u["title"],
             "url": "https://learn.microsoft.com/en-us" + u["url"],
             "minutes": u.get("durationInMinutes"),
-            "kind": "knowledge-check" if is_kc else ("exercise" if "exercise" in rec["slug"] else "reading"),
+            "kind": "knowledge-check" if is_kc else ("exercise" if "exercise" in slug else "reading"),
             "markdown": clean(rec["markdown"]),
         })
     modules.append(m)
 
-out = os.path.join(ROOT, "data", "modules.json")
+out = os.path.join(ROOT, "data", "certs", CERT, "modules.json")
+os.makedirs(os.path.dirname(out), exist_ok=True)
 json.dump(modules, open(out, "w"), indent=1)
-total = sum(len(m["units"]) for m in modules)
-chars = sum(len(u["markdown"]) for m in modules for u in m["units"])
-print(f"wrote {out}: {len(modules)} modules, {total} units, {chars:,} chars of content")
+print(f"{CERT}: {len(modules)} modules, {sum(len(m['units']) for m in modules)} units, "
+      f"{sum(len(u['markdown']) for m in modules for u in m['units']):,} chars -> {out}")

@@ -1,0 +1,22 @@
+[
+ {
+  "id": "gh-600",
+  "code": "GH-600",
+  "name": "Agentic AI Developer",
+  "fullName": "GitHub Certified: Agentic AI Developer",
+  "tagline": "Operating, governing and coordinating AI agents inside the SDLC, with GitHub as the control plane.",
+  "level": "Intermediate",
+  "accent": "teal",
+  "status": "ready"
+ },
+ {
+  "id": "gh-100",
+  "code": "GH-100",
+  "name": "GitHub Enterprise Administrator",
+  "fullName": "GitHub Certified: GitHub Administration",
+  "tagline": "Identity and access, enterprise governance, secure development, Actions administration and usage reporting.",
+  "level": "Intermediate",
+  "accent": "indigo",
+  "status": "ready"
+ }
+]

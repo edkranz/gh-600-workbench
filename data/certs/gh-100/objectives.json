@@ -1,0 +1,183 @@
+{
+ "exam": {
+  "code": "GH-100",
+  "name": "GitHub Enterprise Administrator",
+  "credential": "GitHub Certified: GitHub Administration",
+  "level": "Intermediate",
+  "duration": "120 minutes",
+  "passingScore": 700,
+  "scale": "1000",
+  "questionCount": "~40-60",
+  "languages": ["English"],
+  "proctored": true,
+  "skillsAsOf": "July 2026",
+  "certUrl": "https://learn.microsoft.com/en-us/credentials/certifications/github-administration/",
+  "studyGuideUrl": "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/gh-100",
+  "sandboxUrl": "https://ghcertdemo.starttest.com/",
+  "practiceUrl": "https://learn.microsoft.com/en-us/credentials/certifications/github-administration/practice/assessment?assessment-type=practice&assessmentId=1841205577&practice-assessment-type=certification",
+  "audience": "Candidates for this exam should have experience administering GitHub Enterprise environments, including user identity and access management, GitHub Actions, enterprise-level governance, and the administration of features that support secure software development (such as GitHub Advanced Security). Administrators in this role support both GitHub Enterprise Cloud and Server deployments and collaborate with development, security, and operations teams to ensure effective use of GitHub tools and services.",
+  "responsibilities": [
+   "Managing user identity, authentication and access across the enterprise",
+   "Administering GitHub Enterprise Cloud and Server deployments",
+   "Enforcing security policies, rulesets and compliance controls",
+   "Administering GitHub Actions, runners and encrypted secrets",
+   "Monitoring usage, licensing and cost"
+  ],
+  "paths": [
+   {"title": "GitHub Administration Part 1 of 2", "url": "https://learn.microsoft.com/en-us/training/paths/github-administration-products/"},
+   {"title": "GitHub Administration Part 2 of 2", "url": "https://learn.microsoft.com/en-us/training/paths/github-admin-2/github-admin-2/"}
+  ],
+  "changeLog": "This exam changed significantly in July 2026: objectives were added, removed, moved between functional groups, and all were reworded."
+ },
+ "domains": [
+  {
+   "id": "d1",
+   "number": 1,
+   "title": "Manage GitHub identities and access",
+   "weight": "15-20%",
+   "weightMid": 17.5,
+   "modules": ["m2", "m6", "m3"],
+   "groups": [
+    {
+     "title": "Manage user identities and authentication",
+     "objectives": [
+      {"id": "1.1.1", "text": "Describe differences between managed users and personal accounts"},
+      {"id": "1.1.2", "text": "Configure and enforce SAML SSO and 2FA"},
+      {"id": "1.1.3", "text": "Understand SCIM and team synchronization: implementation and key differences"},
+      {"id": "1.1.4", "text": "Choose and configure identity providers"},
+      {"id": "1.1.5", "text": "Explain GitHub's authentication and authorization model"}
+     ]
+    },
+    {
+     "title": "Manage access and permissions",
+     "objectives": [
+      {"id": "1.2.1", "text": "Configure organization and repository roles"},
+      {"id": "1.2.2", "text": "Define and manage enterprise teams"},
+      {"id": "1.2.3", "text": "Audit access and permissions"},
+      {"id": "1.2.4", "text": "Manage settings, policies, rulesets, and roles"}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d2",
+   "number": 2,
+   "title": "Administer GitHub Enterprise environment",
+   "weight": "10-15%",
+   "weightMid": 12.5,
+   "modules": ["m1", "m3", "m7"],
+   "groups": [
+    {
+     "title": "Support GitHub Enterprise users and stakeholders",
+     "objectives": [
+      {"id": "2.1.1", "text": "Identify issues resolvable by admins vs GitHub Support"},
+      {"id": "2.1.2", "text": "Generate support bundles and diagnostics"},
+      {"id": "2.1.3", "text": "Recommend standards for developer processes"},
+      {"id": "2.1.4", "text": "Define standards for workflows, branching, reviews, and releases"}
+     ]
+    },
+    {
+     "title": "Manage deployment and licensing",
+     "objectives": [
+      {"id": "2.2.1", "text": "Describe GitHub Enterprise deployment scenarios (GHEC with EMU, GHEC with Data Residency + EMU, GHEC with personal accounts, GHES)"},
+      {"id": "2.2.2", "text": "Explain licensing and billing models"},
+      {"id": "2.2.3", "text": "Monitor license usage and consumption"}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d3",
+   "number": 3,
+   "title": "Implement secure software development and compliance",
+   "weight": "25-30%",
+   "weightMid": 27.5,
+   "modules": ["m4", "m5"],
+   "groups": [
+    {
+     "title": "Configure security policies and rulesets",
+     "objectives": [
+      {"id": "3.1.1", "text": "Define organization and enterprise policies"},
+      {"id": "3.1.2", "text": "Strengthen enterprise security posture and data protection"},
+      {"id": "3.1.3", "text": "Implement audit logging and reporting"}
+     ]
+    },
+    {
+     "title": "Enable repository security features",
+     "objectives": [
+      {"id": "3.2.1", "text": "Configure vulnerability alerts, secret scanning, and CodeQL"},
+      {"id": "3.2.2", "text": "Manage Dependabot and security advisories"},
+      {"id": "3.2.3", "text": "Define and implement a security response plan"}
+     ]
+    },
+    {
+     "title": "Manage API access and integrations",
+     "objectives": [
+      {"id": "3.3.1", "text": "Configure personal access tokens"},
+      {"id": "3.3.2", "text": "Understand rate limits for PATs and GitHub Apps"},
+      {"id": "3.3.3", "text": "Describe GitHub Apps and OAuth Apps"},
+      {"id": "3.3.4", "text": "Approve or deny app usage based on policy"}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d4",
+   "number": 4,
+   "title": "Manage GitHub Actions",
+   "weight": "20-25%",
+   "weightMid": 22.5,
+   "modules": ["m8", "m9"],
+   "groups": [
+    {
+     "title": "Configure workflows and reusable components",
+     "objectives": [
+      {"id": "4.1.1", "text": "Configure and manage reuse of actions and workflows to the enterprise repository"},
+      {"id": "4.1.2", "text": "Apply organizational policies for GitHub Actions"}
+     ]
+    },
+    {
+     "title": "Manage runners",
+     "objectives": [
+      {"id": "4.2.1", "text": "Manage runner groups and administer GitHub-hosted vs. self-hosted runner options"},
+      {"id": "4.2.2", "text": "Apply IP allow lists and configure networking (including Azure private networking)"},
+      {"id": "4.2.3", "text": "Monitor and troubleshoot runner performance"}
+     ]
+    },
+    {
+     "title": "Manage encrypted secrets",
+     "objectives": [
+      {"id": "4.3.1", "text": "Define scope and access for secrets"},
+      {"id": "4.3.2", "text": "Configure secrets at organization and repository levels"},
+      {"id": "4.3.3", "text": "Integrate third-party vaults"}
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d5",
+   "number": 5,
+   "title": "Monitor and optimize GitHub usage",
+   "weight": "10-15%",
+   "weightMid": 12.5,
+   "modules": ["m7"],
+   "groups": [
+    {
+     "title": "Monitor enterprise usage and activity",
+     "objectives": [
+      {"id": "5.1.1", "text": "Analyze audit logs and API usage"},
+      {"id": "5.1.2", "text": "Distinguish admin responsibilities vs. GitHub Support and generate diagnostics"},
+      {"id": "5.1.3", "text": "Evaluate enterprise usage patterns to identify adoption, activity, and underutilized features"}
+     ]
+    },
+    {
+     "title": "Optimize cost and performance",
+     "objectives": [
+      {"id": "5.2.1", "text": "Interpret usage reports for metered products"},
+      {"id": "5.2.2", "text": "Recommend strategies for license and resource optimization"}
+     ]
+    }
+   ]
+  }
+ ]
+}

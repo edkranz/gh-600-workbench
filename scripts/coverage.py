@@ -1,50 +1,47 @@
 #!/usr/bin/env python3
-"""Report objectives and units that have no question pointing at them."""
+"""Report objectives and units with no question, for every certification."""
 import glob, json, os, sys
 from collections import Counter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = os.path.join(ROOT, "data")
+SKIP = ("-introduction", "-summary", "1-introduction", "introduction")
+fail = False
 
-obj = json.load(open(os.path.join(D, "objectives.json")))
-mods = json.load(open(os.path.join(D, "modules.json")))
-qs = []
-for f in sorted(glob.glob(os.path.join(D, "questions.*.json"))):
-    qs += json.load(open(f))
+for cert in json.load(open(os.path.join(D, "certs.json"))):
+    cid = cert["id"]
+    base = os.path.join(D, "certs", cid)
+    if not os.path.exists(os.path.join(base, "objectives.json")):
+        continue
+    obj = json.load(open(os.path.join(base, "objectives.json")))
+    mods = json.load(open(os.path.join(base, "modules.json")))
+    qs = []
+    for f in sorted(glob.glob(os.path.join(base, "questions.*.json"))):
+        qs += json.load(open(f))
 
-all_obj = {o["id"]: (d["id"], o["text"])
-           for d in obj["domains"] for g in d["groups"] for o in g["objectives"]}
-# intro/summary units restate what the other units teach, so they need no question of their own
-SKIP = ("-introduction", "-summary")
-content_units = {u["id"]: (m["id"], u["title"])
-                 for m in mods for u in m["units"]
-                 if u["kind"] != "knowledge-check" and not u["id"].endswith(SKIP)}
+    all_obj = {o["id"]: (d["id"], o["text"])
+               for d in obj["domains"] for g in d["groups"] for o in g["objectives"]}
+    units = {u["id"]: u for m in mods for u in m["units"]}
+    content = {uid for uid, u in units.items()
+               if u["kind"] != "knowledge-check" and not uid.endswith(SKIP)}
 
-by_obj = Counter(q["objective"] for q in qs)
-by_unit = Counter(q["unit"] for q in qs)
-by_domain = Counter(q["domain"] for q in qs)
-by_source = Counter(q["source"] for q in qs)
+    by_obj, by_unit = Counter(q["objective"] for q in qs), Counter(q["unit"] for q in qs)
+    print(f"\n{'='*70}\n{cert['code']} — {cert['name']}: {len(qs)} questions")
+    print("  by source:", dict(Counter(q["source"] for q in qs)))
+    print("  by domain:", {d["id"]: sum(1 for q in qs if q["domain"] == d["id"]) for d in obj["domains"]})
 
-print(f"{len(qs)} questions total")
-print("  by source:", dict(by_source))
-print("  by domain:", {d["id"]: by_domain.get(d["id"], 0) for d in obj["domains"]})
+    bad = [q["id"] for q in qs if q["objective"] not in all_obj or q["unit"] not in units]
+    miss_o = sorted(k for k in all_obj if not by_obj.get(k))
+    thin_o = sorted(k for k in all_obj if by_obj.get(k) == 1)
+    miss_u = sorted(u for u in content if not by_unit.get(u))
 
-missing_obj = [(k, v) for k, v in all_obj.items() if by_obj.get(k, 0) == 0]
-thin_obj = [(k, by_obj[k]) for k in all_obj if by_obj.get(k, 0) == 1]
-missing_unit = [(k, v) for k, v in content_units.items() if by_unit.get(k, 0) == 0]
+    if bad:
+        print(f"  !! DANGLING REFS: {bad}"); fail = True
+    print(f"  objectives with no question ({len(miss_o)}/{len(all_obj)}): {miss_o or 'none'}")
+    print(f"  objectives with only one   ({len(thin_o)}): {thin_o or 'none'}")
+    print(f"  content units with none    ({len(miss_u)}/{len(content)}): {miss_u or 'none'}")
+    dupes = [i for i, n in Counter(q["id"] for q in qs).items() if n > 1]
+    if dupes:
+        print(f"  !! DUPLICATE IDS: {dupes}"); fail = True
 
-print(f"\nOBJECTIVES WITH NO QUESTION ({len(missing_obj)}/{len(all_obj)}):")
-for k, (d, t) in sorted(missing_obj):
-    print(f"  {k} [{d}] {t}")
-print(f"\nOBJECTIVES WITH ONLY ONE ({len(thin_obj)}):")
-for k, n in sorted(thin_obj):
-    print(f"  {k} [{all_obj[k][0]}] {all_obj[k][1]}")
-print(f"\nCONTENT UNITS WITH NO QUESTION ({len(missing_unit)}/{len(content_units)}):")
-for k, (m, t) in sorted(missing_unit):
-    print(f"  {k} - {t}")
-
-ids = [q["id"] for q in qs]
-dupes = [i for i, n in Counter(ids).items() if n > 1]
-if dupes:
-    print("\n!! DUPLICATE IDS:", dupes)
-    sys.exit(1)
+sys.exit(1 if fail else 0)

@@ -1,0 +1,128 @@
+{
+ "_comment": "Drives the scrapers. moduleMeta maps a Microsoft Learn module uid to the local module id, display title, and the exam domains it serves.",
+ "gh-600": {
+  "scrapeDir": "",
+  "keepImages": {
+   "agent-lifecycle-diagram.png": "assets/agent-lifecycle-diagram.webp",
+   "assistant-vs-agent-comparison.png": "assets/assistant-vs-agent-comparison.webp"
+  },
+  "moduleMeta": {
+   "learn.github.foundations-agentic-ai": {
+    "id": "m1",
+    "title": "Foundations of Agentic AI in GitHub",
+    "domains": [
+     "d1"
+    ]
+   },
+   "learn.github.design-agent-architecture-integration": {
+    "id": "m2",
+    "title": "Designing Agent Architecture and SDLC Integration",
+    "domains": [
+     "d1"
+    ]
+   },
+   "learn.github.agent-tooling-mcp-execution-environments": {
+    "id": "m3",
+    "title": "Tooling, MCP, and Agent Execution Environments",
+    "domains": [
+     "d2"
+    ]
+   },
+   "learn.github.memory-state-evaluation": {
+    "id": "m4",
+    "title": "Memory, State, and Evaluation",
+    "domains": [
+     "d3",
+     "d4"
+    ]
+   },
+   "learn.github.multi-agent-systems-orchestration": {
+    "id": "m5",
+    "title": "Multi-Agent Systems and Orchestration",
+    "domains": [
+     "d5"
+    ]
+   },
+   "learn.github.governance-guardrails-operations": {
+    "id": "m6",
+    "title": "Governance, Guardrails, and Operations",
+    "domains": [
+     "d6"
+    ]
+   }
+  },
+  "unitIdSource": "uid"
+ },
+ "gh-100": {
+  "scrapeDir": "gh100",
+  "keepImages": {},
+  "moduleMeta": {
+   "learn.github.introduction-to-github": {
+    "id": "m1",
+    "title": "Introduction to GitHub",
+    "domains": [
+     "d2"
+    ]
+   },
+   "learn.github.github-introduction-administration": {
+    "id": "m2",
+    "title": "Introduction to GitHub administration",
+    "domains": [
+     "d1"
+    ]
+   },
+   "learn.github.github-introduction-products": {
+    "id": "m3",
+    "title": "Introduction to GitHub's products",
+    "domains": [
+     "d2",
+     "d1"
+    ]
+   },
+   "learn.github.maintain-secure-repository-github": {
+    "id": "m4",
+    "title": "Maintain a secure repository",
+    "domains": [
+     "d3"
+    ]
+   },
+   "learn.github.manage-sensitive-data-security-policies": {
+    "id": "m5",
+    "title": "Manage sensitive data and security policies",
+    "domains": [
+     "d3"
+    ]
+   },
+   "learn.github.authenticate-authorize-user-identities-github": {
+    "id": "m6",
+    "title": "Authenticate and authorize user identities",
+    "domains": [
+     "d1"
+    ]
+   },
+   "learn.github-administration-for-enterprise-support-adoption": {
+    "id": "m7",
+    "title": "GitHub administration for enterprise support and adoption",
+    "domains": [
+     "d2",
+     "d5"
+    ]
+   },
+   "learn.github.manage-github-actions-enterprise": {
+    "id": "m8",
+    "title": "Manage GitHub Actions in the enterprise",
+    "domains": [
+     "d4"
+    ]
+   },
+   "learn.github.github-actions-packages": {
+    "id": "m9",
+    "title": "Publish to GitHub Packages with Actions",
+    "domains": [
+     "d4"
+    ]
+   }
+  },
+  "unitIdSource": "slug"
+ }
+}

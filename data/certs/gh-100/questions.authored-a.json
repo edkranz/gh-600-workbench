@@ -1,0 +1,254 @@
+[
+ {
+  "id": "auth-a-01", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d1", "objective": "1.1.5", "module": "m6", "unit": "m6-4-authorization", "type": "single",
+  "text": "A colleague says SAML SSO means a user is now authorized to push to your repositories. Where does that reasoning break down?",
+  "options": [
+   {"text": "It doesn't — a successful SAML assertion grants repository access.", "correct": false, "why": "This conflates the two halves of the model. SSO answers who the user is, not what they may do."},
+   {"text": "Authentication proves identity; authorization is separate and still comes from org, team and repository roles.", "correct": true, "why": "GitHub's model splits the two. SAML SSO (plus 2FA) establishes identity against the IdP. What that identity can then do comes from organization membership, team membership and repository permission level. A perfectly authenticated user with no repository grant can push nothing."},
+   {"text": "SAML SSO only authorizes read access; write must come from SCIM.", "correct": false, "why": "SCIM provisions and deprovisions accounts. It is not a permission tier, and SSO does not confer read access by itself."},
+   {"text": "SAML SSO replaces repository permissions entirely for enterprise accounts.", "correct": false, "why": "Repository permissions apply regardless of how the user authenticated."}
+  ],
+  "takeaway": "Authentication = who you are (SAML, 2FA). Authorization = what you may do (org role, team, repository permission). Keep them apart."
+ },
+ {
+  "id": "auth-a-02", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d1", "objective": "1.1.5", "module": "m2", "unit": "m2-3-how-github-authentication-works", "type": "multi",
+  "text": "Which statements about GitHub's authentication options are accurate? (Select all that apply.)",
+  "options": [
+   {"text": "SAML SSO redirects the user to the configured identity provider to authenticate.", "correct": true, "why": "Correct. After SSO is enabled, the user authenticates with the IdP, not against GitHub credentials alone."},
+   {"text": "TOTP as a 2FA method supports secure cloud backup of authentication codes.", "correct": true, "why": "Correct, and it is the practical argument for TOTP over SMS: losing the device does not lock the user out."},
+   {"text": "Enabling SSO removes the need to manage repository permissions.", "correct": false, "why": "No. Identity and permission are separate concerns."},
+   {"text": "Team synchronization keeps GitHub team membership aligned with IdP groups.", "correct": true, "why": "Correct. It maps IdP groups to GitHub teams so membership updates flow automatically."}
+  ],
+  "takeaway": "SSO federates identity, 2FA hardens it, team sync propagates group membership — three separate mechanisms."
+ },
+ {
+  "id": "auth-a-03", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d1", "objective": "1.1.3", "module": "m6", "unit": "m6-5-team-synchronization", "type": "single",
+  "text": "Your enterprise uses both SCIM and team synchronization. An employee leaves and is removed from the IdP. What does each mechanism do?",
+  "options": [
+   {"text": "SCIM deprovisions the GitHub account; team synchronization removes them from teams mapped to IdP groups.", "correct": true, "why": "They solve adjacent problems. SCIM handles the account lifecycle — provisioning and deprovisioning the user. Team sync handles membership, keeping GitHub teams aligned to IdP groups. Note also that revoking a user's SSO identity automatically removes them from teams mapped to IdP groups."},
+   {"text": "Both do the same thing; running both is redundant.", "correct": false, "why": "This is the confusion the objective targets. Account lifecycle and team membership are different operations."},
+   {"text": "SCIM removes them from teams; team synchronization deletes the account.", "correct": false, "why": "Reversed."},
+   {"text": "Neither acts until an administrator runs a manual reconciliation.", "correct": false, "why": "Automating exactly this is the point of both."}
+  ],
+  "takeaway": "SCIM = account lifecycle. Team sync = team membership from IdP groups. Revoking an SSO identity also drops mapped team memberships."
+ },
+ {
+  "id": "auth-a-04", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d1", "objective": "1.1.4", "module": "m7", "unit": "m7-4-scale-your-github-enterprise-deployment", "type": "single",
+  "text": "Which identity providers are named as supporting SCIM provisioning for GitHub?",
+  "options": [
+   {"text": "Microsoft Entra ID, Okta and OneLogin.", "correct": true, "why": "These three are the named supported providers for the SCIM standard, which drives identity workflows through RESTful JSON requests."},
+   {"text": "Only Microsoft Entra ID, because GitHub Enterprise is Microsoft-owned.", "correct": false, "why": "Ownership does not restrict SCIM support; the standard is vendor-neutral and several providers are supported."},
+   {"text": "Any provider, since SCIM is a fully open standard with no per-vendor support.", "correct": false, "why": "SCIM is a standard, but GitHub documents which providers it supports for provisioning."},
+   {"text": "LDAP and Kerberos.", "correct": false, "why": "Neither is a SCIM provisioning provider."}
+  ],
+  "takeaway": "SCIM provisioning: Microsoft Entra ID, Okta, OneLogin. Team sync via IdP groups pairs with it."
+ },
+ {
+  "id": "auth-a-05", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d1", "objective": "1.1.1", "module": "m7", "unit": "m7-enterprise-managed-user-accounts", "type": "single",
+  "text": "What most fundamentally distinguishes an Enterprise Managed User from a personal account that has joined your enterprise?",
+  "options": [
+   {"text": "Managed users get more storage and higher API rate limits.", "correct": false, "why": "Quotas are not the distinction; control and ownership are."},
+   {"text": "The managed user account is created and owned by the enterprise through its IdP, and its scope is limited to that enterprise.", "correct": true, "why": "A managed account is provisioned from the identity provider and belongs to the enterprise, which can control and deprovision it. A personal account belongs to the individual, exists independently of your enterprise, and continues to exist after they leave."},
+   {"text": "Managed users cannot use GitHub Actions.", "correct": false, "why": "Actions availability is not what separates the account types."},
+   {"text": "Personal accounts cannot be required to use SAML SSO.", "correct": false, "why": "Personal accounts joining an organization can be required to authenticate through SSO. The difference is who owns the account."}
+  ],
+  "takeaway": "EMU accounts are enterprise-owned, IdP-provisioned and enterprise-scoped. Personal accounts are user-owned and outlive their membership."
+ },
+ {
+  "id": "auth-a-06", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d1", "objective": "1.2.3", "module": "m2", "unit": "m2-5-enterprise-access-governance", "type": "single",
+  "text": "You must produce evidence for an auditor of who currently has write access across 40 organizations, and how it was granted. What is the practical approach?",
+  "options": [
+   {"text": "Ask each organization owner to send a screenshot of their members list.", "correct": false, "why": "Not reproducible, not verifiable, and stale the moment it is taken."},
+   {"text": "Use the GitHub API (or Actions automation) to enumerate team and repository permissions, and pair it with organization or enterprise audit logs for how access was granted.", "correct": true, "why": "The guidance is explicit: automate team creation and permission assignment via the API or Actions, and audit access via organization or enterprise audit logs. The API gives current state, the audit log gives the change history."},
+   {"text": "Export the billing report, which lists every user's permission level.", "correct": false, "why": "Billing shows consumption and seats, not permission grants."},
+   {"text": "Enable SAML SSO, which produces an access report automatically.", "correct": false, "why": "SSO governs authentication. It does not enumerate repository permissions."}
+  ],
+  "takeaway": "Current state from the API, change history from the audit log. Together they are the access evidence."
+ },
+ {
+  "id": "auth-a-07", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d1", "objective": "1.2.4", "module": "m2", "unit": "m2-5-enterprise-access-governance", "type": "single",
+  "text": "An enterprise is deciding between default read and default write repository permissions across all organizations. Which recommendation does the module make, and why?",
+  "options": [
+   {"text": "Default write, because it removes bottlenecks in content creation.", "correct": false, "why": "That is the stated benefit of default write, but it is not the recommendation — it raises the chance of accidental change."},
+   {"text": "Default read, granting write selectively, to follow least privilege.", "correct": true, "why": "The explicit recommendation is a default read model with write granted selectively, which keeps changes auditable and minimises unintended modification. Smaller single-organization enterprises may reasonably prefer default write."},
+   {"text": "Default admin, so teams are never blocked and can self-serve.", "correct": false, "why": "Admin by default is the widest possible grant and is never the recommendation."},
+   {"text": "No default at all — set permissions per user on every repository.", "correct": false, "why": "Unmanageable at enterprise scale, which is why defaults plus selective elevation exist."}
+  ],
+  "takeaway": "Default read, elevate selectively. Least privilege applies to permission defaults as much as to tokens."
+ },
+ {
+  "id": "auth-a-08", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d1", "objective": "1.2.1", "module": "m2", "unit": "m2-5-enterprise-access-governance", "type": "single",
+  "text": "Which organization role can manage security alerts and settings across the organization and read all its repositories, without being an owner?",
+  "options": [
+   {"text": "Moderator", "correct": false, "why": "Moderators block and unblock non-member contributors, set interaction limits, and hide comments in public repositories."},
+   {"text": "Billing manager", "correct": false, "why": "Billing managers view and edit billing information only."},
+   {"text": "Security manager", "correct": true, "why": "Security managers manage security alerts and settings across the organization and hold read permission on all its repositories — the security-team role that avoids handing out ownership."},
+   {"text": "Outside collaborator", "correct": false, "why": "An outside collaborator has access to specific repositories and is not a member of the organization at all."}
+  ],
+  "takeaway": "Org roles: owner, member, moderator, billing manager, security manager, outside collaborator. Security manager is the least-privilege security role."
+ },
+ {
+  "id": "auth-a-09", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d1", "objective": "1.2.2", "module": "m2", "unit": "m2-5-enterprise-access-governance", "type": "single",
+  "text": "A large enterprise wants team structures that mirror its departmental hierarchy without re-granting permissions at every level. What supports this?",
+  "options": [
+   {"text": "Nested teams, where a parent team's permissions cascade down to child teams.", "correct": true, "why": "Nested teams let the structure reflect departments while permissions cascade from parent to child, which is what avoids re-granting at each level."},
+   {"text": "Outside collaborators, added once per department.", "correct": false, "why": "Outside collaborators are per-repository grants for people outside the organization."},
+   {"text": "Separate enterprises per department.", "correct": false, "why": "That fragments administration entirely rather than modelling a hierarchy."},
+   {"text": "Repository forks per department.", "correct": false, "why": "Forking duplicates code; it is not an access-modelling mechanism."}
+  ],
+  "takeaway": "Nested teams cascade parent permissions to child teams, mirroring org structure without repeated grants."
+ },
+ {
+  "id": "auth-a-10", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d2", "objective": "2.1.1", "module": "m7", "unit": "m7-3-support-for-github-enterprise", "type": "multi",
+  "text": "Which of these require GitHub Support rather than an enterprise administrator? (Select all that apply.)",
+  "options": [
+   {"text": "Recovering a deleted repository (within 90 days).", "correct": true, "why": "Requires GitHub Support, and only within the 90-day window."},
+   {"text": "Account recovery after lost 2FA credentials.", "correct": true, "why": "Requires Support — they verify identity and restore access."},
+   {"text": "Billing and subscription issues.", "correct": true, "why": "Requires Support. Administrators cannot resolve billing disputes themselves."},
+   {"text": "Managing repository access for a team.", "correct": false, "why": "That is squarely an administrator task, and one of the clearest examples on the admin side of the line."}
+  ],
+  "takeaway": "Support handles accounts, security and abuse — plus repo recovery, billing and takedowns. Admins handle access, infrastructure, CI/CD and external auth."
+ },
+ {
+  "id": "auth-a-11", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d2", "objective": "2.1.1", "module": "m7", "unit": "m7-3-support-for-github-enterprise", "type": "single",
+  "text": "A developer force-pushed over a branch and the previous commits are needed back. Who resolves it?",
+  "options": [
+   {"text": "The administrator, by restoring the branch from the UI.", "correct": false, "why": "Administrators can restore recently deleted branches, but restoring force-pushed commits is a different case and sits with Support."},
+   {"text": "GitHub Support, in limited cases.", "correct": true, "why": "Restoring force-pushed commits is listed as requiring Support, and only in limited cases — worth knowing because it is a common assumption that admins can do it."},
+   {"text": "Nobody — force-pushed commits are always unrecoverable.", "correct": false, "why": "Too absolute. Support can help in limited cases."},
+   {"text": "The repository owner, via the audit log export.", "correct": false, "why": "The audit log records that the push happened; it does not restore objects."}
+  ],
+  "takeaway": "Admins restore recently deleted branches. Force-pushed commits, deleted repos and cache clearing after history rewrites go to Support."
+ },
+ {
+  "id": "auth-a-12", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d2", "objective": "2.1.2", "module": "m7", "unit": "m7-3-support-for-github-enterprise", "type": "single",
+  "text": "GitHub Support asks for a support bundle from your GHES instance. Which command generates it?",
+  "options": [
+   {"text": "ghe-diagnostics --bundle", "correct": false, "why": "Not the documented command."},
+   {"text": "ghe-support-bundle -o /path/to/directory/", "correct": true, "why": "Run over SSH to the GHES instance; it writes a .tar.gz to the given directory. The Management Console route is Support → Support Bundles → Create and Download Support Bundle."},
+   {"text": "gh enterprise support bundle create", "correct": false, "why": "Not a GHES administrative command."},
+   {"text": "ghe-config-apply --support", "correct": false, "why": "Applies configuration; unrelated to diagnostics collection."}
+  ],
+  "takeaway": "`ghe-support-bundle -o <dir>` over SSH, or Management Console → Support → Support Bundles."
+ },
+ {
+  "id": "auth-a-13", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d2", "objective": "2.1.2", "module": "m7", "unit": "m7-3-support-for-github-enterprise", "type": "multi",
+  "text": "What does a GHES support bundle contain? (Select all that apply.)",
+  "options": [
+   {"text": "Application logs", "correct": true, "why": "Yes — the primary diagnostic content."},
+   {"text": "System diagnostics such as CPU, memory and disk", "correct": true, "why": "Yes, so Support can see resource pressure."},
+   {"text": "Configuration settings, network errors and replication details where applicable", "correct": true, "why": "Yes. Replication details matter for high-availability deployments."},
+   {"text": "The full contents of every repository on the instance", "correct": false, "why": "No. A support bundle is diagnostics, not a repository backup — and shipping source code to Support is not what it is for."}
+  ],
+  "takeaway": "Bundles carry logs, system diagnostics, configuration, network errors and replication detail. Upload via the one-time secure link Support provides."
+ },
+ {
+  "id": "auth-a-14", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d2", "objective": "2.1.2", "module": "m7", "unit": "m7-3-support-for-github-enterprise", "type": "single",
+  "text": "You have generated a support bundle containing production configuration. What is the recommended way to get it to GitHub Support?",
+  "options": [
+   {"text": "Attach it to the support ticket as a public comment.", "correct": false, "why": "It contains configuration and diagnostics; it should not be posted where it is broadly visible."},
+   {"text": "Submit a ticket, then use the one-time secure upload link Support provides.", "correct": true, "why": "This is the recommended option. Alternatives exist — encrypted email with the password sent separately, restricted cloud storage, or physical transfer for very large bundles — but the secure upload link is the documented first choice."},
+   {"text": "Email it unencrypted so Support can access it quickly.", "correct": false, "why": "If email is used at all, the bundle should be encrypted with 7-Zip or PGP and the password sent separately."},
+   {"text": "Commit it to a private repository and grant Support access.", "correct": false, "why": "Not a documented transfer method, and it puts diagnostics into version control."}
+  ],
+  "takeaway": "Secure one-time upload link is the recommended path; encrypted email or restricted cloud storage are fallbacks."
+ },
+ {
+  "id": "auth-a-15", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d2", "objective": "2.2.1", "module": "m7", "unit": "m7-2-github-enterprise-tools-and-features", "type": "single",
+  "text": "A regulated customer must keep repository data within a specific geography but wants GitHub to host and operate the platform. Which deployment fits?",
+  "options": [
+   {"text": "GitHub Enterprise Server, self-hosted in that region.", "correct": false, "why": "GHES meets the data-location requirement but the customer explicitly wants GitHub to host and operate it — GHES is theirs to run."},
+   {"text": "GitHub Enterprise Cloud with data residency and Enterprise Managed Users.", "correct": true, "why": "Data residency keeps data in the chosen region while GitHub continues to host, and EMU gives enterprise-owned, IdP-provisioned accounts. That combination is one of the named deployment scenarios."},
+   {"text": "GitHub Enterprise Cloud with personal accounts.", "correct": false, "why": "Personal accounts do not address data residency, and the accounts remain user-owned."},
+   {"text": "GitHub Team with SAML SSO.", "correct": false, "why": "SAML SSO is an Enterprise feature, and Team offers no residency guarantees."}
+  ],
+  "takeaway": "The four scenarios: GHEC with EMU, GHEC with data residency + EMU, GHEC with personal accounts, and GHES. Match hosting model against residency and account ownership."
+ },
+ {
+  "id": "auth-a-16", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d2", "objective": "2.2.2", "module": "m3", "unit": "m3-4-github-billing", "type": "single",
+  "text": "Which pair correctly separates subscription/licence charges from usage-based charges?",
+  "options": [
+   {"text": "Licence: GitHub Copilot seats and GitHub Team. Usage: Actions, Packages and supported Copilot features.", "correct": true, "why": "Subscription and licence charges apply to products assigned to an account — GitHub Pro, Team, Copilot seats. Usage-based billing applies where cost scales with consumption — Actions, Packages, and supported Copilot AI features measured in AI credits."},
+   {"text": "Licence: Actions minutes. Usage: Copilot seats.", "correct": false, "why": "Exactly reversed on both counts."},
+   {"text": "Everything on GitHub Enterprise is licence-based; usage billing applies only to personal accounts.", "correct": false, "why": "Enterprises are billed on both models, which is why the distinction matters for budgeting."},
+   {"text": "Licence charges apply only to GHES; GHEC is entirely usage-based.", "correct": false, "why": "Deployment model does not determine the billing model this way."}
+  ],
+  "takeaway": "Licences are assigned (seats, plans). Usage scales with consumption (Actions, Packages, Copilot AI credits). Most enterprise bills combine both."
+ },
+ {
+  "id": "auth-a-17", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d2", "objective": "2.2.2", "module": "m3", "unit": "m3-5-license-usage-stats", "type": "single",
+  "text": "An administrator on a Pay-As-You-Go enterprise plan asks how many licences remain available. What is the correct answer?",
+  "options": [
+   {"text": "Check Settings → Billing & plans; the available count is shown there.", "correct": false, "why": "Available licences are shown for prepaid accounts. Reporting a figure that does not exist on PAYG is the trap."},
+   {"text": "PAYG has no concept of available licences — billing is based on actual usage, charged monthly against active seats.", "correct": true, "why": "PAYG is the default for new Enterprise customers. Only prepaid subscription plans show a set number of available licences; on PAYG you are charged for what you actually use."},
+   {"text": "PAYG accounts always have unlimited licences at no additional cost.", "correct": false, "why": "Unlimited seats and free seats are different things; PAYG charges for active usage."},
+   {"text": "Query the GraphQL seatsAvailable field, which is authoritative on all plans.", "correct": false, "why": "The field exists but is only meaningful where a prepaid allocation exists."}
+  ],
+  "takeaway": "Prepaid plans have available licences. PAYG — the default for new Enterprise customers — bills on active seats instead."
+ },
+ {
+  "id": "auth-a-18", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d2", "objective": "2.2.3", "module": "m3", "unit": "m3-6-license-usage-machine", "type": "single",
+  "text": "Your licence count is higher than your headcount. Which cause should you investigate first?",
+  "options": [
+   {"text": "Self-hosted runners, which each consume a licence.", "correct": false, "why": "Runners consume compute and can be tracked for cost, but the licence consumers here are accounts."},
+   {"text": "Machine accounts used for automation — each one consumes a licence just like a human user.", "correct": true, "why": "Machine accounts act independently of human users, are commonly created for CI/CD and integrations, and each consumes a GitHub licence. They accumulate quietly, which is why regular audits to deactivate unused ones are recommended."},
+   {"text": "Outside collaborators, who are billed at double rate.", "correct": false, "why": "No such double-rate rule exists."},
+   {"text": "GitHub Apps, which each require a user licence.", "correct": false, "why": "Apps authenticate via installation tokens rather than consuming user seats."}
+  ],
+  "takeaway": "Machine accounts consume licences like people. Audit them regularly — stale ones cost money and widen the attack surface."
+ },
+ {
+  "id": "auth-a-19", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d2", "objective": "2.2.3", "module": "m3", "unit": "m3-5-license-usage-stats", "type": "single",
+  "text": "You need licence usage for every organization under one enterprise account, in a form you can run monthly. Which approach fits best?",
+  "options": [
+   {"text": "Open each organization's Billing & plans page and record the numbers.", "correct": false, "why": "It works but does not scale and cannot be scheduled — the requirement is a repeatable monthly report."},
+   {"text": "A GraphQL query on the enterprise, iterating organizations and reading billingInfo.", "correct": true, "why": "Querying `enterprise(slug:) { organizations { nodes { name billingInfo { totalSeats seatsUsed seatsAvailable } } } }` returns every organization in one call, and automating monitoring through the API is the stated best practice."},
+   {"text": "The support bundle, which includes licence allocation.", "correct": false, "why": "Support bundles are GHES diagnostics for troubleshooting, not billing reports."},
+   {"text": "The audit log, filtered to licence events.", "correct": false, "why": "The audit log records actions, not seat totals."}
+  ],
+  "takeaway": "Automate licence monitoring with GraphQL or REST rather than reading dashboards; audit monthly or quarterly to reclaim seats."
+ },
+ {
+  "id": "auth-a-20", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d2", "objective": "2.1.4", "module": "m1", "unit": "m1-3-components-of-github-flow", "type": "single",
+  "text": "You are defining a standard developer workflow for the enterprise. Which sequence matches GitHub flow?",
+  "options": [
+   {"text": "Commit to main, then branch to fix problems afterwards.", "correct": false, "why": "Committing straight to main is what branch protection and the flow exist to prevent."},
+   {"text": "Create a branch, commit changes, open a pull request, review, then merge to main.", "correct": true, "why": "This is GitHub flow, and it is the shape you standardise on: an isolated branch, a pull request as the review surface, and merge only after review and checks."},
+   {"text": "Fork, clone, commit, then push directly to the upstream main branch.", "correct": false, "why": "Forking is for contributors without write access, and even then the change arrives via a pull request rather than a direct push."},
+   {"text": "Open an issue, then push the fix directly since the issue documents the change.", "correct": false, "why": "An issue records intent; it does not replace review of the change itself."}
+  ],
+  "takeaway": "Branch → commit → pull request → review → merge. Standards for workflows, branching, reviews and releases build on this."
+ },
+ {
+  "id": "auth-a-21", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d2", "objective": "2.1.3", "module": "m1", "unit": "m1-4-collaborative-platform", "type": "single",
+  "text": "An external contractor with no write access needs to contribute a fix. What is the correct process to recommend?",
+  "options": [
+   {"text": "Grant them write access to the repository for the duration of the work.", "correct": false, "why": "It works but violates least privilege for a one-off contribution, and creates access you must remember to revoke."},
+   {"text": "Fork the repository, clone the fork, push changes to it, then open a pull request to the upstream repository.", "correct": true, "why": "The fork-and-pull-request model is exactly how contributors without write access participate — they own their fork, and the upstream maintainers decide what is merged."},
+   {"text": "Email a patch file to a maintainer to apply.", "correct": false, "why": "Off-platform and unreviewable — no PR, no checks, no audit trail."},
+   {"text": "Add them as an organization owner so they can create a branch.", "correct": false, "why": "Wildly over-privileged for a single contribution."}
+  ],
+  "takeaway": "No write access? Fork, push to the fork, open a pull request upstream. Access stays unchanged."
+ }
+]

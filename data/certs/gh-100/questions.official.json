@@ -1,0 +1,1587 @@
+[
+ {
+  "id": "off-m1-check-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.1.4",
+  "module": "m1",
+  "unit": "m1-3-components-of-github-flow",
+  "type": "single",
+  "text": "What is the best way to report a bug to a GitHub project?",
+  "options": [
+   {
+    "text": "Send an email to a project owner.",
+    "correct": false,
+    "why": "Emails don't benefit from the issue-management infrastructure provided by GitHub."
+   },
+   {
+    "text": "I don't bother reporting software bugs because there's no transparency, and they never get fixed anyway.",
+    "correct": false,
+    "why": "GitHub provides great infrastructure for reporting, managing, and tracking bugs as issues. As a result, it's easy for the project's community to offer a resolution one way or another."
+   },
+   {
+    "text": "Search for the bug in the project's existing issues, and create a new one if it hasn't been reported yet.",
+    "correct": true,
+    "why": "A project's issues are visible to anyone who has access to the project, so you might find a resolution is already planned or available. Otherwise, you can create and track the issue yourself."
+   }
+  ],
+  "takeaway": "A project's issues are visible to anyone who has access to the project, so you might find a resolution is already planned or available. Otherwise, you can create and track the issue yourself."
+ },
+ {
+  "id": "off-m1-check-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.1.4",
+  "module": "m1",
+  "unit": "m1-3-components-of-github-flow",
+  "type": "single",
+  "text": "Suppose you created a bug fix on a new branch and want it to become part of the next production build generated from the main branch. What should you do next?",
+  "options": [
+   {
+    "text": "Copy your branch changes and commit them directly to the main branch.",
+    "correct": false,
+    "why": "If you have your commits already in place on a new branch as recommended, you should create a pull request to merge them in to the main branch."
+   },
+   {
+    "text": "Create a pull request to merge your new branch into the main branch.",
+    "correct": true,
+    "why": "Pull requests are the correct way to communicate that commits are ready for review and ultimate inclusion on the main branch."
+   },
+   {
+    "text": "On second thought, maybe I won't share this fix. I'll just put it in my own private version of the source code.",
+    "correct": false,
+    "why": "You should reconsider offering your contribution to the original project. By getting your bug fix merged into the main branch, you'll benefit from it being automatically included in future builds."
+   }
+  ],
+  "takeaway": "Pull requests are the correct way to communicate that commits are ready for review and ultimate inclusion on the main branch."
+ },
+ {
+  "id": "off-m1-check-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.1.3",
+  "module": "m1",
+  "unit": "m1-4-collaborative-platform",
+  "type": "single",
+  "text": "Suppose you'd like to work with a project on GitHub, but you don't have write access to the project. What can you do to contribute?",
+  "options": [
+   {
+    "text": "Fork the project's repository to your GitHub account, clone the forked repository to your local machine, push changes to your repository, and submit a pull request to the target (upstream) repository.",
+    "correct": true,
+    "why": "GitHub provides forking functionality designed to allow you to work with projects where you aren't an owner or don't have write access. Forking makes a remote copy of the project in your repository that you can then clone locally. To submit updates to the target repository (upstream repository), you can submit a pull request."
+   },
+   {
+    "text": "Clone the project to your local machine and push updates directly to the project repository.",
+    "correct": false,
+    "why": "You can't push updates to a repository unless you're the owner or have write access."
+   },
+   {
+    "text": "Use git commands to make a copy of the project so that you can work locally. Submit an issue to get your changes into the target repository.",
+    "correct": false,
+    "why": "Although you can clone the target repository to your local machine, you won't be able to push any changes back to it without write access. That's why GitHub provides forking functionality. Although you could submit an issue to the project's repository, using GitHub's fork workflow provides a much better way to contribute to a project."
+   }
+  ],
+  "takeaway": "GitHub provides forking functionality designed to allow you to work with projects where you aren't an owner or don't have write access. Forking makes a remote copy of the project in your repository that you can then clone locally. To submit updates to the target repository (upstream repository), you can submit a pull request."
+ },
+ {
+  "id": "off-m2-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.2.2",
+  "module": "m2",
+  "unit": "m2-4-how-github-organization-permission-works",
+  "type": "single",
+  "text": "You want to grant a user the permissions required to add and remove organization members to and from a team. Which permission would you need to grant that user?",
+  "options": [
+   {
+    "text": "The admin permission on a repository",
+    "correct": false,
+    "why": "The admin permission on a repository only allows you to perform full administration-related tasks on a specific repository. It doesn't affect membership on a team."
+   },
+   {
+    "text": "The maintain permission on a repository",
+    "correct": false,
+    "why": "The maintain permission on a repository only allows you to perform limited administration-related tasks on a specific repository. It doesn't affect membership on a team."
+   },
+   {
+    "text": "Organization billing manager",
+    "correct": false,
+    "why": "The organization billing manager permission only allows the user to handle billing related tasks. It doesn't affect membership on a team."
+   },
+   {
+    "text": "Team maintainer",
+    "correct": true,
+    "why": "As a team maintainer, the user can add and remove organization members to and from a team."
+   }
+  ],
+  "takeaway": "As a team maintainer, the user can add and remove organization members to and from a team."
+ },
+ {
+  "id": "off-m2-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.1.2",
+  "module": "m2",
+  "unit": "m2-3-how-github-authentication-works",
+  "type": "single",
+  "text": "As an organization owner, you want to ensure that everyone who is signed in to your corporate network can access the GitHub website without requiring a second sign-in. Which technology would you enable to accomplish this?",
+  "options": [
+   {
+    "text": "Single sign-on",
+    "correct": true,
+    "why": "Single sign-on is the right technology to allow network users to access the GitHub website without extra sign-ins."
+   },
+   {
+    "text": "Two-factor authentication",
+    "correct": false,
+    "why": "Two-factor authentication requires each user to sign in by using a second means of identifying themselves, like using an authenticator app on their phones."
+   },
+   {
+    "text": "Personal Access Tokens",
+    "correct": false,
+    "why": "Personal Access Tokens provide access for the git client or web API by using a cryptographic key. You don't use them to access the GitHub website."
+   },
+   {
+    "text": "SSH keys",
+    "correct": false,
+    "why": "SSH keys provide access for the git client through a username and password. You don't use them to access the GitHub website."
+   }
+  ],
+  "takeaway": "Single sign-on is the right technology to allow network users to access the GitHub website without extra sign-ins."
+ },
+ {
+  "id": "off-m2-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.2.1",
+  "module": "m2",
+  "unit": "m2-4-how-github-organization-permission-works",
+  "type": "single",
+  "text": "What's the appropriate repository permission level for contributors who need to actively push changes to your repository?",
+  "options": [
+   {
+    "text": "Admin",
+    "correct": false,
+    "why": "The admin permission isn't appropriate because it provides too much access to the administration functions of the repository."
+   },
+   {
+    "text": "Write",
+    "correct": true,
+    "why": "The write permission is the appropriate permission level."
+   },
+   {
+    "text": "Triage",
+    "correct": false,
+    "why": "The triage permission is for contributors who need to proactively manage issues and pull requests without making changes."
+   },
+   {
+    "text": "Maintain",
+    "correct": false,
+    "why": "The maintain permission is for contributors who need to manage the repository without access to sensitive or destructive actions. It provides too much access for other users."
+   }
+  ],
+  "takeaway": "The write permission is the appropriate permission level."
+ },
+ {
+  "id": "off-m2-4",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.2.2",
+  "module": "m2",
+  "unit": "m2-4-how-github-organization-permission-works",
+  "type": "single",
+  "text": "Which role within a team can add or remove team members?",
+  "options": [
+   {
+    "text": "Team Maintainer",
+    "correct": true,
+    "why": ". Team Maintainers can add or remove team members and edit the team\u2019s settings."
+   },
+   {
+    "text": "Team Member",
+    "correct": false,
+    "why": "Team Members can view and participate in team discussions but cannot manage team membership."
+   },
+   {
+    "text": "Organization Owner",
+    "correct": false,
+    "why": "Organization Owners have broader administrative privileges but are not specific to team management."
+   },
+   {
+    "text": "Billing Manager",
+    "correct": false,
+    "why": "Billing Managers focus on billing details and do not manage team membership."
+   }
+  ],
+  "takeaway": ". Team Maintainers can add or remove team members and edit the team\u2019s settings."
+ },
+ {
+  "id": "off-m2-5",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.2.1",
+  "module": "m2",
+  "unit": "m2-4-how-github-organization-permission-works",
+  "type": "single",
+  "text": "What permission level is best for project managers who need to triage and organize issues without contributing code?",
+  "options": [
+   {
+    "text": "Triage",
+    "correct": true,
+    "why": ". The Triage permission level allows users to manage issues and pull requests without pushing changes to the repository."
+   },
+   {
+    "text": "Read",
+    "correct": false,
+    "why": "The Read permission level only allows users to view and clone the repository and comment on issues and pull requests."
+   },
+   {
+    "text": "Write",
+    "correct": false,
+    "why": "The Write permission level allows users to push to branches and manage issues and pull requests."
+   },
+   {
+    "text": "Maintain",
+    "correct": false,
+    "why": "The Maintain permission level allows users to manage repository settings, issues, and pull requests but not delete or transfer the repository."
+   }
+  ],
+  "takeaway": ". The Triage permission level allows users to manage issues and pull requests without pushing changes to the repository."
+ },
+ {
+  "id": "off-m2-6",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.1.3",
+  "module": "m2",
+  "unit": "m2-3-how-github-authentication-works",
+  "type": "single",
+  "text": "What is a benefit of integrating Active Directory (AD) for team synchronization?",
+  "options": [
+   {
+    "text": "Centralized Identity Management",
+    "correct": true,
+    "why": ". Integrating AD leverages existing infrastructure for consistent user identities."
+   },
+   {
+    "text": "Increased administrative overhead",
+    "correct": false,
+    "why": "AD integration aims to reduce administrative overhead."
+   },
+   {
+    "text": "Decentralized administration",
+    "correct": false,
+    "why": "AD integration centralizes identity management."
+   },
+   {
+    "text": "Enhanced isolation",
+    "correct": false,
+    "why": "Enhanced isolation is not a direct benefit of AD integration."
+   }
+  ],
+  "takeaway": ". Integrating AD leverages existing infrastructure for consistent user identities."
+ },
+ {
+  "id": "off-m2-7",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.2.4",
+  "module": "m2",
+  "unit": "m2-5-enterprise-access-governance",
+  "type": "single",
+  "text": "Which of the following actions is exclusive to Organization Owners in GitHub?",
+  "options": [
+   {
+    "text": "Collaborate on repositories based on assigned roles or team memberships",
+    "correct": false,
+    "why": "Organization Members can collaborate on repositories if granted the appropriate roles or added to teams."
+   },
+   {
+    "text": "Contribute code and participate in discussions",
+    "correct": false,
+    "why": "Any Organization Member with sufficient permissions can contribute code and join discussions."
+   },
+   {
+    "text": "Manage organization settings, including security and billing",
+    "correct": true,
+    "why": ". Only Organization Owners have the authority to manage organization-wide settings, including security policies and billing configurations."
+   },
+   {
+    "text": "Access resources as defined by team or repository-specific permissions",
+    "correct": false,
+    "why": "Organization Members can access resources if permissions are granted through team or repository-level settings."
+   }
+  ],
+  "takeaway": ". Only Organization Owners have the authority to manage organization-wide settings, including security policies and billing configurations."
+ },
+ {
+  "id": "off-m2-8",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.2.1",
+  "module": "m2",
+  "unit": "m2-4-how-github-organization-permission-works",
+  "type": "single",
+  "text": "What is a key difference between an organization member and an outside collaborator?",
+  "options": [
+   {
+    "text": "Organization members are included in the organization\u2019s internal directory.",
+    "correct": true,
+    "why": ". Organization members are included in the internal directory and can be assigned to teams, while outside collaborators are not."
+   },
+   {
+    "text": "Outside collaborators have access to all repositories.",
+    "correct": false,
+    "why": "Outside collaborators have explicit access to specific repositories only."
+   },
+   {
+    "text": "Organization members do not appear in the organization\u2019s internal member list.",
+    "correct": false,
+    "why": "Organization members do appear in the internal member list."
+   },
+   {
+    "text": "Outside collaborators inherit organization-wide settings.",
+    "correct": false,
+    "why": "Outside collaborators do not inherit organization-wide settings."
+   }
+  ],
+  "takeaway": ". Organization members are included in the internal directory and can be assigned to teams, while outside collaborators are not."
+ },
+ {
+  "id": "off-m2-9",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.2.1",
+  "module": "m2",
+  "unit": "m2-4-how-github-organization-permission-works",
+  "type": "single",
+  "text": "Which permission level allows users to manage repository settings but not delete or transfer the repository?",
+  "options": [
+   {
+    "text": "Maintain",
+    "correct": true,
+    "why": ". The Maintain permission level allows users to manage repository settings but not delete or transfer the repository."
+   },
+   {
+    "text": "Write",
+    "correct": false,
+    "why": "The Write permission level allows users to push code and manage issues and pull requests but not manage repository settings."
+   },
+   {
+    "text": "Admin",
+    "correct": false,
+    "why": "The Admin permission level grants full control over the repository, including deleting or transferring it."
+   },
+   {
+    "text": "Triage",
+    "correct": false,
+    "why": "The Triage permission level allows users to manage issues and pull requests but not manage repository settings."
+   }
+  ],
+  "takeaway": ". The Maintain permission level allows users to manage repository settings but not delete or transfer the repository."
+ },
+ {
+  "id": "off-m3-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.1.1",
+  "module": "m3",
+  "unit": "m3-2-what-are-github-products",
+  "type": "single",
+  "text": "What's the difference between GitHub organization accounts and GitHub personal/user accounts?",
+  "options": [
+   {
+    "text": "Organizational accounts are shared accounts, while personal/user accounts are for individuals.",
+    "correct": true,
+    "why": ". Organizations are shared accounts where an unlimited number of people can collaborate across many projects at once. Unlike personal/user accounts, permissions with organization accounts are done at a tiered approach."
+   },
+   {
+    "text": "You pay more for organization accounts versus personal/user accounts.",
+    "correct": false,
+    "why": "Depending on your plan, organization and personal accounts can both be free or have similar costs."
+   },
+   {
+    "text": "They're exactly the same.",
+    "correct": false,
+    "why": "Organizations are shared accounts where an unlimited number of people can collaborate across many projects at once. Organization accounts are done at a tiered approach and personal/user accounts have more straightforward permission control."
+   },
+   {
+    "text": "Personal/user accounts have more access than organization accounts.",
+    "correct": false,
+    "why": "Organizations are shared accounts where an unlimited number of people can collaborate across many projects at once."
+   }
+  ],
+  "takeaway": ". Organizations are shared accounts where an unlimited number of people can collaborate across many projects at once. Unlike personal/user accounts, permissions with organization accounts are done at a tiered approach."
+ },
+ {
+  "id": "off-m3-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.2.1",
+  "module": "m3",
+  "unit": "m3-2-what-are-github-products",
+  "type": "single",
+  "text": "What's the best reason to decide to upgrade to the GitHub Enterprise product?",
+  "options": [
+   {
+    "text": "Because you want to use GitHub Actions and Codespaces.",
+    "correct": false,
+    "why": "You don't need to license GitHub Enterprise to use GitHub Actions or Codespaces."
+   },
+   {
+    "text": "Because your VP needs to use GitHub Insights.",
+    "correct": false,
+    "why": "GitHub Insights is available with the GitHub One product, not the GitHub Enterprise product."
+   },
+   {
+    "text": "Because you want to centrally manage users and repositories across multiple organizations.",
+    "correct": true,
+    "why": ". GitHub Enterprise allows you to collect multiple organizations together for central management."
+   },
+   {
+    "text": "Because you want to use the team pull request reviewers feature.",
+    "correct": false,
+    "why": "The team pull request reviewers feature is available at the GitHub Pro and GitHub Team product level."
+   }
+  ],
+  "takeaway": ". GitHub Enterprise allows you to collect multiple organizations together for central management."
+ },
+ {
+  "id": "off-m3-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.2.2",
+  "module": "m3",
+  "unit": "m3-2-what-are-github-products",
+  "type": "single",
+  "text": "What's the purpose of a team?",
+  "options": [
+   {
+    "text": "A team allows you to manage an organization account.",
+    "correct": false,
+    "why": "A team doesn't allow you to manage an organization account."
+   },
+   {
+    "text": "A team allows you to control permission levels for an enterprise.",
+    "correct": false,
+    "why": "A team doesn't allow you to control permission levels for an enterprise."
+   },
+   {
+    "text": "A team allows a single user to sign in using different accounts credentials.",
+    "correct": false,
+    "why": "A team doesn't allow a single user to sign in using different accounts credentials."
+   },
+   {
+    "text": "A team is intended to reflect a company or group's structure. It's used to provide cascading access permissions and make it easy to notify all team members via mentions.",
+    "correct": true,
+    "why": "."
+   }
+  ],
+  "takeaway": "."
+ },
+ {
+  "id": "off-m3-4",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.1.3",
+  "module": "m3",
+  "unit": "m3-3-mobile-versus-desktop",
+  "type": "single",
+  "text": "What's a function you can execute on GitHub Mobile?",
+  "options": [
+   {
+    "text": "Check out branches with pull requests and view CI statuses.",
+    "correct": false,
+    "why": "You can't do these actions on GitHub Mobile, but you can on GitHub Desktop."
+   },
+   {
+    "text": "Compare changed images.",
+    "correct": false,
+    "why": "You can't do this action on GitHub Mobile, but you can on GitHub Desktop."
+   },
+   {
+    "text": "Add and clone repositories.",
+    "correct": false,
+    "why": "You can't do these actions on GitHub Mobile, but you can on GitHub Desktop."
+   },
+   {
+    "text": "Manage, triage, and clear notifications from github.com.",
+    "correct": true,
+    "why": ". On GitHub Mobile you can manage, triage, and clear notifications from github.com."
+   }
+  ],
+  "takeaway": ". On GitHub Mobile you can manage, triage, and clear notifications from github.com."
+ },
+ {
+  "id": "off-m3-5",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.2.1",
+  "module": "m3",
+  "unit": "m3-2-what-are-github-products",
+  "type": "single",
+  "text": "Which of these features is unique to GitHub Enterprise Cloud (GHEC)?",
+  "options": [
+   {
+    "text": "Requires on-premises deployment and infrastructure management",
+    "correct": false,
+    "why": "This answer describes GitHub Enterprise Server (GHES), not GHEC. GHEC is hosted and managed by GitHub in the cloud."
+   },
+   {
+    "text": "Provides centralized user management with identity provider integration",
+    "correct": true,
+    "why": "GHEC supports centralized user management and integrates with identity providers using SAML (for SSO) and SCIM (for user provisioning). A key feature of cloud-hosted enterprise solutions."
+   },
+   {
+    "text": "Must be installed and maintained by the organization's IT team",
+    "correct": false,
+    "why": "GHEC is maintained by GitHub and requires no installation or infrastructure management by the organization."
+   },
+   {
+    "text": "Operates entirely within a private cloud environment",
+    "correct": false,
+    "why": "GHEC operates in GitHub\u2019s public cloud infrastructure, not a private cloud."
+   }
+  ],
+  "takeaway": "GHEC supports centralized user management and integrates with identity providers using SAML (for SSO) and SCIM (for user provisioning). A key feature of cloud-hosted enterprise solutions."
+ },
+ {
+  "id": "off-m3-6",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.1.2",
+  "module": "m3",
+  "unit": "m3-2-what-are-github-products",
+  "type": "single",
+  "text": "What actions can you take at enterprise level to manage the use of GitHub Actions in your enterprise instance?",
+  "options": [
+   {
+    "text": "Create workflow templates",
+    "correct": false,
+    "why": "Workflow templates are created at organizational level."
+   },
+   {
+    "text": "Configure a GitHub Actions use policy",
+    "correct": true,
+    "why": ". GitHub Actions use policies enable you to restrict access to GitHub Actions to specific organizations in your instance."
+   },
+   {
+    "text": "Manually sync public actions in Enterprise Cloud",
+    "correct": false,
+    "why": "Public actions are automatically synced in Enterprise Cloud. Only with Enterprise Server do you have the possibility to manually sync public actions instead of automatically."
+   }
+  ],
+  "takeaway": ". GitHub Actions use policies enable you to restrict access to GitHub Actions to specific organizations in your instance."
+ },
+ {
+  "id": "off-m3-7",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.2.1",
+  "module": "m3",
+  "unit": "m3-2-what-are-github-products",
+  "type": "single",
+  "text": "What actions can you take to configure self-hosted runners for your enterprise use?",
+  "options": [
+   {
+    "text": "Create and add custom labels to your runners",
+    "correct": true,
+    "why": ". Custom labels can be used when you need to run jobs on runners that have specific capabilities."
+   },
+   {
+    "text": "Add proxy configurations to your runners after they start.",
+    "correct": false,
+    "why": "If you need a self-hosted runner to communicate with GitHub via a proxy server, you must add all proxy configurations to your runner before starting it."
+   },
+   {
+    "text": "Add the IP address or IP address range of your runners at repository level.",
+    "correct": false,
+    "why": "If your organization configures an IP allowlist, you must add the IP address or IP address range of your self-hosted runners to the IP allowlist. IP allowlists are found in an organization's Settings."
+   }
+  ],
+  "takeaway": ". Custom labels can be used when you need to run jobs on runners that have specific capabilities."
+ },
+ {
+  "id": "off-m3-8",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.3.1",
+  "module": "m3",
+  "unit": "m3-2-what-are-github-products",
+  "type": "single",
+  "text": "What are encrypted secrets?",
+  "options": [
+   {
+    "text": "Encrypted secrets are authentication tokens you can generate in your account settings.",
+    "correct": false,
+    "why": "The authentication tokens you can create in your account settings are personal access tokens (PATs)."
+   },
+   {
+    "text": "Encrypted secrets are the equivalent of SSH keys in GitHub.",
+    "correct": false,
+    "why": "SSH keys are also called SSH keys in GitHub."
+   },
+   {
+    "text": "Encrypted secrets are encrypted environment variables you can create to store sensitive information.",
+    "correct": true,
+    "why": ". Once created, encrypted secrets become available for use in your workflows and actions at the level at which they were created (organization or repository)."
+   }
+  ],
+  "takeaway": ". Once created, encrypted secrets become available for use in your workflows and actions at the level at which they were created (organization or repository)."
+ },
+ {
+  "id": "off-m4-check-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d3",
+  "objective": "3.2.2",
+  "module": "m4",
+  "unit": "m4-3-security-automation",
+  "type": "single",
+  "text": "What's the best way to make sure you're integrating the most secure versions of your project dependencies?",
+  "options": [
+   {
+    "text": "Configure your package files to always use the latest versions of dependencies.",
+    "correct": false,
+    "why": "This practice is generally a bad idea, because it can introduce breaking changes or unexpected behavior in your software."
+   },
+   {
+    "text": "Check each project's security details closely before adding it to your dependencies by confirming its version status across multiple advisory sites.",
+    "correct": false,
+    "why": "Even if this practice helps you start off with a secure version of a given dependency, it won't ensure that you're safe from future vulnerabilities. You would need to constantly monitor every package to ensure compliance, which might be infeasible."
+   },
+   {
+    "text": "Enable Dependabot for your repository.",
+    "correct": true,
+    "why": "Dependabot scans your repository's dependency manifests and notifies you via pull request whenever a version you rely is marked as insecure."
+   }
+  ],
+  "takeaway": "Dependabot scans your repository's dependency manifests and notifies you via pull request whenever a version you rely is marked as insecure."
+ },
+ {
+  "id": "off-m4-check-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d3",
+  "objective": "3.1.2",
+  "module": "m4",
+  "unit": "m4-2-how-to-maintain-secure-repository",
+  "type": "single",
+  "text": "Suppose one of your source projects relies on secrets kept in a folder called .secrets . You would like to make sure that the files kept in this folder on development machines aren't inadvertently committed to the repository. Which of these files best helps enforce this policy?",
+  "options": [
+   {
+    "text": "SECURITY.md",
+    "correct": false,
+    "why": "SECURITY.md is used to explain the security policy of your project to consumers and contributors, but it doesn't automate anything."
+   },
+   {
+    "text": ".gitignore",
+    "correct": true,
+    "why": ".gitignore can be used to help enforce which files are included in commits by tools that respect it. However, the client enforces this policy and doesn't necessarily prevent users from committing files that violate policy."
+   },
+   {
+    "text": "CONTRIBUTING.md",
+    "correct": false,
+    "why": "CONTRIBUTING.md is used to explain the contribution policy of your project, but it doesn't automate anything."
+   }
+  ],
+  "takeaway": ".gitignore can be used to help enforce which files are included in commits by tools that respect it. However, the client enforces this policy and doesn't necessarily prevent users from committing files that violate policy."
+ },
+ {
+  "id": "off-m4-check-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d3",
+  "objective": "3.2.1",
+  "module": "m4",
+  "unit": "m4-3-security-automation",
+  "type": "single",
+  "text": "What does secret scanning do?",
+  "options": [
+   {
+    "text": "Looks for known secrets or credentials committed within the repository.",
+    "correct": true,
+    "why": "This approach is done to prevent the use of fraudulent behavior and to secure the integrity of any sensitive data."
+   },
+   {
+    "text": "Analyzes and finds security vulnerabilities and errors in the code in a GitHub repository.",
+    "correct": false,
+    "why": "Secret scanning is used to analyze and find security vulnerabilities and errors in the code in a GitHub repository, not secret scanning."
+   },
+   {
+    "text": "Secret scanning uses CodeQL to query your code as data.",
+    "correct": false,
+    "why": "That's code scanning again, not secret scanning."
+   }
+  ],
+  "takeaway": "This approach is done to prevent the use of fraudulent behavior and to secure the integrity of any sensitive data."
+ },
+ {
+  "id": "off-m5-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d3",
+  "objective": "3.2.3",
+  "module": "m5",
+  "unit": "m5-2-set-security-policies",
+  "type": "single",
+  "text": "What file should you use to create documentation for collaborators that lists supported versions of the project?",
+  "options": [
+   {
+    "text": "SECURITY.md",
+    "correct": true,
+    "why": "The SECURITY.md file is the primary document for communicating security information, which is a Markdown file present in a repository's root, docs, or .github folder."
+   },
+   {
+    "text": "CONTRIBUTING.md",
+    "correct": false,
+    "why": "GitHub supports other types of community health documentation that a user might add at the organization level or in their user account."
+   },
+   {
+    "text": "SUPPORT.md",
+    "correct": false,
+    "why": "GitHub supports other types of community health documentation that a user might add at the organization level or in their user account."
+   }
+  ],
+  "takeaway": "The SECURITY.md file is the primary document for communicating security information, which is a Markdown file present in a repository's root, docs, or .github folder."
+ },
+ {
+  "id": "off-m5-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d3",
+  "objective": "3.2.2",
+  "module": "m5",
+  "unit": "m5-2-set-security-policies",
+  "type": "single",
+  "text": "What tool should you use to automate part of your security process?",
+  "options": [
+   {
+    "text": "Add Dependabot to your code base.",
+    "correct": true,
+    "why": "Documentation and advisories require the most significant manual interaction, but applying Dependabot to your code base automates parts of the security process, up to and including updating dependencies."
+   },
+   {
+    "text": "Add access restrictions to your enterprise.",
+    "correct": false,
+    "why": "Access restrictions, security documentation, advisories are available for all repositories, but don't automate your security process."
+   },
+   {
+    "text": "Create security documentation.",
+    "correct": false,
+    "why": "Access restrictions, security documentation, advisories are available for all repositories, but don't automate your security process."
+   },
+   {
+    "text": "Add advisories for your users.",
+    "correct": false,
+    "why": "Access restrictions, security documentation, advisories are available for all repositories, but don't automate your security process."
+   }
+  ],
+  "takeaway": "Documentation and advisories require the most significant manual interaction, but applying Dependabot to your code base automates parts of the security process, up to and including updating dependencies."
+ },
+ {
+  "id": "off-m5-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d3",
+  "objective": "3.2.3",
+  "module": "m5",
+  "unit": "m5-2-set-security-policies",
+  "type": "single",
+  "text": "Which two pieces of information should be included in a security advisory?",
+  "options": [
+   {
+    "text": "Product affected and severity.",
+    "correct": true,
+    "why": "A security advisory should be comprehensive, including the following information: product and versions affected, severity, types of security weaknesses addressed by the project owners' actions, impact, status of patches, and workarounds."
+   },
+   {
+    "text": "Severity and exposure list.",
+    "correct": false,
+    "why": "Exposure list research can help to determine if the vulnerability you're patching matches an existing entry, but it's not needed for the security advisory."
+   },
+   {
+    "text": "Administrator name and severity.",
+    "correct": false,
+    "why": "The administrator name would be unneeded and a security risk if provided publicly. Exposure list research can help to determine if the vulnerability you're patching matches an existing entry, but it's not needed for the security advisory."
+   },
+   {
+    "text": "Exposures list and administrator name.",
+    "correct": false,
+    "why": "Exposure list research can help to determine if the vulnerability you're patching matches an existing entry, but it's not needed for the security advisory. The administrator name would be unneeded and a security risk if provided publicly."
+   }
+  ],
+  "takeaway": "A security advisory should be comprehensive, including the following information: product and versions affected, severity, types of security weaknesses addressed by the project owners' actions, impact, status of patches, and workarounds."
+ },
+ {
+  "id": "off-m5-4",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d3",
+  "objective": "3.1.3",
+  "module": "m5",
+  "unit": "m5-4-report-logs",
+  "type": "single",
+  "text": "Which two pieces of information are included in your organization's log?",
+  "options": [
+   {
+    "text": "The user that performed the action and the date and time of the action.",
+    "correct": true,
+    "why": "The log is available to organization owners, and records information about actions that affect the organization including: which repository an action was performed in, the user that performed the action, the action that was performed, which country/region the action took place in, and the date and time the action occurred"
+   },
+   {
+    "text": "The date and time of the action and changes in permissions.",
+    "correct": false,
+    "why": "The GraphQL API is available for organizations using GitHub Enterprise, and can retrieve information about actions up to 120 days ago. It can monitor: access to your organization or repository settings, changes in permissions, added or removed users in an organization, repository, or team, users being promoted to admin, and changes to permissions of a GitHub App."
+   },
+   {
+    "text": "Changes in permissions and users being promoted to administrators.",
+    "correct": false,
+    "why": "The GraphQL API is available for organizations using GitHub Enterprise, and can retrieve information about actions up to 120 days ago. It can monitor: access to your organization or repository settings, changes in permissions, added or removed users in an organization, repository, or team, users being promoted to admin, and changes to permissions of a GitHub App."
+   },
+   {
+    "text": "Users being promoted to administrators and the user that performed the action.",
+    "correct": false,
+    "why": "The GraphQL API is available for organizations using GitHub Enterprise, and can retrieve information about actions up to 120 days ago. It can monitor: access to your organization or repository settings, changes in permissions, added or removed users in an organization, repository, or team, users being promoted to admin, and changes to permissions of a GitHub App."
+   }
+  ],
+  "takeaway": "The log is available to organization owners, and records information about actions that affect the organization including: which repository an action was performed in, the user that performed the action, the action that was performed, which country/region the action took place in, and the date and time the action occurred"
+ },
+ {
+  "id": "off-m6-check-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.1.2",
+  "module": "m6",
+  "unit": "m6-3-authentication",
+  "type": "single",
+  "text": "What type of user authentication is used to verify a user identity against a known identity provider?",
+  "options": [
+   {
+    "text": "Two-factor authentication (2FA)",
+    "correct": false,
+    "why": "Two-Factor authentication is another level of security available to GitHub Enterprise accounts."
+   },
+   {
+    "text": "Time-based One-time Password (TOTP)",
+    "correct": false,
+    "why": "GitHub recommends using a cloud-based TOTP app to configure 2FA."
+   },
+   {
+    "text": "SAML Single Sign-on (SAML SSO)",
+    "correct": true,
+    "why": "SAML authentication is a process used to verify user identity and credentials against a known identify provider."
+   },
+   {
+    "text": "Short Message Service (SMS)",
+    "correct": false,
+    "why": "If your users aren't able to authenticate using a TOTP mobile app, they can authenticate using SMS messages."
+   }
+  ],
+  "takeaway": "SAML authentication is a process used to verify user identity and credentials against a known identify provider."
+ },
+ {
+  "id": "off-m6-check-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.1.3",
+  "module": "m6",
+  "unit": "m6-5-team-synchronization",
+  "type": "single",
+  "text": "You're an admin and want to enable team synchronization for your organization. What installation permissions do you need to configure team synchronization for Microsoft Entra ID?",
+  "options": [
+   {
+    "text": "Provide the tenant URL",
+    "correct": false,
+    "why": "To enable team synchronization for Okta, you or your IdP administrator must: enable SAML SSO and SCIM for your organization using Okta, provide the tenant URL for your Okta instance, and generate a valid SSWS token with read-only admin permissions for your Okta installation as a service user."
+   },
+   {
+    "text": "Read all users' full profiles",
+    "correct": true,
+    "why": "To enable team synchronization for Microsoft Entra ID, the installation needs the following permissions: read all users' full profiles, sign in and read user profile, and read directory data."
+   },
+   {
+    "text": "Generate a valid Single Sign-on for Web Systems (SSWS) token",
+    "correct": false,
+    "why": "To enable team synchronization for Okta, you or your IdP administrator must: enable SAML SSO and SCIM for your organization using Okta, provide the tenant URL for your Okta instance, and generate a valid SSWS token with read-only admin permissions for your Okta installation as a service user."
+   },
+   {
+    "text": "Enable SAML Single Sign-on (SSO)",
+    "correct": false,
+    "why": "To enable team synchronization for Okta, you or your IdP administrator must: enable SAML SSO and SCIM for your organization using Okta, provide the tenant URL for your Okta instance, and generate a valid SSWS token with read-only admin permissions for your Okta installation as a service user."
+   }
+  ],
+  "takeaway": "To enable team synchronization for Microsoft Entra ID, the installation needs the following permissions: read all users' full profiles, sign in and read user profile, and read directory data."
+ },
+ {
+  "id": "off-m6-check-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.1.4",
+  "module": "m6",
+  "unit": "m6-3-authentication",
+  "type": "single",
+  "text": "Where does a user authenticate after enabling SAML Single sign-on?",
+  "options": [
+   {
+    "text": "With a GitHub login",
+    "correct": false,
+    "why": "GitHub login is a different form of authentication."
+   },
+   {
+    "text": "With the organization credentials",
+    "correct": false,
+    "why": "Organization credentials are a different form of authentication."
+   },
+   {
+    "text": "With the Identity Provider (IdP)",
+    "correct": true,
+    "why": "When a member accesses resources within an organization that uses SAML SSO, GitHub redirects the member to the IdP to authenticate."
+   }
+  ],
+  "takeaway": "When a member accesses resources within an organization that uses SAML SSO, GitHub redirects the member to the IdP to authenticate."
+ },
+ {
+  "id": "off-m6-check-4",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.1.2",
+  "module": "m6",
+  "unit": "m6-3-authentication",
+  "type": "single",
+  "text": "What two-factor authentication method supports the secure backup of your authentication codes in the cloud?",
+  "options": [
+   {
+    "text": "Time-based One-time Password (TOTP)",
+    "correct": true,
+    "why": "TOTP apps support the secure backup of your authentication codes in the cloud, and can be restored if you lose access to your device."
+   },
+   {
+    "text": "Short Message Service (SMS)",
+    "correct": false,
+    "why": "This form of 2FA relies on the assumption that the user is the only person with access to their mobile device."
+   },
+   {
+    "text": "Security Key",
+    "correct": false,
+    "why": "A user can register a new security key through accessing their profile settings and following the security key's documentation."
+   }
+  ],
+  "takeaway": "TOTP apps support the secure backup of your authentication codes in the cloud, and can be restored if you lose access to your device."
+ },
+ {
+  "id": "off-m7-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.2.1",
+  "module": "m7",
+  "unit": "m7-2-github-enterprise-tools-and-features",
+  "type": "single",
+  "text": "What is a feature of GitHub Connect?",
+  "options": [
+   {
+    "text": "Sharing data between GitHub Enterprise Server and GitHub Enterprise Cloud.",
+    "correct": true,
+    "why": "GitHub Connect, which shares data between a GitHub Enterprise Server instance and the GitHub Enterprise Cloud, enables extra redundancy."
+   },
+   {
+    "text": "Allowing you to limit the sharing of your organization's documentation.",
+    "correct": false,
+    "why": "Access control for GitHub Pages sites, which allows you to limit the sharing of your organization's documentation."
+   },
+   {
+    "text": "It has authentication with Security Assertion Markup Language (SAML) single sign-on and access provisioning with SAML or System for Cross-domain Identity Management (SCIM).",
+    "correct": false,
+    "why": "Authentication with SAML single sign-on and access provisioning with SAML or SCIM, which make it easier for users to authenticate and for administrators to ensure everyone has the appropriate level of access."
+   }
+  ],
+  "takeaway": "GitHub Connect, which shares data between a GitHub Enterprise Server instance and the GitHub Enterprise Cloud, enables extra redundancy."
+ },
+ {
+  "id": "off-m7-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.1.1",
+  "module": "m7",
+  "unit": "m7-2-github-enterprise-tools-and-features",
+  "type": "single",
+  "text": "What feature can you use to expand the kinds of actions that you can automate in response to common GitHub events?",
+  "options": [
+   {
+    "text": "GitHub Actions",
+    "correct": true,
+    "why": "GitHub Actions minutes, which expand the kinds of actions you can automate in response to common GitHub events."
+   },
+   {
+    "text": "GitHub Advanced Security",
+    "correct": false,
+    "why": "GitHub Advanced Security (GHAS), which is a specialized add-on to GitHub Enterprise that scans code and other resources for errors, security vulnerabilities, and potential sensitive data."
+   },
+   {
+    "text": "Dependabot",
+    "correct": false,
+    "why": "Dependabot isn't an action that can be automated."
+   }
+  ],
+  "takeaway": "GitHub Actions minutes, which expand the kinds of actions you can automate in response to common GitHub events."
+ },
+ {
+  "id": "off-m7-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.1.1",
+  "module": "m7",
+  "unit": "m7-3-support-for-github-enterprise",
+  "type": "single",
+  "text": "GitHub support is limited to which of the following issues?",
+  "options": [
+   {
+    "text": "Account, Security, and Abuse issues",
+    "correct": true,
+    "why": "GitHub Support is limited to account, security, and abuse issues."
+   },
+   {
+    "text": "Security, server, and 2FA issues.",
+    "correct": false,
+    "why": "GitHub Support is limited to account, security, and abuse issues."
+   },
+   {
+    "text": "Account, server, and security issues.",
+    "correct": false,
+    "why": "GitHub Support is limited to account, security, and abuse issues."
+   },
+   {
+    "text": "Account, 2FA, and security issues.",
+    "correct": false,
+    "why": "GitHub Support is limited to account, security, and abuse issues, not server setup issues, or 2FA setup."
+   }
+  ],
+  "takeaway": "GitHub Support is limited to account, security, and abuse issues."
+ },
+ {
+  "id": "off-m7-4",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.1.1",
+  "module": "m7",
+  "unit": "m7-3-support-for-github-enterprise",
+  "type": "single",
+  "text": "Which GitHub priority should you use to report critical system failures?",
+  "options": [
+   {
+    "text": "Urgent",
+    "correct": true,
+    "why": "Urgent tickets report critical system failure."
+   },
+   {
+    "text": "High",
+    "correct": false,
+    "why": "High-priority tickets report problems impacting business operations or critical bugs, including removing sensitive data (commits, issues, pull requests, uploaded attachments) from your own accounts and organization restorations."
+   },
+   {
+    "text": "Normal",
+    "correct": false,
+    "why": "Normal-priority tickets request account recovery or spam unflagging, report user sign-in issues, and report noncritical bugs."
+   },
+   {
+    "text": "Low",
+    "correct": false,
+    "why": "Low-priority tickets ask general questions and submit requests for new features, purchases, training, or health checks."
+   }
+  ],
+  "takeaway": "Urgent tickets report critical system failure."
+ },
+ {
+  "id": "off-m8-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.1.2",
+  "module": "m8",
+  "unit": "m8-control-actions-access-and-use",
+  "type": "single",
+  "text": "What actions can you take at enterprise level to manage the use of GitHub Actions in your enterprise instance?",
+  "options": [
+   {
+    "text": "Create workflow templates",
+    "correct": false,
+    "why": "Workflow templates are created at organizational level."
+   },
+   {
+    "text": "Configure a GitHub Actions use policy",
+    "correct": true,
+    "why": ". GitHub Actions use policies enable you to restrict access to GitHub Actions to specific organizations in your instance."
+   },
+   {
+    "text": "Manually sync public actions in Enterprise Cloud",
+    "correct": false,
+    "why": "Public actions are automatically synced in Enterprise Cloud. Only with Enterprise Server do you have the possibility to manually sync public actions instead of automatically."
+   }
+  ],
+  "takeaway": ". GitHub Actions use policies enable you to restrict access to GitHub Actions to specific organizations in your instance."
+ },
+ {
+  "id": "off-m8-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.2.1",
+  "module": "m8",
+  "unit": "m8-configure-self-hosted-runners",
+  "type": "single",
+  "text": "What actions can you take to configure self-hosted runners for your enterprise use?",
+  "options": [
+   {
+    "text": "Create and add custom labels to your runners",
+    "correct": true,
+    "why": ". Custom labels can be used when you need to run jobs on runners that have specific capabilities."
+   },
+   {
+    "text": "Add proxy configurations to your runners after they start.",
+    "correct": false,
+    "why": "You must add all proxy configurations to your runner before starting it."
+   },
+   {
+    "text": "Add the IP address or IP address range of your runners at repository level.",
+    "correct": false,
+    "why": "This action is managed at the organization level in IP allowlists."
+   }
+  ],
+  "takeaway": ". Custom labels can be used when you need to run jobs on runners that have specific capabilities."
+ },
+ {
+  "id": "off-m8-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.3.1",
+  "module": "m8",
+  "unit": "m8-manage-encrypted-secrets",
+  "type": "single",
+  "text": "What are encrypted secrets?",
+  "options": [
+   {
+    "text": "Authentication tokens you can generate in your account settings.",
+    "correct": false,
+    "why": "This definition matches personal access tokens (PATs)."
+   },
+   {
+    "text": "The equivalent of SSH keys in GitHub.",
+    "correct": false,
+    "why": "SSH keys are separate and named accordingly."
+   },
+   {
+    "text": "Encrypted environment variables for storing sensitive information.",
+    "correct": true,
+    "why": ". You can securely scope them by repository, organization, or environment."
+   }
+  ],
+  "takeaway": ". You can securely scope them by repository, organization, or environment."
+ },
+ {
+  "id": "off-m8-4",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d3",
+  "objective": "3.3.1",
+  "module": "m8",
+  "unit": "m8-manage-encrypted-secrets",
+  "type": "single",
+  "text": "Which credential type poses the greatest security risk if used in GitHub Actions?",
+  "options": [
+   {
+    "text": "Repository deploy keys",
+    "correct": false,
+    "why": "These credentials are scoped and safer for single-repo use."
+   },
+   {
+    "text": "Personal access token (classic)",
+    "correct": true,
+    "why": ". These credentials have broad access, making them riskier."
+   },
+   {
+    "text": "GitHub App tokens",
+    "correct": false,
+    "why": "These credentials are more granular and preferred for security."
+   },
+   {
+    "text": "GITHUB_TOKEN",
+    "correct": false,
+    "why": "It is scoped and managed automatically."
+   }
+  ],
+  "takeaway": ". These credentials have broad access, making them riskier."
+ },
+ {
+  "id": "off-m8-5",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d1",
+  "objective": "1.2.4",
+  "module": "m8",
+  "unit": "m8-control-actions-access-and-use",
+  "type": "single",
+  "text": "Which feature enforces that tests pass before code can be merged?",
+  "options": [
+   {
+    "text": "Organization secrets",
+    "correct": false,
+    "why": "They handle credentials, not enforcement of tests."
+   },
+   {
+    "text": "Repository rule sets",
+    "correct": true,
+    "why": ". Rule sets can enforce status checks before merges."
+   },
+   {
+    "text": "Workflow templates",
+    "correct": false,
+    "why": "These aid reuse, not enforcement."
+   },
+   {
+    "text": "Runner groups",
+    "correct": false,
+    "why": "They help manage runners, not enforce rules."
+   }
+  ],
+  "takeaway": ". Rule sets can enforce status checks before merges."
+ },
+ {
+  "id": "off-m8-6",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d2",
+  "objective": "2.2.1",
+  "module": "m8",
+  "unit": "m8-github-enterprise-models",
+  "type": "single",
+  "text": "Which of the following is unique to GitHub Enterprise Cloud (GHEC)?",
+  "options": [
+   {
+    "text": "Requires on-premises infrastructure",
+    "correct": false,
+    "why": "That describes GitHub Enterprise Server."
+   },
+   {
+    "text": "Centralized user management with identity provider integration",
+    "correct": true,
+    "why": ". GHEC integrates with identity providers using SAML (Security Assertion Markup Language)."
+   },
+   {
+    "text": "IT teams must install it.",
+    "correct": false,
+    "why": "GitHub hosts and manages GHEC."
+   },
+   {
+    "text": "Runs in a private cloud",
+    "correct": false,
+    "why": "GHEC runs on GitHub\u2019s public cloud."
+   }
+  ],
+  "takeaway": ". GHEC integrates with identity providers using SAML (Security Assertion Markup Language)."
+ },
+ {
+  "id": "off-m8-7",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.1.1",
+  "module": "m8",
+  "unit": "m8-manage-leverage-reusable-actions",
+  "type": "single",
+  "text": "What is a key benefit of using reusable workflows?",
+  "options": [
+   {
+    "text": "Blocks external contributors automatically",
+    "correct": false,
+    "why": "Security must be separately configured."
+   },
+   {
+    "text": "Reduces redundancy and maintenance overhead",
+    "correct": true,
+    "why": ". Reusable workflows simplify workflow reuse."
+   },
+   {
+    "text": "Only usable in the same repository",
+    "correct": false,
+    "why": "They can be reused across repositories."
+   },
+   {
+    "text": "Restricts workflows to internal users",
+    "correct": false,
+    "why": "This behaviour is configurable, not default."
+   }
+  ],
+  "takeaway": ". Reusable workflows simplify workflow reuse."
+ },
+ {
+  "id": "off-m8-8",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.2.1",
+  "module": "m8",
+  "unit": "m8-manage-runners",
+  "type": "single",
+  "text": "What is a benefit of using GitHub-hosted runners?",
+  "options": [
+   {
+    "text": "Full control over hardware",
+    "correct": false,
+    "why": "That benefit is for self-hosted runners."
+   },
+   {
+    "text": "Internal network access",
+    "correct": false,
+    "why": "GitHub-hosted runners do not have this benefit."
+   },
+   {
+    "text": "Automatic OS and package updates",
+    "correct": true,
+    "why": ". GitHub maintains hosted runner environments."
+   },
+   {
+    "text": "Install custom software",
+    "correct": false,
+    "why": "That feature is supported on self-hosted runners."
+   }
+  ],
+  "takeaway": ". GitHub maintains hosted runner environments."
+ },
+ {
+  "id": "off-m8-9",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.3.1",
+  "module": "m8",
+  "unit": "m8-manage-encrypted-secrets",
+  "type": "single",
+  "text": "What is a best practice for managing encrypted secrets?",
+  "options": [
+   {
+    "text": "Print them in logs for debugging",
+    "correct": false,
+    "why": "Never expose secrets in logs."
+   },
+   {
+    "text": "Reuse the same secret across all repos",
+    "correct": false,
+    "why": "This increases risk."
+   },
+   {
+    "text": "Scope secrets to the lowest level needed",
+    "correct": true,
+    "why": ". This limits exposure."
+   },
+   {
+    "text": "Store secrets in archived workflow logs",
+    "correct": false,
+    "why": "That approach is a security vulnerability."
+   }
+  ],
+  "takeaway": ". This limits exposure."
+ },
+ {
+  "id": "off-m9-1-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.1.1",
+  "module": "m9",
+  "unit": "m9-2b-publish-using-workflow",
+  "type": "single",
+  "text": "In which file do you define the steps to execute in your GitHub Action?",
+  "options": [
+   {
+    "text": "In a workflow.yml (YAML) file",
+    "correct": true,
+    "why": "The workflow.yml file, under the .github/workflows directory, contains the steps of your action."
+   },
+   {
+    "text": "In the Dockerfile",
+    "correct": false,
+    "why": "The Dockerfile tells how to build your container, not the steps of your CI."
+   },
+   {
+    "text": "In the package.json file",
+    "correct": false,
+    "why": "The package.json file is widely used in NodeJS projects, but it's not used to define a GitHub Action."
+   }
+  ],
+  "takeaway": "The workflow.yml file, under the .github/workflows directory, contains the steps of your action."
+ },
+ {
+  "id": "off-m9-1-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.1.1",
+  "module": "m9",
+  "unit": "m9-2b-publish-using-workflow",
+  "type": "single",
+  "text": "Which action do you use to publish the latest version of a Docker image to GitHub Container Registry?",
+  "options": [
+   {
+    "text": "docker push ghcr.io/OWNER/IMAGE_NAME",
+    "correct": false,
+    "why": "While this command pushes the image, it's not necessarily the latest version."
+   },
+   {
+    "text": "docker push ghcr.io/OWNER/IMAGE_NAME:latest",
+    "correct": true,
+    "why": "This is the correct command to push the latest Docker image."
+   },
+   {
+    "text": "docker push latest ghcr.io/OWNER/IMAGE_NAME",
+    "correct": false,
+    "why": "This syntax is incorrect."
+   }
+  ],
+  "takeaway": "This is the correct command to push the latest Docker image."
+ },
+ {
+  "id": "off-m9-1-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d3",
+  "objective": "3.3.1",
+  "module": "m9",
+  "unit": "m9-2-what-is-github-packages",
+  "type": "single",
+  "text": "When pulling an image to your local environment, which credentials are needed?",
+  "options": [
+   {
+    "text": "Your GitHub username and a Personal Access Token",
+    "correct": true,
+    "why": "GitHub Packages use your GitHub identity to authenticate you."
+   },
+   {
+    "text": "The name of the organization and an API Key",
+    "correct": false,
+    "why": "While you can share packages only within your organization, you need to use your GitHub identity to log in."
+   },
+   {
+    "text": "The name of the package and a package key",
+    "correct": false,
+    "why": "Accessing packages and container images is tied to your GitHub account, and not to a specific package."
+   }
+  ],
+  "takeaway": "GitHub Packages use your GitHub identity to authenticate you."
+ },
+ {
+  "id": "off-m9-2-1",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d4",
+  "objective": "4.1.1",
+  "module": "m9",
+  "unit": "m9-5-github-packages-code-packages",
+  "type": "single",
+  "text": "In which scenarios should you NOT use GitHub Packages?",
+  "options": [
+   {
+    "text": "When I want to share code between methods of my application.",
+    "correct": true,
+    "why": "Sharing code within your project is done through code constructs and design patterns."
+   },
+   {
+    "text": "When I want to share container images among developers of your team.",
+    "correct": false,
+    "why": "GitHub Packages allow you to easily share container images with the same permissions as your GitHub repository."
+   },
+   {
+    "text": "When I want to publish a small code library as an open-source project.",
+    "correct": false,
+    "why": "GitHub packages allow you to publish your libraries in public, and is free for public repositories."
+   }
+  ],
+  "takeaway": "Sharing code within your project is done through code constructs and design patterns."
+ },
+ {
+  "id": "off-m9-2-2",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d3",
+  "objective": "3.3.1",
+  "module": "m9",
+  "unit": "m9-2-what-is-github-packages",
+  "type": "single",
+  "text": "When pulling an image to your local environment, which credentials are needed?",
+  "options": [
+   {
+    "text": "Your GitHub username and a Personal Access Token",
+    "correct": true,
+    "why": "GitHub Packages use your GitHub identity to authenticate you."
+   },
+   {
+    "text": "The name of the organization and an API Key",
+    "correct": false,
+    "why": "While you can share packages only within your organization, you need to use your GitHub identity to log in."
+   },
+   {
+    "text": "The name of the package and a package key",
+    "correct": false,
+    "why": "Accessing packages and container images is tied to your GitHub account, and not to a specific package."
+   }
+  ],
+  "takeaway": "GitHub Packages use your GitHub identity to authenticate you."
+ },
+ {
+  "id": "off-m9-2-3",
+  "source": "official",
+  "sourceLabel": "Microsoft Learn knowledge check",
+  "domain": "d3",
+  "objective": "3.3.1",
+  "module": "m9",
+  "unit": "m9-5-github-packages-code-packages",
+  "type": "single",
+  "text": "How can you authenticate to GitHub Packages from your local development environment?",
+  "options": [
+   {
+    "text": "With an API Key",
+    "correct": false,
+    "why": "API Keys can't be used to authenticate with your package manager."
+   },
+   {
+    "text": "With my GitHub Credentials (username and password)",
+    "correct": false,
+    "why": "Your GitHub Credentials can't be used to authenticate with your package manager."
+   },
+   {
+    "text": "With a Personal Access Token",
+    "correct": true,
+    "why": "Yes, with your GitHub username and a Personal Access Token."
+   }
+  ],
+  "takeaway": "Yes, with your GitHub username and a Personal Access Token."
+ }
+]

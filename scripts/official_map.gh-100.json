@@ -1,0 +1,63 @@
+{
+ "_comment": "key = <knowledge-check unit uid>#<zero-based question index>; value = [domain, objective, teaching unit id]",
+
+ "learn.github.introduction-to-github.4-knowledge-check#0": ["d2", "2.1.4", "m1-3-components-of-github-flow"],
+ "learn.github.introduction-to-github.4-knowledge-check#1": ["d2", "2.1.4", "m1-3-components-of-github-flow"],
+ "learn.github.introduction-to-github.4-knowledge-check#2": ["d2", "2.1.3", "m1-4-collaborative-platform"],
+
+ "learn.github.github-introduction-administration.knowledge-check#0": ["d1", "1.2.2", "m2-4-how-github-organization-permission-works"],
+ "learn.github.github-introduction-administration.knowledge-check#1": ["d1", "1.1.2", "m2-3-how-github-authentication-works"],
+ "learn.github.github-introduction-administration.knowledge-check#2": ["d1", "1.2.1", "m2-4-how-github-organization-permission-works"],
+ "learn.github.github-introduction-administration.knowledge-check#3": ["d1", "1.2.2", "m2-4-how-github-organization-permission-works"],
+ "learn.github.github-introduction-administration.knowledge-check#4": ["d1", "1.2.1", "m2-4-how-github-organization-permission-works"],
+ "learn.github.github-introduction-administration.knowledge-check#5": ["d1", "1.1.3", "m2-3-how-github-authentication-works"],
+ "learn.github.github-introduction-administration.knowledge-check#6": ["d1", "1.2.4", "m2-5-enterprise-access-governance"],
+ "learn.github.github-introduction-administration.knowledge-check#7": ["d1", "1.2.1", "m2-4-how-github-organization-permission-works"],
+ "learn.github.github-introduction-administration.knowledge-check#8": ["d1", "1.2.1", "m2-4-how-github-organization-permission-works"],
+
+ "learn.github.github-introduction-products.knowledge-check#0": ["d1", "1.1.1", "m3-2-what-are-github-products"],
+ "learn.github.github-introduction-products.knowledge-check#1": ["d2", "2.2.1", "m3-2-what-are-github-products"],
+ "learn.github.github-introduction-products.knowledge-check#2": ["d1", "1.2.2", "m3-2-what-are-github-products"],
+ "learn.github.github-introduction-products.knowledge-check#3": ["d2", "2.1.3", "m3-3-mobile-versus-desktop"],
+ "learn.github.github-introduction-products.knowledge-check#4": ["d2", "2.2.1", "m3-2-what-are-github-products"],
+ "learn.github.github-introduction-products.knowledge-check#5": ["d4", "4.1.2", "m3-2-what-are-github-products"],
+ "learn.github.github-introduction-products.knowledge-check#6": ["d4", "4.2.1", "m3-2-what-are-github-products"],
+ "learn.github.github-introduction-products.knowledge-check#7": ["d4", "4.3.1", "m3-2-what-are-github-products"],
+
+ "learn.github.maintain-secure-repository-github.4-knowledge-check#0": ["d3", "3.2.2", "m4-3-security-automation"],
+ "learn.github.maintain-secure-repository-github.4-knowledge-check#1": ["d3", "3.1.2", "m4-2-how-to-maintain-secure-repository"],
+ "learn.github.maintain-secure-repository-github.4-knowledge-check#2": ["d3", "3.2.1", "m4-3-security-automation"],
+
+ "learn.github.manage-sensitive-data-security-policies.knowledge-check#0": ["d3", "3.2.3", "m5-2-set-security-policies"],
+ "learn.github.manage-sensitive-data-security-policies.knowledge-check#1": ["d3", "3.2.2", "m5-2-set-security-policies"],
+ "learn.github.manage-sensitive-data-security-policies.knowledge-check#2": ["d3", "3.2.3", "m5-2-set-security-policies"],
+ "learn.github.manage-sensitive-data-security-policies.knowledge-check#3": ["d3", "3.1.3", "m5-4-report-logs"],
+
+ "learn.github.authenticate-authorize-user-identities-github.6-knowledge-check#0": ["d1", "1.1.2", "m6-3-authentication"],
+ "learn.github.authenticate-authorize-user-identities-github.6-knowledge-check#1": ["d1", "1.1.3", "m6-5-team-synchronization"],
+ "learn.github.authenticate-authorize-user-identities-github.6-knowledge-check#2": ["d1", "1.1.4", "m6-3-authentication"],
+ "learn.github.authenticate-authorize-user-identities-github.6-knowledge-check#3": ["d1", "1.1.2", "m6-3-authentication"],
+
+ "learn.github-administration-for-enterprise-support-adoption.knowledge-check#0": ["d2", "2.2.1", "m7-2-github-enterprise-tools-and-features"],
+ "learn.github-administration-for-enterprise-support-adoption.knowledge-check#1": ["d4", "4.1.1", "m7-2-github-enterprise-tools-and-features"],
+ "learn.github-administration-for-enterprise-support-adoption.knowledge-check#2": ["d2", "2.1.1", "m7-3-support-for-github-enterprise"],
+ "learn.github-administration-for-enterprise-support-adoption.knowledge-check#3": ["d2", "2.1.1", "m7-3-support-for-github-enterprise"],
+
+ "learn.github.manage-github-actions-enterprise.knowledge-check#0": ["d4", "4.1.2", "m8-control-actions-access-and-use"],
+ "learn.github.manage-github-actions-enterprise.knowledge-check#1": ["d4", "4.2.1", "m8-configure-self-hosted-runners"],
+ "learn.github.manage-github-actions-enterprise.knowledge-check#2": ["d4", "4.3.1", "m8-manage-encrypted-secrets"],
+ "learn.github.manage-github-actions-enterprise.knowledge-check#3": ["d3", "3.3.1", "m8-manage-encrypted-secrets"],
+ "learn.github.manage-github-actions-enterprise.knowledge-check#4": ["d1", "1.2.4", "m8-control-actions-access-and-use"],
+ "learn.github.manage-github-actions-enterprise.knowledge-check#5": ["d2", "2.2.1", "m8-github-enterprise-models"],
+ "learn.github.manage-github-actions-enterprise.knowledge-check#6": ["d4", "4.1.1", "m8-manage-leverage-reusable-actions"],
+ "learn.github.manage-github-actions-enterprise.knowledge-check#7": ["d4", "4.2.1", "m8-manage-runners"],
+ "learn.github.manage-github-actions-enterprise.knowledge-check#8": ["d4", "4.3.1", "m8-manage-encrypted-secrets"],
+
+ "learn.github.github-actions-packages.knowledge-check-1#0": ["d4", "4.1.1", "m9-2b-publish-using-workflow"],
+ "learn.github.github-actions-packages.knowledge-check-1#1": ["d4", "4.1.1", "m9-2b-publish-using-workflow"],
+ "learn.github.github-actions-packages.knowledge-check-1#2": ["d3", "3.3.1", "m9-2-what-is-github-packages"],
+
+ "learn.github.github-actions-packages.knowledge-check-2#0": ["d4", "4.1.1", "m9-5-github-packages-code-packages"],
+ "learn.github.github-actions-packages.knowledge-check-2#1": ["d3", "3.3.1", "m9-2-what-is-github-packages"],
+ "learn.github.github-actions-packages.knowledge-check-2#2": ["d3", "3.3.1", "m9-5-github-packages-code-packages"]
+}

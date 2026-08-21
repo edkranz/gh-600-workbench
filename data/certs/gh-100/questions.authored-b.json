@@ -1,0 +1,326 @@
+[
+ {
+  "id": "auth-b-01", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d3", "objective": "3.1.1", "module": "m2", "unit": "m2-5-enterprise-access-governance", "type": "single",
+  "text": "An enterprise wants one security baseline applied everywhere, while letting each business unit set stricter rules of its own. Which structure supports that?",
+  "options": [
+   {"text": "A single organization, since uniform policy is the whole point of a baseline.", "correct": false, "why": "A single organization gives consistency and simpler management, but the trade-off named against it is limited flexibility — one-size-fits-all policy may not suit every team."},
+   {"text": "Multiple organizations under one enterprise: enterprise policy sets the floor, each organization tailors above it.", "correct": true, "why": "Multiple organizations give tailored policies, enhanced isolation so a breach is contained, and decentralised administration — at the cost of more overhead and harder cross-org collaboration. Enterprise-level policy still applies across all of them."},
+   {"text": "Separate enterprise accounts per business unit.", "correct": false, "why": "That removes the shared baseline entirely, which is the requirement."},
+   {"text": "One organization per repository.", "correct": false, "why": "Unmanageable, and it multiplies administrative overhead without benefit."}
+  ],
+  "takeaway": "Single org: simpler, consistent, cheaper — less flexible, wider blast radius. Multiple orgs: tailored and isolated — more overhead."
+ },
+ {
+  "id": "auth-b-02", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d3", "objective": "3.1.3", "module": "m5", "unit": "m5-4-report-logs", "type": "single",
+  "text": "You need audit events from 8 months ago for a compliance investigation. GitHub Enterprise Cloud shows nothing that old. Why, and what should have been in place?",
+  "options": [
+   {"text": "The log only retains 90 days on Enterprise Cloud; audit log streaming to a SIEM provides long-term retention.", "correct": true, "why": "Retention is 90 days on Enterprise Cloud (120 days via GraphQL on Enterprise Server). Streaming to a destination such as AWS S3 or Azure Event Hubs, feeding Splunk or Datadog, is the documented way to keep events beyond that."},
+   {"text": "The events were purged because the repository was deleted; nothing can be done.", "correct": false, "why": "Retention is time-based, not tied to repository deletion."},
+   {"text": "Only organization owners can see events older than 90 days.", "correct": false, "why": "Access control governs who can read the log, not how far back it goes."},
+   {"text": "GraphQL would return them, since it has unlimited history.", "correct": false, "why": "GraphQL extends to 120 days on Enterprise Server — still far short of 8 months, and it excludes Git events."}
+  ],
+  "takeaway": "90 days on GHEC, 120 via GraphQL on GHES. Anything longer needs audit log streaming to a SIEM."
+ },
+ {
+  "id": "auth-b-03", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d3", "objective": "3.1.3", "module": "m5", "unit": "m5-4-report-logs", "type": "single",
+  "text": "You must confirm whether a specific branch was force-pushed last week. Which audit log interface can answer it?",
+  "options": [
+   {"text": "The GraphQL audit log API, which covers the longest window.", "correct": false, "why": "This is the trap. GraphQL reaches further back on GHES, but it explicitly does not include Git events such as pushes and pulls."},
+   {"text": "The REST audit log API, which includes Git events such as push, pull and merge.", "correct": true, "why": "REST covers settings, permissions, team membership and application changes plus Git events — for example `GET /orgs/{org}/audit-log?phrase=git.push`. Note Git events are retained for only 7 days."},
+   {"text": "The billing usage report.", "correct": false, "why": "Billing reports consumption, not repository events."},
+   {"text": "A support bundle from the instance.", "correct": false, "why": "Bundles are GHES diagnostics for troubleshooting, not an event query surface."}
+  ],
+  "takeaway": "REST audit log = includes Git events (7-day retention). GraphQL = longer window on GHES but no Git events."
+ },
+ {
+  "id": "auth-b-04", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d3", "objective": "3.1.2", "module": "m5", "unit": "m5-4-report-logs", "type": "multi",
+  "text": "Which controls protect the audit log itself and the data in it? (Select all that apply.)",
+  "options": [
+   {"text": "Only owners and security managers can view the logs.", "correct": true, "why": "Yes — access control on the log matters as much as the log's contents."},
+   {"text": "Source IP addresses are recorded, so suspicious access can be spotted.", "correct": true, "why": "Yes. IP logging is what turns an event list into something you can detect anomalies in."},
+   {"text": "Regional data-handling requirements are met for compliance.", "correct": true, "why": "Yes — regional compliance is a stated property, and it pairs with data residency for regulated customers."},
+   {"text": "Log entries can be edited by owners to redact sensitive values.", "correct": false, "why": "No. An editable audit log would be worthless as evidence."}
+  ],
+  "takeaway": "Restricted read access, IP logging, and regional compliance. The log is evidence precisely because it is not editable."
+ },
+ {
+  "id": "auth-b-05", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d3", "objective": "3.3.1", "module": "m5", "unit": "m5-4-report-logs", "type": "single",
+  "text": "An integration needs long-lived, narrowly-scoped access to several repositories in an organization. Which credential type is most appropriate?",
+  "options": [
+   {"text": "A classic personal access token belonging to an engineer.", "correct": false, "why": "PATs are tied to a user account and are broad in scope. They also break when that person leaves — and a classic PAT is the credential type that poses the greatest security risk in Actions."},
+   {"text": "A GitHub App installation token, which offers fine-grained permissions.", "correct": true, "why": "Installation tokens are issued to a GitHub App installation with fine-grained permissions, are not tied to an individual, and are the recommended shape for organizational integrations."},
+   {"text": "An OAuth token from a shared account.", "correct": false, "why": "OAuth tokens are scoped for OAuth Apps and should follow least privilege, but a shared account reintroduces the person-dependency problem."},
+   {"text": "A device token.", "correct": false, "why": "Device tokens serve device-based authentication flows, not service integrations."}
+  ],
+  "takeaway": "GitHub Apps for organizational integrations (fine-grained, not person-bound). PATs for simple personal scripts."
+ },
+ {
+  "id": "auth-b-06", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d3", "objective": "3.3.2", "module": "m5", "unit": "m5-4-report-logs", "type": "single",
+  "text": "A script polling the API without credentials starts failing after a short burst. What is the limit it hit?",
+  "options": [
+   {"text": "60 requests per hour, the unauthenticated limit.", "correct": true, "why": "Unauthenticated requests are limited to 60 per hour. Authenticating raises it to 5,000 per hour; App limits vary by installation. Check the current position with `GET /rate_limit`."},
+   {"text": "5,000 requests per hour.", "correct": false, "why": "That is the authenticated limit — the point of the question is that the script is not authenticating."},
+   {"text": "1,000 requests per hour.", "correct": false, "why": "Not one of the documented tiers."},
+   {"text": "There is no limit; the failure must be a network fault.", "correct": false, "why": "Rate limits apply to all API traffic, and hitting one is the common cause of exactly this symptom."}
+  ],
+  "takeaway": "Unauthenticated 60/hour, authenticated 5,000/hour, Apps vary by installation. `GET /rate_limit` shows where you stand."
+ },
+ {
+  "id": "auth-b-07", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d3", "objective": "3.3.3", "module": "m6", "unit": "m6-4-authorization", "type": "single",
+  "text": "Which statement best captures the difference between GitHub Apps and OAuth Apps for enterprise use?",
+  "options": [
+   {"text": "OAuth Apps are always more secure because they use the OAuth standard.", "correct": false, "why": "Using OAuth does not by itself make an integration better scoped. OAuth Apps act on behalf of a user and should be granted least privilege."},
+   {"text": "GitHub Apps offer fine-grained permissions and act as their own identity, which suits organizational integrations; OAuth Apps act on behalf of a user.", "correct": true, "why": "This is the distinction that drives the recommendation. Apps have their own installation identity and fine-grained permissions; OAuth Apps carry a user's authorisation, so their access follows that person."},
+   {"text": "GitHub Apps cannot be restricted by organization policy.", "correct": false, "why": "The opposite — organizations can restrict untrusted apps through settings."},
+   {"text": "They are the same mechanism with different names.", "correct": false, "why": "Different identity models, different permission granularity."}
+  ],
+  "takeaway": "GitHub Apps: own identity, fine-grained, ideal for org integrations. OAuth Apps: act for a user, least privilege, review subscriptions."
+ },
+ {
+  "id": "auth-b-08", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d3", "objective": "3.3.4", "module": "m5", "unit": "m5-4-report-logs", "type": "single",
+  "text": "Developers keep connecting unvetted third-party applications to your organization. What is the administrative control?",
+  "options": [
+   {"text": "Rotate all organization secrets weekly so any leaked access expires.", "correct": false, "why": "Rotation limits damage after the fact. It does not stop the connection being made."},
+   {"text": "Restrict untrusted apps through organization settings, approving or denying app usage against policy.", "correct": true, "why": "Organizations can restrict untrusted applications through settings, so app access becomes an approval decision rather than a developer default. Reviewing event subscriptions regularly is part of the same practice."},
+   {"text": "Disable the REST API for the organization.", "correct": false, "why": "That would break legitimate automation along with everything else."},
+   {"text": "Require 2FA, which blocks third-party apps.", "correct": false, "why": "2FA strengthens user authentication; it does not gate application authorisation."}
+  ],
+  "takeaway": "App access is a policy decision: restrict untrusted apps in org settings and review what they subscribe to."
+ },
+ {
+  "id": "auth-b-09", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d3", "objective": "3.2.3", "module": "m5", "unit": "m5-2-set-security-policies", "type": "single",
+  "text": "Beyond listing supported versions, what else does SECURITY.md establish?",
+  "options": [
+   {"text": "The automated scanning schedule for the repository.", "correct": false, "why": "Scanning cadence is configured in code scanning and Dependabot settings, not in a markdown file."},
+   {"text": "How to report a vulnerability — the intake path for the security response process.", "correct": true, "why": "SECURITY.md defines both the supported versions and the reporting process, so a finder knows where to send a report privately instead of opening a public issue."},
+   {"text": "Which branches are protected.", "correct": false, "why": "Branch protection is a repository setting or ruleset."},
+   {"text": "The list of users allowed to publish advisories.", "correct": false, "why": "Advisory permissions come from repository and organization roles."}
+  ],
+  "takeaway": "SECURITY.md = supported versions + how to report. It is the front door of the security response plan."
+ },
+ {
+  "id": "auth-b-10", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d3", "objective": "3.2.1", "module": "m4", "unit": "m4-3-security-automation", "type": "single",
+  "text": "Match each tool to what it actually detects: a hardcoded API key committed last month, a SQL injection flaw, and a dependency with a known CVE.",
+  "options": [
+   {"text": "Secret scanning, CodeQL code scanning, Dependabot respectively.", "correct": true, "why": "Secret scanning looks for known secrets or credentials committed in the repository, CodeQL analyses code for vulnerabilities such as injection flaws, and Dependabot surfaces vulnerable dependencies and can raise update pull requests."},
+   {"text": "Dependabot, secret scanning, CodeQL respectively.", "correct": false, "why": "All three are shuffled."},
+   {"text": "CodeQL for all three, since it analyses the whole repository.", "correct": false, "why": "CodeQL analyses code. It is not the mechanism for credential detection or dependency advisories."},
+   {"text": "Push protection, branch protection, dependency graph respectively.", "correct": false, "why": "Push protection prevents supported secrets being committed (prevention, not detection of an existing one), and branch protection is a merge policy."}
+  ],
+  "takeaway": "Secret scanning = credentials. CodeQL = code vulnerabilities. Dependabot = vulnerable dependencies. Push protection stops secrets before the commit lands."
+ },
+ {
+  "id": "auth-b-11", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d4", "objective": "4.2.2", "module": "m8", "unit": "m8-control-actions-access-and-use", "type": "single",
+  "text": "You are hardening self-hosted runners. Which control addresses the risk of an attacker reaching a runner to execute malicious actions?",
+  "options": [
+   {"text": "Ephemeral runners that reset after each job.", "correct": false, "why": "Ephemeral runners address runner compromise and cross-team interference by resetting state between jobs — a different risk from unauthorized access."},
+   {"text": "IP allow lists restricting who can reach the runners.", "correct": true, "why": "Unauthorized access — attackers hijacking runners to execute malicious actions — is mitigated with IP allow lists. Pair with runner groups to limit which repositories and teams may use them."},
+   {"text": "Storing secrets in environment variables rather than GitHub secrets.", "correct": false, "why": "Backwards. The guidance is to store secrets in GitHub secrets management instead of environment variables."},
+   {"text": "Enabling required reviews on the default branch.", "correct": false, "why": "A merge policy, not a runner network control."}
+  ],
+  "takeaway": "Unauthorized access → IP allow lists. Secret exposure → secrets management. Runner compromise → ephemeral runners."
+ },
+ {
+  "id": "auth-b-12", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d4", "objective": "4.2.1", "module": "m8", "unit": "m8-configure-self-hosted-runners", "type": "single",
+  "text": "A team needs workflows to reach an on-premises database during CI. Which runner type is required, and what do they give up?",
+  "options": [
+   {"text": "GitHub-hosted, and they give up customisation.", "correct": false, "why": "GitHub-hosted runners have no direct access to internal networks, which is the blocking constraint here."},
+   {"text": "Self-hosted, giving up automatic OS and package updates, autoscaling and per-job clean environments.", "correct": true, "why": "Self-hosted runners can reach internal and private networks and use higher-performance hardware, but they must be manually provisioned, hardened and maintained, and state can persist between jobs unless made ephemeral."},
+   {"text": "Either — network access is identical between them.", "correct": false, "why": "Network access is one of the clearest differences between the two."},
+   {"text": "GitHub-hosted with an IP allow list exception.", "correct": false, "why": "An allow list governs inbound reachability; it does not place a hosted runner inside your network."}
+  ],
+  "takeaway": "Self-hosted: private network access, custom hardware — you own patching, scaling and isolation. Hosted: clean per-job VM, autoscaled, no internal network."
+ },
+ {
+  "id": "auth-b-13", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d4", "objective": "4.2.3", "module": "m8", "unit": "m8-manage-runners", "type": "multi",
+  "text": "Which are genuine operational risks of leaving self-hosted runners unmonitored? (Select all that apply.)",
+  "options": [
+   {"text": "Idle runners waste compute and infrastructure spend.", "correct": true, "why": "Yes — identifying idle self-hosted runners is a named optimisation, because the infrastructure is billed whether or not jobs run."},
+   {"text": "Unmonitored runners can present a security exposure.", "correct": true, "why": "Yes. Runners left unmonitored may be compromised or misconfigured, and they hold access that workflows rely on."},
+   {"text": "State persisting between jobs can leak data or cause interference between teams.", "correct": true, "why": "Yes — self-hosted runners can persist state between jobs, which is why ephemeral runners are recommended for isolation."},
+   {"text": "Unmonitored runners automatically upgrade themselves and may break workflows.", "correct": false, "why": "No. Automatic OS and package updates are a GitHub-hosted property. Self-hosted runners require manual maintenance, which is the opposite problem."}
+  ],
+  "takeaway": "Self-hosted runners cost money when idle, need manual hardening and patching, and should be ephemeral to avoid cross-job state."
+ },
+ {
+  "id": "auth-b-14", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d4", "objective": "4.3.2", "module": "m8", "unit": "m8-manage-encrypted-secrets", "type": "single",
+  "text": "A signing credential is needed by every repository in one organization, but must only be usable in production deployments. How should it be scoped?",
+  "options": [
+   {"text": "A repository secret duplicated into each repository.", "correct": false, "why": "Duplication multiplies rotation work and the number of places the credential exists."},
+   {"text": "An organization secret, with an environment secret or protected environment controlling production use.", "correct": true, "why": "Organization secrets avoid duplication across repositories; environment scoping restricts where the secret can actually be used. Secrets become accessible to workflows with permission to the organization, repository or environment where they are defined."},
+   {"text": "A plain environment variable in the workflow file.", "correct": false, "why": "Workflow files are committed; a credential there is disclosed to everyone with read access."},
+   {"text": "An enterprise-wide secret available to every organization.", "correct": false, "why": "Wider than the requirement, which names a single organization."}
+  ],
+  "takeaway": "Secrets resolve at organization, repository or environment level. Scope to the narrowest level that still avoids duplication."
+ },
+ {
+  "id": "auth-b-15", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d4", "objective": "4.3.3", "module": "m8", "unit": "m8-manage-encrypted-secrets", "type": "multi",
+  "text": "Why integrate a third-party vault such as HashiCorp Vault, AWS Secrets Manager or Azure Key Vault with Actions? (Select all that apply.)",
+  "options": [
+   {"text": "Centralised secret management across systems beyond GitHub.", "correct": true, "why": "Yes — one place to manage credentials that several platforms consume reduces the number of copies in existence."},
+   {"text": "Automated secret rotation to satisfy security policy.", "correct": true, "why": "Yes. Rotation is the capability GitHub secrets alone do not provide."},
+   {"text": "Vault-side audit logs and access control for monitoring.", "correct": true, "why": "Yes, plus least-privilege access so a workflow retrieves only the secret it needs."},
+   {"text": "It removes the need for any credential in GitHub at all.", "correct": false, "why": "Usually a token is still stored in GitHub to authenticate to the vault. The mechanism that genuinely removes stored credentials is OIDC, authenticating directly to the cloud provider."}
+  ],
+  "takeaway": "Vaults give central management, rotation and audit. OIDC goes further — no stored cloud credential at all."
+ },
+ {
+  "id": "auth-b-16", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d4", "objective": "4.3.1", "module": "m8", "unit": "m8-manage-encrypted-secrets", "type": "single",
+  "text": "A workflow deploys to a cloud provider using a long-lived access key stored as a secret. What removes the stored credential entirely?",
+  "options": [
+   {"text": "Move the key to an organization secret so fewer people can see it.", "correct": false, "why": "Narrowing scope is an improvement, but a long-lived key still exists and can still leak."},
+   {"text": "Configure OIDC so the workflow authenticates directly with the cloud provider.", "correct": true, "why": "With OpenID Connect the workflow exchanges a short-lived identity token with the provider, so there is no longer a need to store credentials as secrets at all."},
+   {"text": "Rotate the key nightly with a scheduled workflow.", "correct": false, "why": "Rotation shortens the exposure window but the credential still exists between rotations."},
+   {"text": "Store the key in a repository variable instead of a secret.", "correct": false, "why": "Variables are not encrypted and are visible in logs — strictly worse."}
+  ],
+  "takeaway": "OIDC eliminates stored cloud credentials. Vaults centralise and rotate them. Secrets scoping just limits who can reach them."
+ },
+ {
+  "id": "auth-b-17", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d4", "objective": "4.1.2", "module": "m8", "unit": "m8-control-actions-access-and-use", "type": "single",
+  "text": "An enterprise wants third-party actions used only where they have been vetted. Which control is the right one?",
+  "options": [
+   {"text": "Require all workflows to use self-hosted runners.", "correct": false, "why": "Runner choice governs where a workflow executes, not which actions it may reference."},
+   {"text": "Configure a GitHub Actions use policy at the enterprise level, restricting which actions may run.", "correct": true, "why": "Enterprise-level Actions policy is the control for what may run across the instance — including limiting to allowed actions — and is what the module names for managing Actions use in an enterprise."},
+   {"text": "Set default repository permissions to read.", "correct": false, "why": "That governs repository access, not action allow-listing."},
+   {"text": "Disable Actions entirely and re-enable per request.", "correct": false, "why": "A blunt instrument that blocks legitimate automation while the policy control already exists."}
+  ],
+  "takeaway": "Enterprise Actions policy governs what may run; runner groups govern where; secrets scoping governs what it can reach."
+ },
+ {
+  "id": "auth-b-18", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d4", "objective": "4.1.1", "module": "m8", "unit": "m8-manage-leverage-reusable-actions", "type": "single",
+  "text": "Twenty repositories each maintain a near-identical build workflow, and a required change means editing all twenty. What addresses the root problem?",
+  "options": [
+   {"text": "A matrix strategy in each workflow.", "correct": false, "why": "A matrix parallelises one workflow across variants. It does nothing about the same workflow existing twenty times."},
+   {"text": "Reusable workflows called by each repository, so the logic lives once.", "correct": true, "why": "Reusable workflows reduce redundancy and maintenance overhead — the change is made centrally and every caller picks it up."},
+   {"text": "A scheduled workflow that copies the canonical file into each repository.", "correct": false, "why": "Synchronising copies is still twenty copies, and now with a job that can drift or fail silently."},
+   {"text": "Converting each workflow into a composite action stored in the same repository.", "correct": false, "why": "Composite actions help factor out steps, but keeping one per repository preserves the duplication."}
+  ],
+  "takeaway": "Reusable workflows centralise logic across repositories; the benefit is reduced redundancy and maintenance overhead."
+ },
+ {
+  "id": "auth-b-19", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d5", "objective": "5.1.1", "module": "m5", "unit": "m5-4-report-logs", "type": "single",
+  "text": "A repository disappeared overnight. Which audit log query identifies who removed it and when?",
+  "options": [
+   {"text": "Filter the log by actor to see everything that person did.", "correct": false, "why": "You do not yet know who to filter on — that is what you are trying to establish."},
+   {"text": "Search the phrase repository.deleted, then read the actor and timestamp from the event.", "correct": true, "why": "Identify the asset, query with the event filter (`?phrase=repository.deleted` in REST, or the equivalent GraphQL query), then inspect the metadata: actor, timestamp and repository name. Remediation is restoring from backup or revisiting permissions."},
+   {"text": "Export billing to see when the repository stopped consuming storage.", "correct": false, "why": "Indirect at best, and it identifies no actor."},
+   {"text": "Contact GitHub Support, since deletions are not audited.", "correct": false, "why": "Deletions are audited. Support may be needed to *recover* the repository within 90 days, but the log answers who and when."}
+  ],
+  "takeaway": "Query by event (`repository.deleted`), read actor and timestamp, then remediate. Qualifiers: action, actor, user, org, repo, created."
+ },
+ {
+  "id": "auth-b-20", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d5", "objective": "5.1.1", "module": "m5", "unit": "m5-4-report-logs", "type": "single",
+  "text": "You suspect a leaked credential is being used against your organization's API. Which audit log filter narrows it down fastest?",
+  "options": [
+   {"text": "phrase=token, to surface token usage and identify compromised credentials.", "correct": true, "why": "Filtering by token is the documented route for identifying compromised credentials. The API activity log (`phrase=api.request`) tracks REST and GraphQL requests, and source IPs are recorded to spot suspicious access."},
+   {"text": "phrase=git.push, since credentials are only used for pushes.", "correct": false, "why": "Tokens authenticate far more than pushes, and API abuse may involve no push at all."},
+   {"text": "phrase=team.create, to see privilege escalation.", "correct": false, "why": "Useful in a wider investigation, but not the fastest route to token misuse."},
+   {"text": "There is no way to filter by credential activity.", "correct": false, "why": "Token usage filtering is explicitly available."}
+  ],
+  "takeaway": "Log types worth knowing: Git activity (`git.push`), API activity (`api.request`), token usage (`token`), and EMU events."
+ },
+ {
+  "id": "auth-b-21", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d5", "objective": "5.1.2", "module": "m7", "unit": "m7-3-support-for-github-enterprise", "type": "single",
+  "text": "A production GHES instance is degrading and you plan to raise a ticket. Which priority level fits, and what should accompany it?",
+  "options": [
+   {"text": "Low, with a link to the repository.", "correct": false, "why": "Low is for general inquiries and feature requests, with a 24–48 hour response."},
+   {"text": "Urgent/critical, with reproduction steps, context including business impact, and verbatim error messages.", "correct": true, "why": "Critical covers security, account lockout and billing, and major service impact warrants the top tiers. Tickets should carry steps to reproduce, context such as first occurrence and business impact, and error messages verbatim."},
+   {"text": "Medium, because the instance is still partially reachable.", "correct": false, "why": "Medium covers technical issues affecting users with a 12–24 hour response — too slow for a degrading production instance."},
+   {"text": "Any priority; response times are identical across levels.", "correct": false, "why": "They differ substantially, and Premium/Premium Plus shortens them further — 30 minutes for urgent versus 8 hours on standard Enterprise Support."}
+  ],
+  "takeaway": "Low 24–48h, Medium 12–24h, High a few hours, Critical immediate. Premium Plus responds to urgent issues within 30 minutes."
+ },
+ {
+  "id": "auth-b-22", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d5", "objective": "5.1.3", "module": "m3", "unit": "m3-4-github-billing", "type": "single",
+  "text": "Finance asks how many people are actually using Copilot. An administrator sends the count of assigned licences. Why is that the wrong number?",
+  "options": [
+   {"text": "It is right — an assigned licence means the user is active.", "correct": false, "why": "This is precisely the conflation the module warns against."},
+   {"text": "An assigned licence is a billing fact, not usage. Adoption comes from the Copilot usage metrics and impact dashboards.", "correct": true, "why": "Billing and licensing views show assigned seats and costs. The usage metrics dashboard reports adoption and engagement telemetry, and the impact dashboard groups users into adoption cohorts over a rolling 28-day window. A user can appear passive while still holding a billable licence."},
+   {"text": "Licence counts are only accurate at the end of a billing cycle.", "correct": false, "why": "Timing is not the issue; the metric measures the wrong thing."},
+   {"text": "Copilot does not report usage at all, so no better number exists.", "correct": false, "why": "Two dedicated dashboards exist for exactly this question."}
+  ],
+  "takeaway": "Billing views = seats and cost. Usage metrics = engagement. Impact = adoption cohorts over 28 rolling days. An assigned licence is not an active user."
+ },
+ {
+  "id": "auth-b-23", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d5", "objective": "5.1.3", "module": "m3", "unit": "m3-6-license-usage-machine", "type": "single",
+  "text": "You are asked to find features the enterprise is paying for but barely using. Which combination gives the clearest picture?",
+  "options": [
+   {"text": "Licence counts alone, since anything assigned is being paid for.", "correct": false, "why": "Assigned seats show spend, not whether the capability is used."},
+   {"text": "Billing and usage reports for consumption, plus audit and API activity to spot integrations and accounts that have gone quiet.", "correct": true, "why": "Consumption reports show what is actually being spent on metered products; the audit log surfaces inactive services and third-party tools. Together they distinguish paid-for from used, which is what identifies underutilised features."},
+   {"text": "The support bundle, which summarises feature adoption.", "correct": false, "why": "Bundles are troubleshooting diagnostics for GHES."},
+   {"text": "Repository counts per organization.", "correct": false, "why": "Repository count says nothing about feature usage or spend."}
+  ],
+  "takeaway": "Cross-reference consumption reports against audit and API activity. Spend without activity is the definition of underutilised."
+ },
+ {
+  "id": "auth-b-24", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d5", "objective": "5.2.1", "module": "m3", "unit": "m3-7-metered-usage-consumption-reports", "type": "single",
+  "text": "How is GitHub Advanced Security billed, and what makes the number move?",
+  "options": [
+   {"text": "Per repository with GHAS enabled, each month.", "correct": false, "why": "Repository count is not the billing unit, which is why enabling GHAS on many small repositories with the same team does not multiply cost."},
+   {"text": "Per unique active committer — anyone who pushed at least one commit to a GHAS-enabled repository in the last 90 days, counted once across repositories.", "correct": true, "why": "Billing is by unique active committers per billing period. A committer contributing to several GHAS-enabled repositories still counts once, and the 90-day window is what determines whether they are active."},
+   {"text": "Per code scanning alert raised.", "correct": false, "why": "Alert volume does not drive GHAS cost."},
+   {"text": "Included free with GitHub Enterprise at no extra charge.", "correct": false, "why": "There is no free tier except for public repositories."}
+  ],
+  "takeaway": "GHAS = unique active committers, 90-day activity window, counted once across repositories. Restrict GHAS to repositories that need it."
+ },
+ {
+  "id": "auth-b-25", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d5", "objective": "5.2.1", "module": "m3", "unit": "m3-7-metered-usage-consumption-reports", "type": "single",
+  "text": "A team's Actions bill is dominated by one workflow. Which detail most likely explains it?",
+  "options": [
+   {"text": "The workflow runs on public repositories, which are billed at a premium.", "correct": false, "why": "Actions on public repositories is free with unlimited minutes on GitHub-hosted runners."},
+   {"text": "The workflow runs on macOS runners, which are metered at a much higher per-minute rate than Linux.", "correct": true, "why": "Runner type drives cost sharply: roughly $0.008/min Linux, $0.016/min Windows, $0.08/min macOS. A macOS job is about ten times a Linux one for the same duration."},
+   {"text": "It uses too many secrets, which are billed per reference.", "correct": false, "why": "Secrets are not metered."},
+   {"text": "It uploads artifacts, which are billed as Actions minutes.", "correct": false, "why": "Artifact and package storage is metered separately from minutes."}
+  ],
+  "takeaway": "Minutes are metered by runner OS — macOS ≈ 10× Linux, Windows ≈ 2×. Private repos get a monthly free allowance by plan; public repos are free."
+ },
+ {
+  "id": "auth-b-26", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d5", "objective": "5.2.2", "module": "m3", "unit": "m3-5-license-usage-stats", "type": "multi",
+  "text": "Which are recommended strategies for optimising licence and resource cost? (Select all that apply.)",
+  "options": [
+   {"text": "Identify inactive users and reclaim their seats.", "correct": true, "why": "Yes — reclaiming unused seats is the most direct licence saving, and stale accounts are a security exposure too."},
+   {"text": "Use SSO and SCIM provisioning to automate joiner and leaver handling.", "correct": true, "why": "Yes. Automating deprovisioning means seats are released when people leave rather than lingering."},
+   {"text": "Audit regularly, monthly or quarterly, and automate monitoring via the API.", "correct": true, "why": "Yes — both are named best practices, because drift accumulates quietly between reviews."},
+   {"text": "Convert every workflow to macOS runners for faster builds.", "correct": false, "why": "No. macOS is the most expensive runner type; the optimisation runs the other way, towards self-hosted runners for high-volume workflows."}
+  ],
+  "takeaway": "Reclaim inactive seats, automate lifecycle with SSO and SCIM, audit on a cadence, and move heavy workflows to cheaper or self-hosted runners."
+ },
+ {
+  "id": "auth-b-27", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d5", "objective": "5.2.2", "module": "m3", "unit": "m3-7-metered-usage-consumption-reports", "type": "single",
+  "text": "GitHub Packages storage for private repositories keeps growing and costing more. Which optimisation is recommended?",
+  "options": [
+   {"text": "Move all packages to public repositories to make storage free.", "correct": false, "why": "Public storage is free, but publishing private artifacts publicly to save money is not an acceptable trade."},
+   {"text": "Delete unused packages or apply retention policies, and avoid duplicating images across repositories.", "correct": true, "why": "The named strategies are deleting unused packages or enabling retention, storing frequently used images in a centralised registry to avoid duplication, and using compressed formats."},
+   {"text": "Increase the spending limit so builds stop failing.", "correct": false, "why": "That accommodates the cost rather than reducing it."},
+   {"text": "Switch to self-hosted runners, which removes package storage charges.", "correct": false, "why": "Runner hosting and package storage are separately metered."}
+  ],
+  "takeaway": "Storage: prune and set retention, centralise shared images, compress. Private repos get a small free storage and transfer allowance."
+ }
+]

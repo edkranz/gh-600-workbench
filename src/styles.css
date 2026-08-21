@@ -680,3 +680,50 @@ button, input, select { font: inherit; color: inherit; }
   .md th, .md td { padding: 7px 9px; }
   .md { font-size: 15.5px; }
 }
+
+/* ============================================================ cert picker */
+.picker-head { display: flex; flex-direction: column; gap: 8px; margin: 8px 0 28px; }
+
+.cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+
+.cert-card {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 22px 24px; text-decoration: none; color: inherit;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r-lg); box-shadow: var(--shadow);
+  border-top: 3px solid var(--accent);
+  transition: border-color .12s, transform .12s;
+}
+.cert-card:hover { color: inherit; transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.cert-card[data-accent="indigo"] { border-top-color: #5b5bd6; }
+:root[data-theme="dark"] .cert-card[data-accent="indigo"],
+:root:not([data-theme="light"]) .cert-card[data-accent="indigo"] { border-top-color: #8b8bf0; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .cert-card[data-accent="indigo"] { border-top-color: #5b5bd6; }
+}
+
+.cert-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.cert-code {
+  font-family: var(--mono); font-size: 12px; font-weight: 500;
+  letter-spacing: .12em; color: var(--accent);
+}
+.cert-name { font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -.015em; line-height: 1.15; }
+.cert-tagline { font-size: 14px; line-height: 1.5; color: var(--muted); }
+.cert-stats {
+  display: flex; gap: 16px; flex-wrap: wrap; margin-top: 2px;
+  font-size: 13px; color: var(--muted);
+}
+.cert-stats b { font-family: var(--mono); color: var(--ink); font-weight: 500; }
+.cert-prog { display: flex; flex-direction: column; gap: 5px; margin-top: auto; padding-top: 10px; }
+.cert-prog-n { font-family: var(--mono); font-size: 11.5px; color: var(--faint); }
+.picker-foot { margin-top: 26px; font-size: 12.5px; color: var(--faint); }
+
+.brand-link { text-decoration: none; color: inherit; border-radius: var(--r-md); }
+.brand-link:hover { color: inherit; }
+.brand-link:hover .brand-sub { color: var(--accent); }
+
+@media (max-width: 640px) {
+  .cert-grid { grid-template-columns: 1fr; }
+  .cert-card { padding: 18px; }
+  .cert-name { font-size: 19px; }
+}

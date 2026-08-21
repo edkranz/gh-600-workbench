@@ -1,0 +1,146 @@
+[
+ {
+  "id": "auth-c-01", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d1", "objective": "1.2.3", "module": "m6", "unit": "m6-2-user-identity-access-management", "type": "single",
+  "text": "During an access review you find a contractor who left months ago still listed on two repositories. Which control would have prevented it?",
+  "options": [
+   {"text": "Requiring 2FA for all organization members.", "correct": false, "why": "2FA hardens authentication for people who should still have access. It does nothing about access that should have been removed."},
+   {"text": "SCIM deprovisioning driven by the identity provider, so leaving the IdP removes the GitHub account.", "correct": true, "why": "Manual offboarding is where stale access comes from. SCIM ties the account lifecycle to the IdP, so a leaver is deprovisioned automatically — which also frees the licence."},
+   {"text": "Branch protection on the default branch.", "correct": false, "why": "A merge policy. It constrains what an account can land, not whether the account should exist."},
+   {"text": "Moving the repositories into a different organization.", "correct": false, "why": "Access follows the grant, not the location."}
+  ],
+  "takeaway": "Stale access is an offboarding failure. SCIM automates deprovisioning; periodic access review catches what slips through."
+ },
+ {
+  "id": "auth-c-02", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d3", "objective": "3.1.1", "module": "m2", "unit": "m2-5-enterprise-access-governance", "type": "multi",
+  "text": "Which practices are recommended when scripting permission management across many organizations? (Select all that apply.)",
+  "options": [
+   {"text": "Build scripts in modular components so a new organization needs minimal change.", "correct": true, "why": "Yes — modularity is what keeps the automation maintainable as the estate grows."},
+   {"text": "Test in a controlled environment before deploying.", "correct": true, "why": "Yes. A permissions script run against production untested can revoke access at scale."},
+   {"text": "Log changes in detail, and keep the scripts under version control.", "correct": true, "why": "Yes — logging supports troubleshooting and compliance, and version control gives review and rollback for the automation itself."},
+   {"text": "Run scripts with an organization owner's personal access token for simplicity.", "correct": false, "why": "No. That ties enterprise automation to one person's credential — a GitHub App with fine-grained permissions is the appropriate identity."}
+  ],
+  "takeaway": "Modular, tested, logged, version-controlled — and authenticated as an App rather than a person."
+ },
+ {
+  "id": "auth-c-03", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d3", "objective": "3.3.2", "module": "m3", "unit": "m3-6-license-usage-machine", "type": "single",
+  "text": "Developers report intermittent API failures during business hours. Investigation shows several third-party integrations polling continuously. What is the primary risk being described?",
+  "options": [
+   {"text": "The integrations are consuming enterprise licences, raising cost.", "correct": false, "why": "True of machine accounts and worth auditing, but it does not cause intermittent failures for developers."},
+   {"text": "Excessive API calls exhaust rate limits, which then affects developers' workflows.", "correct": true, "why": "Heavy polling by third-party tools and CI/CD consumes shared API capacity. The stated consequence is exactly this: excessive calls lead to rate limits that affect developer workflows. The remedy is to replace polling with webhooks, Apps or Actions triggers."},
+   {"text": "Audit log retention is being exceeded.", "correct": false, "why": "Retention governs how long events are kept, not API availability."},
+   {"text": "Secret scanning is throttling the integrations.", "correct": false, "why": "Secret scanning does not rate-limit API consumers."}
+  ],
+  "takeaway": "Avoid inefficient polling. Use webhooks, GitHub Apps or Actions to trigger automation, and monitor API usage for unknown consumers."
+ },
+ {
+  "id": "auth-c-04", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d3", "objective": "3.3.3", "module": "m6", "unit": "m6-2-user-identity-access-management", "type": "single",
+  "text": "Match the token type to its use: a one-off maintenance script, a GitHub App integration, and renewing expired access without re-authenticating.",
+  "options": [
+   {"text": "PAT, installation token, refresh token respectively.", "correct": true, "why": "PATs are tied to a user account and suit simple scripts. Installation tokens serve GitHub App installations with fine-grained permissions. Refresh tokens renew expired tokens without requiring the user to authenticate again."},
+   {"text": "Installation token, PAT, device token respectively.", "correct": false, "why": "The first two are swapped, and device tokens serve device-based authentication flows."},
+   {"text": "OAuth token, refresh token, PAT respectively.", "correct": false, "why": "OAuth tokens serve OAuth Apps with scoped access; none of this mapping holds."},
+   {"text": "Device token, OAuth token, installation token respectively.", "correct": false, "why": "None of these match their stated use."}
+  ],
+  "takeaway": "PAT = user-tied, simple scripts, broad scope. Installation = App, fine-grained. OAuth = scoped, on behalf of a user. Refresh = renew without re-auth."
+ },
+ {
+  "id": "auth-c-05", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d3", "objective": "3.3.4", "module": "m5", "unit": "m5-4-report-logs", "type": "single",
+  "text": "After approving a third-party app, what ongoing review does the guidance call for?",
+  "options": [
+   {"text": "None — approval is a one-time decision.", "correct": false, "why": "An app's access and the events it receives can matter long after approval, and the tool itself may fall out of use."},
+   {"text": "Manage and regularly review the app's event subscriptions and continued necessity.", "correct": true, "why": "OAuth Apps should be granted least privilege with event subscriptions managed and reviewed regularly. Auditing third-party tools also identifies integrations no longer in use, which reduces both risk and cost."},
+   {"text": "Rotate the organization's SAML certificate each time an app is added.", "correct": false, "why": "Unrelated to application authorisation."},
+   {"text": "Convert every approved OAuth App into a machine account.", "correct": false, "why": "That would consume licences and reintroduce a user-tied credential."}
+  ],
+  "takeaway": "App approval is not permanent. Review subscriptions, least privilege and whether the integration is still needed."
+ },
+ {
+  "id": "auth-c-06", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d4", "objective": "4.2.2", "module": "m8", "unit": "m8-control-actions-access-and-use", "type": "single",
+  "text": "You must stop public repositories using the enterprise's self-hosted runners while keeping them available to selected internal repositories. What do you configure?",
+  "options": [
+   {"text": "An IP allow list on the runner hosts.", "correct": false, "why": "IP allow lists restrict network reachability. They do not express which repositories may schedule jobs."},
+   {"text": "A runner group with access limited to selected repositories, and public repositories excluded.", "correct": true, "why": "Runner groups are the access boundary: create the group, set the access level to allow only selected repositories, and do not allow public repositories to use enterprise runners."},
+   {"text": "Ephemeral runners, which refuse public repository jobs.", "correct": false, "why": "Ephemeral means the runner resets after each job. It is an isolation property, not an access rule."},
+   {"text": "Branch protection on each public repository.", "correct": false, "why": "A merge control with no bearing on runner scheduling."}
+  ],
+  "takeaway": "Runner groups scope which repositories and teams may use runners. IP allow lists control who can reach them. Ephemeral controls reuse."
+ },
+ {
+  "id": "auth-c-07", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d4", "objective": "4.2.3", "module": "m8", "unit": "m8-manage-runners", "type": "single",
+  "text": "Jobs queue for long periods on self-hosted runners during peak hours, while GitHub-hosted jobs elsewhere start immediately. What explains the difference?",
+  "options": [
+   {"text": "Self-hosted runners are rate-limited by GitHub during peak periods.", "correct": false, "why": "No such throttle exists; capacity is whatever you have provisioned."},
+   {"text": "GitHub-hosted runners autoscale dynamically, whereas self-hosted capacity must be provisioned manually.", "correct": true, "why": "Autoscaling is a GitHub-hosted property. With self-hosted runners you add capacity yourself, so a fixed pool queues under peak load — which is what monitoring runner performance is meant to surface."},
+   {"text": "Self-hosted runners only accept jobs from the default branch.", "correct": false, "why": "No such restriction."},
+   {"text": "The workflows are missing a concurrency group.", "correct": false, "why": "Concurrency limits overlap deliberately; it would cause queuing you configured, not a capacity shortfall."}
+  ],
+  "takeaway": "Hosted runners autoscale; self-hosted do not. Queue depth against a fixed pool is a provisioning signal."
+ },
+ {
+  "id": "auth-c-08", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d4", "objective": "4.3.2", "module": "m8", "unit": "m8-manage-encrypted-secrets", "type": "single",
+  "text": "Which statement about where a secret becomes available is correct?",
+  "options": [
+   {"text": "Every secret is available to every workflow in the organization once created.", "correct": false, "why": "That would defeat scoping entirely. Availability follows the level at which the secret is defined."},
+   {"text": "A secret is accessible to workflows and actions with permission to the organization, repository or environment where it is defined.", "correct": true, "why": "Secrets are encrypted environment variables, and access follows the definition level. Choosing that level is the scoping decision — organization for shared credentials, repository for local ones, environment for deployment-gated ones."},
+   {"text": "Repository secrets override organization secrets of the same name and are visible in logs.", "correct": false, "why": "Secrets are masked in logs; printing them is what you actively guard against."},
+   {"text": "Environment secrets are available to any job in the repository.", "correct": false, "why": "They are available to jobs targeting that environment, which is precisely the point of using them for production."}
+  ],
+  "takeaway": "Definition level determines availability: organization, repository, or environment. Scope to the lowest level that works."
+ },
+ {
+  "id": "auth-c-09", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d4", "objective": "4.3.3", "module": "m8", "unit": "m8-manage-encrypted-secrets", "type": "single",
+  "text": "A workflow fetches a database password from HashiCorp Vault at run time. What still has to live in GitHub, and why does the arrangement help?",
+  "options": [
+   {"text": "Nothing — Vault integration removes all GitHub secrets.", "correct": false, "why": "The Vault action authenticates with a token, typically referenced as a GitHub secret. Only OIDC genuinely removes the stored credential."},
+   {"text": "A Vault token as a GitHub secret; the database password itself stays in Vault, where it can be rotated and audited centrally.", "correct": true, "why": "One credential in GitHub replaces many. The password lives in Vault with automated rotation, access control and audit logging, and least-privilege access means the workflow retrieves only what it needs."},
+   {"text": "The database password, duplicated in GitHub as a fallback.", "correct": false, "why": "Duplicating the secret reintroduces exactly the exposure the vault was adopted to remove."},
+   {"text": "Nothing, because Vault actions authenticate anonymously.", "correct": false, "why": "Vault requires authentication."}
+  ],
+  "takeaway": "Vaults collapse many stored secrets into one authentication credential, and add rotation plus audit. OIDC removes even that."
+ },
+ {
+  "id": "auth-c-10", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d5", "objective": "5.1.2", "module": "m7", "unit": "m7-3-support-for-github-enterprise", "type": "multi",
+  "text": "Which are explicitly the administrator's responsibility rather than GitHub Support's? (Select all that apply.)",
+  "options": [
+   {"text": "Infrastructure configuration and hardware setup.", "correct": true, "why": "Yes — named as administrator scope, particularly for self-hosted GHES."},
+   {"text": "CI/CD integrations and internal scripting.", "correct": true, "why": "Yes. Support does not debug your pipelines or automation."},
+   {"text": "Third-party authentication systems such as SAML.", "correct": true, "why": "Yes — configuring and troubleshooting the IdP integration is the administrator's job."},
+   {"text": "Investigating harassment reports under GitHub's terms of service.", "correct": false, "why": "No — abuse cases are one of Support's three named areas, alongside accounts and security."}
+  ],
+  "takeaway": "Support: accounts, security, abuse. Administrators: infrastructure, internal tooling, CI/CD, external auth, immediate on-prem response."
+ },
+ {
+  "id": "auth-c-11", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d3", "objective": "3.1.2", "module": "m5", "unit": "m5-3-scrub-sensitive-data-from-repository", "type": "single",
+  "text": "A credential was committed and pushed six months ago. Rewriting history to remove it is planned. What else is essential?",
+  "options": [
+   {"text": "Nothing further — removing it from history fully resolves the exposure.", "correct": false, "why": "The credential has been readable for six months. History rewriting removes the copy, not the knowledge of it."},
+   {"text": "Rotate the credential, because it must be assumed compromised regardless of the rewrite.", "correct": true, "why": "Anything committed and pushed should be treated as disclosed — it may exist in clones, forks and caches. Rotation is the control that actually ends the exposure; the rewrite is cleanup. Note that clearing caches after history rewriting is a task requiring GitHub Support."},
+   {"text": "Enable branch protection so it cannot happen again.", "correct": false, "why": "Sensible hardening, but it does not address the already-exposed credential. Push protection is the preventive control for secrets."},
+   {"text": "Delete and recreate the repository.", "correct": false, "why": "Destroys history and collaboration while still leaving the leaked credential valid."}
+  ],
+  "takeaway": "A pushed secret is a compromised secret. Rotate first, then clean history — and enable push protection so the next one never lands."
+ },
+ {
+  "id": "auth-c-12", "source": "authored", "sourceLabel": "Written for this guide",
+  "domain": "d4", "objective": "4.1.1", "module": "m8", "unit": "m8-manage-actions-workflows", "type": "single",
+  "text": "An enterprise wants a set of vetted, centrally maintained workflows that any organization can call. Where should they live?",
+  "options": [
+   {"text": "Duplicated into every repository that needs them, kept in sync by a bot.", "correct": false, "why": "Synchronised duplication is still duplication, with a new failure mode when the bot drifts or breaks."},
+   {"text": "In a designated enterprise repository, referenced as reusable workflows by callers.", "correct": true, "why": "Centralising vetted actions and workflows in an enterprise repository and calling them is what makes reuse manageable — one place to review, update and secure, with every caller inheriting the change."},
+   {"text": "In each developer's personal account, shared by link.", "correct": false, "why": "Ties enterprise automation to individual accounts, which disappear when people leave."},
+   {"text": "As a Marketplace action published publicly.", "correct": false, "why": "Publishing internal build logic publicly is an unnecessary disclosure, and it does not give the enterprise control over consumption."}
+  ],
+  "takeaway": "Vet centrally, reuse widely: enterprise-owned repository plus reusable workflows, governed by Actions policy."
+ }
+]

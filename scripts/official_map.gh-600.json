@@ -1,0 +1,182 @@
+{
+ "learn.github.agent-tooling-mcp-execution-environments.knowledge-check#0": [
+  "d2",
+  "2.3.1",
+  "m3-execution-context-boundaries"
+ ],
+ "learn.github.agent-tooling-mcp-execution-environments.knowledge-check#1": [
+  "d2",
+  "2.3.4",
+  "m3-execution-context-boundaries"
+ ],
+ "learn.github.agent-tooling-mcp-execution-environments.knowledge-check#2": [
+  "d2",
+  "2.1.3",
+  "m3-execution-context-boundaries"
+ ],
+ "learn.github.agent-tooling-mcp-execution-environments.knowledge-check#3": [
+  "d2",
+  "2.3.5",
+  "m3-agent-execution-limits-protections"
+ ],
+ "learn.github.agent-tooling-mcp-execution-environments.knowledge-check#4": [
+  "d2",
+  "2.3.3",
+  "m3-interact-github-apis-workflows"
+ ],
+ "learn.github.agent-tooling-mcp-execution-environments.knowledge-check#5": [
+  "d2",
+  "2.2.1",
+  "m3-mcp-servers-registry-allowlists"
+ ],
+ "learn.github.agent-tooling-mcp-execution-environments.knowledge-check#6": [
+  "d2",
+  "2.2.4",
+  "m3-mcp-servers-registry-allowlists"
+ ],
+ "learn.github.agent-tooling-mcp-execution-environments.knowledge-check#7": [
+  "d2",
+  "2.3.6",
+  "m3-agent-execution-limits-protections"
+ ],
+ "learn.github.agent-tooling-mcp-execution-environments.knowledge-check#8": [
+  "d2",
+  "2.1.3",
+  "m3-execution-context-boundaries"
+ ],
+ "learn.github.agent-tooling-mcp-execution-environments.knowledge-check#9": [
+  "d2",
+  "2.4.5",
+  "m3-agent-execution-limits-protections"
+ ],
+ "learn.github.design-agent-architecture-integration.knowledge-check#0": [
+  "d1",
+  "1.2.4",
+  "m2-pull-request-governance-controls"
+ ],
+ "learn.github.design-agent-architecture-integration.knowledge-check#1": [
+  "d1",
+  "1.3.1",
+  "m2-pull-request-governance-controls"
+ ],
+ "learn.github.design-agent-architecture-integration.knowledge-check#2": [
+  "d1",
+  "1.3.2",
+  "m2-agent-operations-controls"
+ ],
+ "learn.github.design-agent-architecture-integration.knowledge-check#3": [
+  "d1",
+  "1.3.1",
+  "m2-reliable-workflows"
+ ],
+ "learn.github.design-agent-architecture-integration.knowledge-check#4": [
+  "d1",
+  "1.1.2",
+  "m2-plan-reason-execution"
+ ],
+ "learn.github.foundations-agentic-ai.knowledge-check#0": [
+  "d1",
+  "1.1.1",
+  "m1-define-agentic-ai"
+ ],
+ "learn.github.foundations-agentic-ai.knowledge-check#1": [
+  "d1",
+  "1.3.2",
+  "m1-describe-github-system-record-control-plane"
+ ],
+ "learn.github.foundations-agentic-ai.knowledge-check#2": [
+  "d1",
+  "1.3.1",
+  "m1-describe-github-system-record-control-plane"
+ ],
+ "learn.github.foundations-agentic-ai.knowledge-check#3": [
+  "d1",
+  "1.1.2",
+  "m1-identify-risks-traceability"
+ ],
+ "learn.github.foundations-agentic-ai.knowledge-check#4": [
+  "d1",
+  "1.1.2",
+  "m1-apply-contributor-model-agent-generated-work"
+ ],
+ "learn.github.governance-guardrails-operations.knowledge-check#0": [
+  "d6",
+  "6.2.3",
+  "m6-define-risk-based-autonomy"
+ ],
+ "learn.github.governance-guardrails-operations.knowledge-check#1": [
+  "d6",
+  "6.2.4",
+  "m6-enforce-governance-github-controls"
+ ],
+ "learn.github.governance-guardrails-operations.knowledge-check#2": [
+  "d6",
+  "6.2.3",
+  "m6-control-agent-capabilities"
+ ],
+ "learn.github.governance-guardrails-operations.knowledge-check#3": [
+  "d6",
+  "6.2.4",
+  "m6-design-human-workflows"
+ ],
+ "learn.github.governance-guardrails-operations.knowledge-check#4": [
+  "d6",
+  "6.2.2",
+  "m6-enforce-governance-github-controls"
+ ],
+ "learn.github.memory-state-evaluation.knowledge-check#0": [
+  "d3",
+  "3.1.1",
+  "m4-agent-memory-strategies"
+ ],
+ "learn.github.memory-state-evaluation.knowledge-check#1": [
+  "d3",
+  "3.2.1",
+  "m4-agent-state-context-drift"
+ ],
+ "learn.github.memory-state-evaluation.knowledge-check#2": [
+  "d3",
+  "3.2.3",
+  "m4-agent-state-context-drift"
+ ],
+ "learn.github.memory-state-evaluation.knowledge-check#3": [
+  "d4",
+  "4.1.1",
+  "m4-evaluation-signals-quality-gates"
+ ],
+ "learn.github.memory-state-evaluation.knowledge-check#4": [
+  "d4",
+  "4.2.1",
+  "m4-agent-failures-behavior-improvement"
+ ],
+ "learn.github.memory-state-evaluation.knowledge-check#5": [
+  "d4",
+  "4.3.1",
+  "m4-agent-failures-behavior-improvement"
+ ],
+ "learn.github.multi-agent-systems-orchestration.knowledge-check#0": [
+  "d5",
+  "5.1.1",
+  "m5-agent-orchestration-github-workflows"
+ ],
+ "learn.github.multi-agent-systems-orchestration.knowledge-check#1": [
+  "d5",
+  "5.1.2",
+  "m5-execution-isolation-permissions-concurrency"
+ ],
+ "learn.github.multi-agent-systems-orchestration.knowledge-check#2": [
+  "d5",
+  "5.1.3",
+  "m5-conflict-resolution-github-arbitration"
+ ],
+ "learn.github.multi-agent-systems-orchestration.knowledge-check#3": [
+  "d5",
+  "5.3.1",
+  "m5-scale-failure-recovery"
+ ],
+ "learn.github.multi-agent-systems-orchestration.knowledge-check#4": [
+  "d5",
+  "5.3.3",
+  "m5-scale-failure-recovery"
+ ]
+}
