@@ -1179,7 +1179,7 @@ function viewOverview() {
   const domainRows = domains.map(d => {
     const s = statsFor(qByDomain[d.id] || []);
     const cls = s.seen === 0 ? "" : s.pct >= 80 ? "good" : s.pct >= 60 ? "warn" : "bad";
-    return el("a", { class: "dom-row", href: `${href("/quiz/domain/${d.id}")}` },
+    return el("a", { class: "dom-row", href: `${href(`/quiz/domain/${d.id}`)}` },
       el("span", { class: "dom-num", text: d.number }),
       el("span", {},
         el("div", { class: "dom-name", text: d.title }),
@@ -1224,7 +1224,7 @@ function viewOverview() {
         el("div", { class: "eyebrow", text: "Where to spend your next hour" }),
         el("div", { style: "font-size:15px;margin-top:4px" },
           `Domain ${weak.d.number} — ${weak.d.title} is your weakest at ${weak.s.pct}%, and it carries ${weak.d.weight} of the exam.`)),
-      el("a", { class: "btn btn-primary", href: `${href("/quiz/domain/${weak.d.id}")}` }, "Drill this domain")) : null,
+      el("a", { class: "btn btn-primary", href: `${href(`/quiz/domain/${weak.d.id}`)}` }, "Drill this domain")) : null,
 
     el("div", { class: "sec-head" },
       el("h2", { class: "sec-title", text: "The six domains" }),
@@ -1233,9 +1233,9 @@ function viewOverview() {
 
     el("div", { class: "sec-head" }, el("h2", { class: "sec-title", text: "Start somewhere" })),
     el("div", { class: "grid g3" },
-      startCard("Read the modules", `${unitTotal} units from the two official learning paths, rendered here in full.`, "#/study"),
-      startCard("Take a module quiz", "Every knowledge-check question, plus practice items for each unit.", "#/quiz"),
-      startCard("Sit a practice exam", `${exam.duration}, weighted to the published domain percentages.`, "#/exam")),
+      startCard("Read the modules", `${unitTotal} units from the two official learning paths, rendered here in full.`, href("/study")),
+      startCard("Take a module quiz", "Every knowledge-check question, plus practice items for each unit.", href("/quiz")),
+      startCard("Sit a practice exam", `${exam.duration}, weighted to the published domain percentages.`, href("/exam"))),
 
     el("div", { class: "sec-head" }, el("h2", { class: "sec-title", text: "About the exam" })),
     el("div", { class: "card pad", style: "display:flex;flex-direction:column;gap:12px" },
@@ -1252,7 +1252,7 @@ function viewOverview() {
       el("div", { class: "sec-head" }, el("h2", { class: "sec-title", text: "Practice exam history" })),
       el("div", { class: "card" }, attempts.slice().reverse().map((a, n) => {
         const idx = attempts.length - 1 - n;
-        return el("a", { class: "miss-item", href: `${href("/exam/result/${idx}")}` },
+        return el("a", { class: "miss-item", href: `${href(`/exam/result/${idx}`)}` },
           el("span", {},
             el("div", { class: "miss-q", text: `${a.right} of ${a.total} correct — scaled ${a.scaled}/1000` }),
             el("div", { class: "hit-snip", text: new Date(a.at).toLocaleString() })),
@@ -1339,7 +1339,7 @@ function viewStudy(unitId, fromQid) {
     u.kind === "knowledge-check"
       ? el("div", { class: "card pad", style: "display:flex;flex-direction:column;gap:12px" },
           el("p", { text: `This unit is the module's knowledge check — ${(qByModule[m.id] || []).filter(q => q.source === "official").length} questions with the module authors' own explanations.` }),
-          el("a", { class: "btn btn-primary", href: `${href("/quiz/module/${m.id}")}` }, "Take the " + m.title + " quiz"))
+          el("a", { class: "btn btn-primary", href: `${href(`/quiz/module/${m.id}`)}` }, "Take the " + m.title + " quiz"))
       : el("div", { class: "md", html: markdown(u.markdown) }),
 
     el("div", { class: "unit-foot" },
@@ -1347,7 +1347,7 @@ function viewStudy(unitId, fromQid) {
         el("div", { style: "flex:1;min-width:200px" },
           el("div", { class: "eyebrow", text: "Check yourself" }),
           el("div", { style: "font-size:14.5px;margin-top:2px", text: `${tests.length} question${tests.length > 1 ? "s" : ""} in the bank test this unit.` })),
-        el("a", { class: "btn btn-primary", href: `${href("/quiz/unit/${u.id}")}` }, "Quiz this unit")) : null,
+        el("a", { class: "btn btn-primary", href: `${href(`/quiz/unit/${u.id}`)}` }, "Quiz this unit")) : null,
       el("div", { class: "row" },
         prev ? el("a", { class: "btn btn-sm", href: href("/study/") + prev.id }, "← " + prev.title) : null,
         el("span", { class: "spacer" }),
@@ -1379,7 +1379,7 @@ function viewObjectives() {
             el("div", { class: "dom-sub", text: d.weight + " of the exam" })),
           el("span", { class: "obj-score" + (s.seen ? (s.pct >= 80 ? " is-good" : s.pct < 60 ? " is-bad" : "") : ""),
             text: s.seen ? `${s.pct}%` : "—" }),
-          el("a", { class: "btn btn-sm", href: `${href("/quiz/domain/${d.id}")}` }, "Drill")),
+          el("a", { class: "btn btn-sm", href: `${href(`/quiz/domain/${d.id}`)}` }, "Drill")),
         d.groups.map(g => el("div", { class: "obj-group" },
           el("div", { class: "obj-group-title", text: g.title }),
           g.objectives.map(o => {
@@ -1428,30 +1428,30 @@ function viewQuizPicker() {
     el("div", { class: "pick-grid" }, modules.map(m => {
       const list = qByModule[m.id] || [];
       const off = list.filter(q => q.source === "official").length;
-      return set(m.title, `${off} official knowledge-check questions plus ${list.length - off} practice items.`, list, `${href("/quiz/module/${m.id}")}`);
+      return set(m.title, `${off} official knowledge-check questions plus ${list.length - off} practice items.`, list, `${href(`/quiz/module/${m.id}`)}`);
     })),
 
     el("div", { class: "sec-head" }, el("h2", { class: "sec-title", text: "By exam domain" })),
     el("div", { class: "pick-grid" }, domains.map(d =>
       set(`Domain ${d.number} — ${d.title}`, `${d.weight} of the exam · ${d.groups.reduce((n, g) => n + g.objectives.length, 0)} objectives.`,
-        qByDomain[d.id] || [], `${href("/quiz/domain/${d.id}")}`))),
+        qByDomain[d.id] || [], `${href(`/quiz/domain/${d.id}`)}`))),
 
     el("div", { class: "sec-head" }, el("h2", { class: "sec-title", text: "Targeted sets" })),
     el("div", { class: "pick-grid" },
-      set("Official knowledge checks only", "The 36 questions Microsoft Learn asks at the end of each module, verbatim.", official, "#/quiz/set/official", { tag: "Official" }),
-      set("Everything you got wrong", "Every question whose last attempt was incorrect.", missed, "#/quiz/set/missed"),
-      set("Flagged for review", "Questions you marked while practising.", flagged, "#/quiz/set/flagged"),
-      set("Not yet attempted", "Fresh questions you have never answered.", unseen, "#/quiz/set/unseen"),
-      set("Full bank, shuffled", "All " + questions.length + " questions in random order.", questions, "#/quiz/set/all")),
+      set("Official knowledge checks only", "The 36 questions Microsoft Learn asks at the end of each module, verbatim.", official, href("/quiz/set/official"), { tag: "Official" }),
+      set("Everything you got wrong", "Every question whose last attempt was incorrect.", missed, href("/quiz/set/missed")),
+      set("Flagged for review", "Questions you marked while practising.", flagged, href("/quiz/set/flagged")),
+      set("Not yet attempted", "Fresh questions you have never answered.", unseen, href("/quiz/set/unseen")),
+      set("Full bank, shuffled", "All " + questions.length + " questions in random order.", questions, href("/quiz/set/all"))),
 
     el("div", { class: "sec-head" },
       el("h2", { class: "sec-title", text: "Advanced" }),
       el("span", { class: "sec-note", text: "exact keys, flags and product behaviour - harder than the module material" })),
     el("div", { class: "pick-grid" },
       set("Advanced tier only", "Implementation-level questions drawn from the advanced guide: agent frontmatter, MCP transports, CLI flags, hook events.",
-        questions.filter(q => q.difficulty === "advanced"), "#/quiz/set/advanced", { tag: "Hard" }),
+        questions.filter(q => q.difficulty === "advanced"), href("/quiz/set/advanced"), { tag: "Hard" }),
       set("Everything except the advanced tier", "The module-level bank on its own, for a gentler pass.",
-        questions.filter(q => q.difficulty !== "advanced"), "#/quiz/set/standard")));
+        questions.filter(q => q.difficulty !== "advanced"), href("/quiz/set/standard"))));
 }
 
 function resolveQuizSet(kind, id) {
@@ -1480,7 +1480,7 @@ function resolveQuizSet(kind, id) {
 let timerHandle = null;
 
 function viewRunner() {
-  if (!session) return notFound("No quiz in progress.", "#/quiz");
+  if (!session) return notFound("No quiz in progress.", href("/quiz"));
   if (session.finished) return viewSessionResult();
 
   const i = session.index;
@@ -1554,9 +1554,9 @@ function viewRunner() {
       // to the guide they actually come from and keep the unit as context
       q.source === "advanced-guide"
         ? el("a", { class: "btn btn-sm btn-primary", href: href("/reference/ref-advanced") }, "Read the advanced guide →")
-        : (unit ? el("a", { class: "btn btn-sm btn-primary", href: `${href("/study/${unit.id}?from=${q.id}")}` }, "Read where this is taught →") : null),
+        : (unit ? el("a", { class: "btn btn-sm btn-primary", href: `${href(`/study/${unit.id}?from=${q.id}`)}` }, "Read where this is taught →") : null),
       q.source === "advanced-guide" && unit
-        ? el("a", { class: "btn btn-sm", href: `${href("/study/${unit.id}?from=${q.id}")}` }, "Related unit")
+        ? el("a", { class: "btn btn-sm", href: `${href(`/study/${unit.id}?from=${q.id}`)}` }, "Related unit")
         : null,
       unit ? el("a", { class: "btn btn-sm", href: unit.url, target: "_blank", rel: "noopener noreferrer" }, "On Microsoft Learn ↗") : null,
       q.sourceUrl ? el("a", { class: "btn btn-sm", href: q.sourceUrl, target: "_blank", rel: "noopener noreferrer" }, "Question source ↗") : null,
@@ -1588,7 +1588,7 @@ function viewRunner() {
         el("div", { class: "qbar-meta", text: `Question ${i + 1} of ${session.questions.length} · ${answeredCount} answered` })),
       el("span", { class: "spacer" }),
       isExam ? el("span", { class: "timer", id: "timer" }, "--:--") : null,
-      el("a", { class: "btn btn-sm", href: isExam ? "#/exam" : "#/quiz",
+      el("a", { class: "btn btn-sm", href: isExam ? href("/exam") : href("/quiz"),
         onclick: e => { if (!confirm("Leave this " + (isExam ? "exam" : "quiz") + "? Answers you have already checked are saved.")) e.preventDefault(); else session = null; } }, "Exit")),
     meter(pct(i + 1, session.questions.length)),
     palette,
@@ -1661,7 +1661,7 @@ function missRow(q) {
     el("span", {},
       el("div", { class: "miss-q", html: inline(q.text) }),
       el("div", { class: "miss-meta" }, domainTag(q.domain), el("span", { class: "tag", text: q.objective }), sourceTag(q))),
-    unit ? el("a", { class: "btn btn-sm", href: `${href("/study/${unit.id}?from=${q.id}")}` }, "Read →") : null);
+    unit ? el("a", { class: "btn btn-sm", href: `${href(`/study/${unit.id}?from=${q.id}`)}` }, "Read →") : null);
 }
 
 /* ==========================================================================
@@ -1707,7 +1707,7 @@ function viewExamIntro() {
 
 function viewExamResult(idx) {
   const a = store.p().exams[+idx];
-  if (!a) return notFound("No such exam attempt.", "#/exam");
+  if (!a) return notFound("No such exam attempt.", href("/exam"));
   const passed = a.scaled >= 700;
   const passX = 70;
 
@@ -1734,7 +1734,7 @@ function viewExamResult(idx) {
       const b = a.byDomain[d.id] || { right: 0, total: 0 };
       const p = pct(b.right, b.total);
       const cls = b.total === 0 ? "" : p >= 80 ? "good" : p >= 60 ? "warn" : "bad";
-      return el("a", { class: "dom-row", href: `${href("/quiz/domain/${d.id}")}` },
+      return el("a", { class: "dom-row", href: `${href(`/quiz/domain/${d.id}`)}` },
         el("span", { class: "dom-num", text: d.number }),
         el("span", {}, el("div", { class: "dom-name", text: d.title }),
           el("div", { class: "dom-sub", text: d.weight + " of the exam" })),
@@ -1760,6 +1760,12 @@ function viewExamResult(idx) {
 let cardState = { list: null, i: 0, flipped: false, filter: "all" };
 
 function viewCards() {
+  if (!flashcards.length) {
+    return el("div", { class: "wrap-narrow" },
+      pageHead("Flashcards", "No flashcards for " + exam.code,
+        "The flashcard deck was contributed for GH-600 by the community study guide. There is no equivalent for this certification yet."),
+      el("a", { class: "btn btn-primary", href: href("/quiz") }, "Go to the quizzes instead"));
+  }
   if (!cardState.list) cardState.list = flashcards.slice();
   const list = cardState.filter === "all" ? cardState.list
              : cardState.list.filter(c => c.domain === cardState.filter);
@@ -1814,7 +1820,7 @@ function viewReference(id) {
           el("span", { class: "pick-foot" }, el("span", { class: "tag" }, "Community"))))));
   }
   const r = REFERENCE[id];
-  if (!r) return notFound("No such reference document.", "#/reference");
+  if (!r) return notFound("No such reference document.", href("/reference"));
   return el("div", { class: "wrap-narrow" },
     el("div", { class: "unit-head" },
       el("div", { class: "row" },
@@ -1956,6 +1962,12 @@ const NAV = [
 ];
 const TAB_PATHS = ["/", "/study", "/quiz", "/exam", "/cards", "/search"];
 
+/** Not every cert has flashcards or a reference shelf; hide what would be empty. */
+function availableNav() {
+  return NAV.filter(n => (n.path !== "/cards" || flashcards.length)
+                      && (n.path !== "/reference" || reference.length));
+}
+
 /* ==========================================================================
    View: certification picker (the landing page)
    ========================================================================== */
@@ -2065,11 +2077,11 @@ function renderChrome(inPicker) {
     el("span", { class: "brand-sub", text: "\u2190 all certifications" })));
   rail.appendChild(el("nav", { class: "nav", "aria-label": "Sections" },
     el("div", { class: "nav-label", text: "Learn" }),
-    NAV.slice(0, 3).map(navLink),
+    availableNav().filter(n => ["/", "/study", "/objectives"].includes(n.path)).map(navLink),
     el("div", { class: "nav-label", text: "Test yourself" }),
-    NAV.slice(3, 6).map(navLink),
+    availableNav().filter(n => ["/quiz", "/exam", "/cards"].includes(n.path)).map(navLink),
     el("div", { class: "nav-label", text: "More" }),
-    NAV.slice(6).map(navLink)));
+    availableNav().filter(n => ["/reference", "/search"].includes(n.path)).map(navLink)));
   rail.appendChild(el("div", { class: "rail-foot" },
     themeRow(),
     el("p", { style: "font-size:11.5px;color:var(--faint);line-height:1.45" },
@@ -2081,8 +2093,9 @@ function renderChrome(inPicker) {
   topbar.appendChild(el("span", { class: "spacer" }));
   topbar.appendChild(themeToggleBtn());
 
-  TAB_PATHS.forEach(pth => {
-    const n = NAV.find(x => x.path === pth);
+  const tabs = availableNav().filter(n => TAB_PATHS.includes(n.path));
+  tabbar.style.gridTemplateColumns = `repeat(${tabs.length}, 1fr)`;
+  tabs.forEach(n => {
     tabbar.appendChild(el("a", { href: href(n.path), "data-nav": n.path },
       icon(n.icon), el("span", { text: n.label.split(" ")[0] })));
   });

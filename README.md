@@ -2,7 +2,7 @@
 
 Study and quiz platform for GitHub certifications. Pick a cert, browse the official material, drill the question bank, sit a weighted mock.
 
-**▶ [Open the site](https://edkranz.github.io/gh-600-workbench/)**
+**▶ [Open the site](https://edkranz.github.io/gh-cert-prep/)**
 
 ## Certifications covered
 
